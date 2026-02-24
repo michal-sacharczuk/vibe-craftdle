@@ -1,12 +1,12 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import ModeSelector from './components/layout/ModeSelector';
-import ClassicGame from './components/classic/ClassicGame';
-import CraftingGame from './components/crafting/CraftingGame';
-import TextureGame from './components/texture/TextureGame';
-import SoundGame from './components/sound/SoundGame';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+import ModeSelector from "./components/layout/ModeSelector";
+import ClassicGame from "./components/classic/ClassicGame";
+import CraftingGame from "./components/crafting/CraftingGame";
+import TextureGame from "./components/texture/TextureGame";
+import SoundGame from "./components/sound/SoundGame";
 
 function HomePage() {
   return (

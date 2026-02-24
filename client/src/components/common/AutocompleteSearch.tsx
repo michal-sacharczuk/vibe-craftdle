@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
-import { useAutocomplete } from '../../hooks/useAutocomplete';
-import { SearchResult } from '../../types';
+import React, { useRef, useEffect } from "react";
+import { useAutocomplete } from "../../hooks/useAutocomplete";
+import { SearchResult } from "../../types";
 
 interface AutocompleteSearchProps {
   onSelect: (item: SearchResult) => void;
@@ -8,18 +8,26 @@ interface AutocompleteSearchProps {
   placeholder?: string;
 }
 
-export default function AutocompleteSearch({ onSelect, disabled, placeholder }: AutocompleteSearchProps) {
-  const { query, results, isOpen, loading, search, setIsOpen, clear } = useAutocomplete();
+export default function AutocompleteSearch({
+  onSelect,
+  disabled,
+  placeholder,
+}: AutocompleteSearchProps) {
+  const { query, results, isOpen, loading, search, setIsOpen, clear } =
+    useAutocomplete();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsOpen]);
 
   function handleSelect(item: SearchResult) {
@@ -34,7 +42,7 @@ export default function AutocompleteSearch({ onSelect, disabled, placeholder }: 
         value={query}
         onChange={(e) => search(e.target.value)}
         disabled={disabled}
-        placeholder={placeholder || 'Type to search...'}
+        placeholder={placeholder || "Type to search..."}
         className="mc-input"
         aria-label="Search for an item, block, or mob"
       />
@@ -47,10 +55,23 @@ export default function AutocompleteSearch({ onSelect, disabled, placeholder }: 
             <li
               key={item.id}
               onClick={() => handleSelect(item)}
-              className="px-4 py-2 cursor-pointer hover:bg-mc-stone flex items-center gap-3 text-sm"
+              className="px-3 py-2 cursor-pointer hover:bg-mc-stone flex items-center gap-2 text-sm"
             >
-              <span className="text-mc-gold text-xs">[{item.type}]</span>
-              <span>{item.name}</span>
+              {item.textureUrl && (
+                <img
+                  src={item.textureUrl}
+                  alt=""
+                  className="w-6 h-6 flex-shrink-0"
+                  style={{ imageRendering: "pixelated" }}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              )}
+              <span className="text-mc-gold text-xs font-minecraft">
+                [{item.type}]
+              </span>
+              <span className="truncate">{item.name}</span>
             </li>
           ))}
         </ul>

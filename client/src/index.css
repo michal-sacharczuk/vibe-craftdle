@@ -43,3 +43,16 @@
     @apply bg-red-800 border border-red-600;
   }
 }
+
+/* Pixelated image rendering utility */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Mobile-friendly scrollbar */
+@media (max-width: 640px) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}

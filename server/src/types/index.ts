@@ -19,7 +19,7 @@ export interface ItemOrBlock {
 export interface Mob {
   id: string;
   name: string;
-  type: 'Mob';
+  type: "Mob";
   dimension: Dimension[];
   behavior: MobBehavior;
   stackable: false;
@@ -55,9 +55,16 @@ export interface SoundEntry {
 
 // --------------- Enum-like Types ---------------
 
-export type EntityType = 'Block' | 'Item' | 'Tool' | 'Weapon' | 'Armor' | 'Food' | 'Mob';
-export type Dimension = 'Overworld' | 'Nether' | 'End';
-export type MobBehavior = 'Hostile' | 'Passive' | 'Neutral';
+export type EntityType =
+  | "Block"
+  | "Item"
+  | "Tool"
+  | "Weapon"
+  | "Armor"
+  | "Food"
+  | "Mob";
+export type Dimension = "Overworld" | "Nether" | "End";
+export type MobBehavior = "Hostile" | "Passive" | "Neutral";
 
 // --------------- Classic Mode ---------------
 
@@ -66,7 +73,7 @@ export interface ClassicEntity {
   name: string;
   type: EntityType;
   dimension: Dimension[];
-  behavior: MobBehavior | 'N/A';
+  behavior: MobBehavior | "N/A";
   stackable: boolean;
   renewable: boolean;
   versionAdded: string;
@@ -94,7 +101,7 @@ export interface ClassicGuessFeedback {
 
 export interface GameSession {
   id: string;
-  mode: 'classic' | 'crafting' | 'texture' | 'sound';
+  mode: "classic" | "crafting" | "texture" | "sound";
   targetId: string;
   guessLimit: number | null; // null = unlimited
   guesses: string[];
@@ -103,13 +110,15 @@ export interface GameSession {
 }
 
 export interface CraftingSession extends GameSession {
-  mode: 'crafting';
+  mode: "crafting";
   revealedSlots: number[];
 }
 
 export interface TextureSession extends GameSession {
-  mode: 'texture';
+  mode: "texture";
   cropLevel: number; // 0 = most zoomed in, increases with wrong guesses
+  centerX: number; // 0.0-1.0, crop center position
+  centerY: number;
 }
 
 // --------------- API Request/Response ---------------
@@ -142,6 +151,7 @@ export interface ClassicGuessResponse {
 export interface CraftingStartResponse extends StartGameResponse {
   grid: (string | null)[][]; // all null initially
   revealedSlots: number[];
+  ingredientIcons: Record<string, string>; // ingredient id → icon URL
 }
 
 export interface CraftingGuessResponse {
@@ -149,11 +159,14 @@ export interface CraftingGuessResponse {
   guessesRemaining: number | null;
   grid: (string | null)[][];
   revealedSlots: number[];
+  ingredientIcons: Record<string, string>;
 }
 
 export interface TextureStartResponse extends StartGameResponse {
   cropLevel: number;
-  imageData: string; // base64 or URL of cropped image
+  imageData: string; // URL of texture image
+  centerX: number;
+  centerY: number;
 }
 
 export interface TextureGuessResponse {
@@ -161,6 +174,8 @@ export interface TextureGuessResponse {
   guessesRemaining: number | null;
   cropLevel: number;
   imageData: string;
+  centerX: number;
+  centerY: number;
 }
 
 export interface SoundStartResponse extends StartGameResponse {

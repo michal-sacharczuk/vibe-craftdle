@@ -1,10 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import { loadAllData, searchEntities } from './data/dataLoader';
-import classicRoutes from './routes/classicRoutes';
-import craftingRoutes from './routes/craftingRoutes';
-import textureRoutes from './routes/textureRoutes';
-import soundRoutes from './routes/soundRoutes';
+import express from "express";
+import cors from "cors";
+import { loadAllData, searchEntities } from "./data/dataLoader";
+import classicRoutes from "./routes/classicRoutes";
+import craftingRoutes from "./routes/craftingRoutes";
+import textureRoutes from "./routes/textureRoutes";
+import soundRoutes from "./routes/soundRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -17,14 +17,14 @@ app.use(express.json());
 loadAllData();
 
 // Routes
-app.use('/api/classic', classicRoutes);
-app.use('/api/crafting', craftingRoutes);
-app.use('/api/texture', textureRoutes);
-app.use('/api/sound', soundRoutes);
+app.use("/api/classic", classicRoutes);
+app.use("/api/crafting", craftingRoutes);
+app.use("/api/texture", textureRoutes);
+app.use("/api/sound", soundRoutes);
 
 // Search endpoint
-app.get('/api/items/search', (req, res) => {
-  const query = (req.query.q as string) || '';
+app.get("/api/items/search", (req, res) => {
+  const query = (req.query.q as string) || "";
   if (query.length < 1) {
     return res.json([]);
   }
@@ -33,8 +33,8 @@ app.get('/api/items/search', (req, res) => {
 });
 
 // Health check
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
 });
 
 // Only listen if this file is run directly (not imported for tests)

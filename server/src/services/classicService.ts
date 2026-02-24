@@ -1,9 +1,25 @@
-import { getClassicEntities } from '../data/dataLoader';
-import { createSession, getSession, getGuessesRemaining } from './sessionService';
-import { compareClassicEntities } from '../utils/compare';
-import { ClassicEntity, ClassicStartResponse, ClassicGuessResponse, AnswerResponse } from '../types';
+import { getClassicEntities } from "../data/dataLoader";
+import {
+  createSession,
+  getSession,
+  getGuessesRemaining,
+} from "./sessionService";
+import { compareClassicEntities } from "../utils/compare";
+import {
+  ClassicEntity,
+  ClassicStartResponse,
+  ClassicGuessResponse,
+  AnswerResponse,
+} from "../types";
 
-const ATTRIBUTES = ['type', 'dimension', 'behavior', 'stackable', 'renewable', 'versionAdded'];
+const ATTRIBUTES = [
+  "type",
+  "dimension",
+  "behavior",
+  "stackable",
+  "renewable",
+  "versionAdded",
+];
 
 function getRandomEntity(): ClassicEntity {
   const entities = getClassicEntities();
@@ -16,13 +32,15 @@ function findEntityById(id: string): ClassicEntity | undefined {
 
 function findEntityByName(name: string): ClassicEntity | undefined {
   return getClassicEntities().find(
-    (e) => e.name.toLowerCase() === name.toLowerCase()
+    (e) => e.name.toLowerCase() === name.toLowerCase(),
   );
 }
 
-export function startClassicGame(guessLimit: number | null): ClassicStartResponse {
+export function startClassicGame(
+  guessLimit: number | null,
+): ClassicStartResponse {
   const target = getRandomEntity();
-  const sessionId = createSession('classic', target.id, guessLimit);
+  const sessionId = createSession("classic", target.id, guessLimit);
 
   return {
     sessionId,
@@ -32,16 +50,20 @@ export function startClassicGame(guessLimit: number | null): ClassicStartRespons
   };
 }
 
-export function guessClassic(sessionId: string, guessName: string): ClassicGuessResponse | { error: string } {
+export function guessClassic(
+  sessionId: string,
+  guessName: string,
+): ClassicGuessResponse | { error: string } {
   const session = getSession(sessionId);
-  if (!session) return { error: 'Session not found' };
-  if (session.solved) return { error: 'Game already completed' };
+  if (!session) return { error: "Session not found" };
+  if (session.solved) return { error: "Game already completed" };
 
   const remaining = getGuessesRemaining(session);
-  if (remaining !== null && remaining <= 0) return { error: 'No guesses remaining' };
+  if (remaining !== null && remaining <= 0)
+    return { error: "No guesses remaining" };
 
   const guessEntity = findEntityByName(guessName);
-  if (!guessEntity) return { error: 'Unknown entity' };
+  if (!guessEntity) return { error: "Unknown entity" };
 
   const target = findEntityById(session.targetId)!;
   session.guesses.push(guessEntity.id);
@@ -59,12 +81,14 @@ export function guessClassic(sessionId: string, guessName: string): ClassicGuess
   };
 }
 
-export function getClassicAnswer(sessionId: string): AnswerResponse | { error: string } {
+export function getClassicAnswer(
+  sessionId: string,
+): AnswerResponse | { error: string } {
   const session = getSession(sessionId);
-  if (!session) return { error: 'Session not found' };
+  if (!session) return { error: "Session not found" };
 
   const target = findEntityById(session.targetId);
-  if (!target) return { error: 'Target not found' };
+  if (!target) return { error: "Target not found" };
 
   session.solved = true;
 

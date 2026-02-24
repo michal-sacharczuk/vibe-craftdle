@@ -3,104 +3,313 @@
     "id": "creeper",
     "name": "Creeper",
     "type": "Mob",
-    "dimension": ["Overworld"],
+    "dimension": [
+      "Overworld"
+    ],
     "behavior": "Hostile",
     "stackable": false,
     "renewable": true,
     "versionAdded": "1.0",
-    "textureUrl": "/textures/creeper.png",
-    "soundUrl": "/sounds/creeper.ogg",
+    "textureUrl": "https://minecraft.wiki/images/Creeper_JE1.png?a8881",
     "wikiUrl": "https://minecraft.wiki/w/Creeper"
+  },
+  {
+    "id": "zombie",
+    "name": "Zombie",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Zombie_JE1.png?c65a8",
+    "wikiUrl": "https://minecraft.wiki/w/Zombie"
+  },
+  {
+    "id": "skeleton",
+    "name": "Skeleton",
+    "type": "Mob",
+    "dimension": [
+      "Overworld",
+      "Nether"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Skeleton_JE1.png?8f214",
+    "wikiUrl": "https://minecraft.wiki/w/Skeleton"
+  },
+  {
+    "id": "spider",
+    "name": "Spider",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Spider_JE2_BE1.png?6a246",
+    "wikiUrl": "https://minecraft.wiki/w/Spider"
   },
   {
     "id": "enderman",
     "name": "Enderman",
     "type": "Mob",
-    "dimension": ["Overworld", "Nether", "End"],
+    "dimension": [
+      "Overworld",
+      "Nether",
+      "End"
+    ],
     "behavior": "Neutral",
     "stackable": false,
     "renewable": true,
     "versionAdded": "1.0",
-    "textureUrl": "/textures/enderman.png",
-    "soundUrl": "/sounds/enderman.ogg",
+    "textureUrl": "https://minecraft.wiki/images/Enderman_JE1.png?f1a5d",
     "wikiUrl": "https://minecraft.wiki/w/Enderman"
-  },
-  {
-    "id": "cow",
-    "name": "Cow",
-    "type": "Mob",
-    "dimension": ["Overworld"],
-    "behavior": "Passive",
-    "stackable": false,
-    "renewable": true,
-    "versionAdded": "1.0",
-    "textureUrl": "/textures/cow.png",
-    "soundUrl": "/sounds/cow.ogg",
-    "wikiUrl": "https://minecraft.wiki/w/Cow"
   },
   {
     "id": "blaze",
     "name": "Blaze",
     "type": "Mob",
-    "dimension": ["Nether"],
+    "dimension": [
+      "Nether"
+    ],
     "behavior": "Hostile",
     "stackable": false,
     "renewable": true,
     "versionAdded": "1.0",
-    "textureUrl": "/textures/blaze.png",
-    "soundUrl": "/sounds/blaze.ogg",
+    "textureUrl": "https://minecraft.wiki/images/Blaze_JE1_BE1.png?1bdde",
     "wikiUrl": "https://minecraft.wiki/w/Blaze"
-  },
-  {
-    "id": "warden",
-    "name": "Warden",
-    "type": "Mob",
-    "dimension": ["Overworld"],
-    "behavior": "Hostile",
-    "stackable": false,
-    "renewable": true,
-    "versionAdded": "1.19",
-    "textureUrl": "/textures/warden.png",
-    "soundUrl": "/sounds/warden.ogg",
-    "wikiUrl": "https://minecraft.wiki/w/Warden"
-  },
-  {
-    "id": "wolf",
-    "name": "Wolf",
-    "type": "Mob",
-    "dimension": ["Overworld"],
-    "behavior": "Neutral",
-    "stackable": false,
-    "renewable": true,
-    "versionAdded": "1.0",
-    "textureUrl": "/textures/wolf.png",
-    "soundUrl": "/sounds/wolf.ogg",
-    "wikiUrl": "https://minecraft.wiki/w/Wolf"
   },
   {
     "id": "ghast",
     "name": "Ghast",
     "type": "Mob",
-    "dimension": ["Nether"],
+    "dimension": [
+      "Nether"
+    ],
     "behavior": "Hostile",
     "stackable": false,
     "renewable": true,
     "versionAdded": "1.0",
-    "textureUrl": "/textures/ghast.png",
-    "soundUrl": "/sounds/ghast.ogg",
+    "textureUrl": "https://minecraft.wiki/images/Ghast_JE1_BE1.png?2c021",
     "wikiUrl": "https://minecraft.wiki/w/Ghast"
+  },
+  {
+    "id": "wither_skeleton",
+    "name": "Wither Skeleton",
+    "type": "Mob",
+    "dimension": [
+      "Nether"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.4",
+    "textureUrl": "https://minecraft.wiki/images/Wither_Skeleton_JE1_BE1.png?a40e8",
+    "wikiUrl": "https://minecraft.wiki/w/Wither_Skeleton"
+  },
+  {
+    "id": "magma_cube",
+    "name": "Magma Cube",
+    "type": "Mob",
+    "dimension": [
+      "Nether"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Magma_Cube_JE1_BE1.png?6af55",
+    "wikiUrl": "https://minecraft.wiki/w/Magma_Cube"
+  },
+  {
+    "id": "wolf",
+    "name": "Wolf",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Neutral",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Wolf_JE1_BE1.png?5506b",
+    "wikiUrl": "https://minecraft.wiki/w/Wolf"
+  },
+  {
+    "id": "cat",
+    "name": "Cat",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Passive",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.14",
+    "textureUrl": "https://minecraft.wiki/images/Tuxedo_Cat_JE1_BE1.png?e8dcd",
+    "wikiUrl": "https://minecraft.wiki/w/Cat"
+  },
+  {
+    "id": "pig",
+    "name": "Pig",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Passive",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Pig_JE1.png?1ff91",
+    "wikiUrl": "https://minecraft.wiki/w/Pig"
+  },
+  {
+    "id": "cow",
+    "name": "Cow",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Passive",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Cow_JE1.png?1258f",
+    "wikiUrl": "https://minecraft.wiki/w/Cow"
+  },
+  {
+    "id": "sheep",
+    "name": "Sheep",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Passive",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/White_Sheep_JE1.png?68a44",
+    "wikiUrl": "https://minecraft.wiki/w/Sheep"
+  },
+  {
+    "id": "chicken",
+    "name": "Chicken",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Passive",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Chicken_JE1_%28facing_NWU%29.png?3893e",
+    "wikiUrl": "https://minecraft.wiki/w/Chicken"
   },
   {
     "id": "villager",
     "name": "Villager",
     "type": "Mob",
-    "dimension": ["Overworld"],
+    "dimension": [
+      "Overworld"
+    ],
     "behavior": "Passive",
     "stackable": false,
     "renewable": true,
     "versionAdded": "1.0",
-    "textureUrl": "/textures/villager.png",
-    "soundUrl": "/sounds/villager.ogg",
+    "textureUrl": "https://minecraft.wiki/images/Plains_Villager_Base_JE1_BE1.png?6f61a",
     "wikiUrl": "https://minecraft.wiki/w/Villager"
+  },
+  {
+    "id": "iron_golem",
+    "name": "Iron Golem",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Neutral",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.2",
+    "textureUrl": "https://minecraft.wiki/images/Iron_Golem_JE1_BE1.png?cc134",
+    "wikiUrl": "https://minecraft.wiki/w/Iron_Golem"
+  },
+  {
+    "id": "ender_dragon",
+    "name": "Ender Dragon",
+    "type": "Mob",
+    "dimension": [
+      "End"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Ender_Dragon_JE1_BE1.png?69608",
+    "wikiUrl": "https://minecraft.wiki/w/Ender_Dragon"
+  },
+  {
+    "id": "wither",
+    "name": "Wither",
+    "type": "Mob",
+    "dimension": [
+      "Overworld",
+      "Nether",
+      "End"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.4",
+    "textureUrl": "https://minecraft.wiki/images/Wither_JE1_BE1.png?28915",
+    "wikiUrl": "https://minecraft.wiki/w/Wither"
+  },
+  {
+    "id": "phantom",
+    "name": "Phantom",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.13",
+    "textureUrl": "https://minecraft.wiki/images/Phantom_JE1.png?76252",
+    "wikiUrl": "https://minecraft.wiki/w/Phantom"
+  },
+  {
+    "id": "warden",
+    "name": "Warden",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.19",
+    "textureUrl": "https://minecraft.wiki/images/Warden_JE1_BE1.png?7fb24",
+    "wikiUrl": "https://minecraft.wiki/w/Warden"
+  },
+  {
+    "id": "slime",
+    "name": "Slime",
+    "type": "Mob",
+    "dimension": [
+      "Overworld"
+    ],
+    "behavior": "Hostile",
+    "stackable": false,
+    "renewable": true,
+    "versionAdded": "1.0",
+    "textureUrl": "https://minecraft.wiki/images/Slime_JE1.png?dfcc5",
+    "wikiUrl": "https://minecraft.wiki/w/Slime"
   }
 ]

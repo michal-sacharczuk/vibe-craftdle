@@ -1,16 +1,19 @@
-import { v4 as uuidv4 } from 'uuid';
-import { GameSession, CraftingSession, TextureSession } from '../types';
+import { v4 as uuidv4 } from "uuid";
+import { GameSession, CraftingSession, TextureSession } from "../types";
 
-const sessions = new Map<string, GameSession | CraftingSession | TextureSession>();
+const sessions = new Map<
+  string,
+  GameSession | CraftingSession | TextureSession
+>();
 
 // Auto-clean sessions older than 1 hour
 const SESSION_TTL = 60 * 60 * 1000;
 
 export function createSession(
-  mode: GameSession['mode'],
+  mode: GameSession["mode"],
   targetId: string,
   guessLimit: number | null,
-  extra?: Partial<CraftingSession | TextureSession>
+  extra?: Partial<CraftingSession | TextureSession>,
 ): string {
   const id = uuidv4();
   const session: GameSession = {
@@ -27,7 +30,9 @@ export function createSession(
   return id;
 }
 
-export function getSession(id: string): GameSession | CraftingSession | TextureSession | undefined {
+export function getSession(
+  id: string,
+): GameSession | CraftingSession | TextureSession | undefined {
   const session = sessions.get(id);
   if (session && Date.now() - session.createdAt > SESSION_TTL) {
     sessions.delete(id);

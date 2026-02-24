@@ -1,7 +1,7 @@
 {
   "name": "craftdle-client",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
     "test": "jest --config jest.config.cjs"
   },
   "dependencies": {
+    "canvas-confetti": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.22.0"
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",

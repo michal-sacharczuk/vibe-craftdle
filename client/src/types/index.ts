@@ -46,6 +46,7 @@ export interface CraftingStartResponse {
   guessesRemaining: number | null;
   grid: (string | null)[][];
   revealedSlots: number[];
+  ingredientIcons: Record<string, string>;
 }
 
 export interface CraftingGuessResponse {
@@ -53,6 +54,7 @@ export interface CraftingGuessResponse {
   guessesRemaining: number | null;
   grid: (string | null)[][];
   revealedSlots: number[];
+  ingredientIcons: Record<string, string>;
 }
 
 // Texture mode
@@ -62,6 +64,8 @@ export interface TextureStartResponse {
   guessesRemaining: number | null;
   cropLevel: number;
   imageData: string;
+  centerX: number;
+  centerY: number;
 }
 
 export interface TextureGuessResponse {
@@ -69,6 +73,8 @@ export interface TextureGuessResponse {
   guessesRemaining: number | null;
   cropLevel: number;
   imageData: string;
+  centerX: number;
+  centerY: number;
 }
 
 // Sound mode
@@ -92,4 +98,4 @@ export interface AnswerResponse {
   wikiUrl: string;
 }
 
-export type GameMode = 'classic' | 'crafting' | 'texture' | 'sound';
+export type GameMode = "classic" | "crafting" | "texture" | "sound";

@@ -1,6 +1,15 @@
-import { getSounds, getMobs } from '../data/dataLoader';
-import { createSession, getSession, getGuessesRemaining } from './sessionService';
-import { SoundEntry, SoundStartResponse, SoundGuessResponse, AnswerResponse } from '../types';
+import { getSounds, getMobs } from "../data/dataLoader";
+import {
+  createSession,
+  getSession,
+  getGuessesRemaining,
+} from "./sessionService";
+import {
+  SoundEntry,
+  SoundStartResponse,
+  SoundGuessResponse,
+  AnswerResponse,
+} from "../types";
 
 function getRandomSound(): SoundEntry {
   const sounds = getSounds();
@@ -13,7 +22,7 @@ function findSoundByEntityId(entityId: string): SoundEntry | undefined {
 
 export function startSoundGame(guessLimit: number | null): SoundStartResponse {
   const sound = getRandomSound();
-  const sessionId = createSession('sound', sound.entityId, guessLimit);
+  const sessionId = createSession("sound", sound.entityId, guessLimit);
 
   return {
     sessionId,
@@ -23,16 +32,20 @@ export function startSoundGame(guessLimit: number | null): SoundStartResponse {
   };
 }
 
-export function guessSound(sessionId: string, guessName: string): SoundGuessResponse | { error: string } {
+export function guessSound(
+  sessionId: string,
+  guessName: string,
+): SoundGuessResponse | { error: string } {
   const session = getSession(sessionId);
-  if (!session) return { error: 'Session not found' };
-  if (session.solved) return { error: 'Game already completed' };
+  if (!session) return { error: "Session not found" };
+  if (session.solved) return { error: "Game already completed" };
 
   const remaining = getGuessesRemaining(session);
-  if (remaining !== null && remaining <= 0) return { error: 'No guesses remaining' };
+  if (remaining !== null && remaining <= 0)
+    return { error: "No guesses remaining" };
 
   const targetSound = findSoundByEntityId(session.targetId);
-  if (!targetSound) return { error: 'Sound not found' };
+  if (!targetSound) return { error: "Sound not found" };
 
   session.guesses.push(guessName);
 
@@ -45,12 +58,14 @@ export function guessSound(sessionId: string, guessName: string): SoundGuessResp
   };
 }
 
-export function getSoundAnswer(sessionId: string): AnswerResponse | { error: string } {
+export function getSoundAnswer(
+  sessionId: string,
+): AnswerResponse | { error: string } {
   const session = getSession(sessionId);
-  if (!session) return { error: 'Session not found' };
+  if (!session) return { error: "Session not found" };
 
   const targetSound = findSoundByEntityId(session.targetId);
-  if (!targetSound) return { error: 'Sound not found' };
+  if (!targetSound) return { error: "Sound not found" };
 
   session.solved = true;
 
@@ -60,7 +75,9 @@ export function getSoundAnswer(sessionId: string): AnswerResponse | { error: str
   return {
     id: targetSound.entityId,
     name: targetSound.name,
-    textureUrl: mob?.textureUrl || '',
-    wikiUrl: mob?.wikiUrl || `https://minecraft.wiki/w/${targetSound.name.replace(/ /g, '_')}`,
+    textureUrl: mob?.textureUrl || "",
+    wikiUrl:
+      mob?.wikiUrl ||
+      `https://minecraft.wiki/w/${targetSound.name.replace(/ /g, "_")}`,
   };
 }

@@ -1,9 +1,9 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { searchItems } from '../services/api';
-import { SearchResult } from '../types';
+import { useState, useCallback, useRef, useEffect } from "react";
+import { searchItems } from "../services/api";
+import { SearchResult } from "../types";
 
 export function useAutocomplete() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export function useAutocomplete() {
   }, []);
 
   const clear = useCallback(() => {
-    setQuery('');
+    setQuery("");
     setResults([]);
     setIsOpen(false);
   }, []);

@@ -3,9 +3,87 @@
     "itemId": "diamond_sword",
     "name": "Diamond Sword",
     "grid": [
-      [null, "diamond", null],
-      [null, "diamond", null],
-      [null, "stick", null]
+      [
+        null,
+        "diamond",
+        null
+      ],
+      [
+        null,
+        "diamond",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "iron_sword",
+    "name": "Iron Sword",
+    "grid": [
+      [
+        null,
+        "iron_ingot",
+        null
+      ],
+      [
+        null,
+        "iron_ingot",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "stone_sword",
+    "name": "Stone Sword",
+    "grid": [
+      [
+        null,
+        "cobblestone",
+        null
+      ],
+      [
+        null,
+        "cobblestone",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "wooden_sword",
+    "name": "Wooden Sword",
+    "grid": [
+      [
+        null,
+        "oak_planks",
+        null
+      ],
+      [
+        null,
+        "oak_planks",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
     ],
     "shapeless": false
   },
@@ -13,19 +91,417 @@
     "itemId": "diamond_pickaxe",
     "name": "Diamond Pickaxe",
     "grid": [
-      ["diamond", "diamond", "diamond"],
-      [null, "stick", null],
-      [null, "stick", null]
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
     ],
     "shapeless": false
+  },
+  {
+    "itemId": "iron_pickaxe",
+    "name": "Iron Pickaxe",
+    "grid": [
+      [
+        "iron_ingot",
+        "iron_ingot",
+        "iron_ingot"
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "stone_pickaxe",
+    "name": "Stone Pickaxe",
+    "grid": [
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "wooden_pickaxe",
+    "name": "Wooden Pickaxe",
+    "grid": [
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diamond_axe",
+    "name": "Diamond Axe",
+    "grid": [
+      [
+        "diamond",
+        "diamond",
+        null
+      ],
+      [
+        "diamond",
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "iron_axe",
+    "name": "Iron Axe",
+    "grid": [
+      [
+        "iron_ingot",
+        "iron_ingot",
+        null
+      ],
+      [
+        "iron_ingot",
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diamond_shovel",
+    "name": "Diamond Shovel",
+    "grid": [
+      [
+        null,
+        "diamond",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bow",
+    "name": "Bow",
+    "grid": [
+      [
+        null,
+        "stick",
+        "string"
+      ],
+      [
+        "stick",
+        null,
+        "string"
+      ],
+      [
+        null,
+        "stick",
+        "string"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "shield",
+    "name": "Shield",
+    "grid": [
+      [
+        "oak_planks",
+        "iron_ingot",
+        "oak_planks"
+      ],
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ],
+      [
+        null,
+        "oak_planks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "fishing_rod",
+    "name": "Fishing Rod",
+    "grid": [
+      [
+        null,
+        null,
+        "stick"
+      ],
+      [
+        null,
+        "stick",
+        "string"
+      ],
+      [
+        "stick",
+        null,
+        "string"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "shears",
+    "name": "Shears",
+    "grid": [
+      [
+        null,
+        "iron_ingot",
+        null
+      ],
+      [
+        "iron_ingot",
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "flint_and_steel",
+    "name": "Flint and Steel",
+    "grid": [
+      [
+        "iron_ingot",
+        null,
+        null
+      ],
+      [
+        null,
+        "flint",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": true
   },
   {
     "itemId": "crafting_table",
     "name": "Crafting Table",
     "grid": [
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-      [null, null, null]
+      [
+        "oak_planks",
+        "oak_planks",
+        null
+      ],
+      [
+        "oak_planks",
+        "oak_planks",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "furnace",
+    "name": "Furnace",
+    "grid": [
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        null,
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chest",
+    "name": "Chest",
+    "grid": [
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ],
+      [
+        "oak_planks",
+        null,
+        "oak_planks"
+      ],
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "enchanting_table",
+    "name": "Enchanting Table",
+    "grid": [
+      [
+        null,
+        "book",
+        null
+      ],
+      [
+        "diamond",
+        "obsidian",
+        "diamond"
+      ],
+      [
+        "obsidian",
+        "obsidian",
+        "obsidian"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bookshelf",
+    "name": "Bookshelf",
+    "grid": [
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ],
+      [
+        "book",
+        "book",
+        "book"
+      ],
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "piston",
+    "name": "Piston",
+    "grid": [
+      [
+        "oak_planks",
+        "oak_planks",
+        "oak_planks"
+      ],
+      [
+        "cobblestone",
+        "iron_ingot",
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        "redstone",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "tnt",
+    "name": "TNT",
+    "grid": [
+      [
+        "gunpowder",
+        "sand",
+        "gunpowder"
+      ],
+      [
+        "sand",
+        "gunpowder",
+        "sand"
+      ],
+      [
+        "gunpowder",
+        "sand",
+        "gunpowder"
+      ]
     ],
     "shapeless": false
   },
@@ -33,9 +509,285 @@
     "itemId": "golden_apple",
     "name": "Golden Apple",
     "grid": [
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-      ["gold_ingot", "apple", "gold_ingot"],
-      ["gold_ingot", "gold_ingot", "gold_ingot"]
+      [
+        "gold_ingot",
+        "gold_ingot",
+        "gold_ingot"
+      ],
+      [
+        "gold_ingot",
+        "apple",
+        "gold_ingot"
+      ],
+      [
+        "gold_ingot",
+        "gold_ingot",
+        "gold_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bread",
+    "name": "Bread",
+    "grid": [
+      [
+        "wheat",
+        "wheat",
+        "wheat"
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cookie",
+    "name": "Cookie",
+    "grid": [
+      [
+        "wheat",
+        "cocoa_beans",
+        "wheat"
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cake",
+    "name": "Cake",
+    "grid": [
+      [
+        "milk_bucket",
+        "milk_bucket",
+        "milk_bucket"
+      ],
+      [
+        "sugar",
+        "egg",
+        "sugar"
+      ],
+      [
+        "wheat",
+        "wheat",
+        "wheat"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "stick",
+    "name": "Stick",
+    "grid": [
+      [
+        null,
+        "oak_planks",
+        null
+      ],
+      [
+        null,
+        "oak_planks",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "torch",
+    "name": "Torch",
+    "grid": [
+      [
+        null,
+        "coal",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bucket",
+    "name": "Bucket",
+    "grid": [
+      [
+        "iron_ingot",
+        null,
+        "iron_ingot"
+      ],
+      [
+        null,
+        "iron_ingot",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "compass",
+    "name": "Compass",
+    "grid": [
+      [
+        null,
+        "iron_ingot",
+        null
+      ],
+      [
+        "iron_ingot",
+        "redstone",
+        "iron_ingot"
+      ],
+      [
+        null,
+        "iron_ingot",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "clock",
+    "name": "Clock",
+    "grid": [
+      [
+        null,
+        "gold_ingot",
+        null
+      ],
+      [
+        "gold_ingot",
+        "redstone",
+        "gold_ingot"
+      ],
+      [
+        null,
+        "gold_ingot",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diamond_helmet",
+    "name": "Diamond Helmet",
+    "grid": [
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      [
+        "diamond",
+        null,
+        "diamond"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diamond_chestplate",
+    "name": "Diamond Chestplate",
+    "grid": [
+      [
+        "diamond",
+        null,
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diamond_leggings",
+    "name": "Diamond Leggings",
+    "grid": [
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      [
+        "diamond",
+        null,
+        "diamond"
+      ],
+      [
+        "diamond",
+        null,
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diamond_boots",
+    "name": "Diamond Boots",
+    "grid": [
+      [
+        "diamond",
+        null,
+        "diamond"
+      ],
+      [
+        "diamond",
+        null,
+        "diamond"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
     ],
     "shapeless": false
   },
@@ -43,9 +795,21 @@
     "itemId": "oak_planks",
     "name": "Oak Planks",
     "grid": [
-      ["oak_log", null, null],
-      [null, null, null],
-      [null, null, null]
+      [
+        "oak_log",
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
     ],
     "shapeless": true
   }

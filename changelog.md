@@ -4,6 +4,45 @@ All notable changes to the Craftdle project are documented in this file.
 
 ---
 
+## [0.2.0] - 2026-02-24
+
+### Added
+
+- **Win animation**: confetti effect (canvas-confetti) fires from both sides with green/gold Minecraft-themed particles on correct guess. "🏆 You Win! 🏆" text with bounce animation.
+- **Auto-redirect**: after winning, players automatically return to the home page after 4 seconds with a "Go Home Now" shortcut button.
+- **Real wiki data**: `scripts/fetch-wiki-data.ts` fetches item/mob/recipe/sound data from the minecraft.wiki MediaWiki API (`api.php`).
+  - 82 items with real Invicon texture URLs across 6 categories.
+  - 22 mobs with wiki entity render images.
+  - 37 real Minecraft crafting recipes.
+  - 12 mob sounds with wiki OGG audio URLs.
+  - 90 ingredient-to-icon URL mappings for crafting grid display.
+- **Crafting Grid images**: 3×3 crafting grid now shows real Minecraft item Invicon images (from minecraft.wiki) instead of text labels when ingredients are revealed.
+- **Texture Close-up real images**: uses CSS `background-image` cropping with real wiki texture URLs. Randomized crop center (centerX/centerY) for variety. Pixelated rendering for authentic Minecraft look.
+- **Sound mode real audio**: plays actual mob sound OGG files from minecraft.wiki instead of placeholder descriptions.
+- **Autocomplete thumbnails**: search dropdown shows 24×24 wiki Invicon thumbnails next to item names.
+- **Mobile responsive design**:
+  - Hamburger menu (☰/✕) for mobile navigation, auto-closes on link click.
+  - Stacked guess limit selector on small screens.
+  - Responsive crafting grid sizing.
+  - Mobile-friendly scrollbar CSS.
+
+### Changed
+
+- `GameOverModal` redesigned: win state shows confetti + auto-redirect, loss state shows "Play Again" + "Back to Menu".
+- `CraftingGrid` component accepts `ingredientIcons` prop for image display with text fallback.
+- `TextureCrop` uses CSS background-position/background-size instead of canvas (avoids CORS issues).
+- `SoundPlayer` uses `useRef` for persistent Audio element with play/stop toggle and pulse animation.
+- `Header` component adds responsive mobile hamburger menu.
+- Server `craftingService` includes `ingredientIcons` map in start/guess responses.
+- Server `textureService` returns real `textureUrl` and random `centerX`/`centerY` in responses.
+- `dataLoader` now loads `ingredientIcons.json` at startup.
+
+### Dependencies
+
+- Added `canvas-confetti` (client) for win animation effects.
+
+---
+
 ## [0.1.0] - 2026-02-24
 
 ### Added

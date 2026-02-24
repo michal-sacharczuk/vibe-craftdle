@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import AutocompleteSearch from '../common/AutocompleteSearch';
-import GuessLimitSelector from '../common/GuessLimitSelector';
-import GameOverModal from '../common/GameOverModal';
-import AttributeRow, { ATTRIBUTE_LABELS } from './AttributeRow';
-import { startClassic, guessClassic, getClassicAnswer } from '../../services/api';
-import { ClassicGuessFeedback, AnswerResponse, SearchResult } from '../../types';
+import React, { useState } from "react";
+import AutocompleteSearch from "../common/AutocompleteSearch";
+import GuessLimitSelector from "../common/GuessLimitSelector";
+import GameOverModal from "../common/GameOverModal";
+import AttributeRow, { ATTRIBUTE_LABELS } from "./AttributeRow";
+import {
+  startClassic,
+  guessClassic,
+  getClassicAnswer,
+} from "../../services/api";
+import {
+  ClassicGuessFeedback,
+  AnswerResponse,
+  SearchResult,
+} from "../../types";
 
 export default function ClassicGame() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -14,7 +22,7 @@ export default function ClassicGame() {
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
   const [answer, setAnswer] = useState<AnswerResponse | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function handleStart() {
     try {
@@ -25,7 +33,7 @@ export default function ClassicGame() {
       setGameOver(false);
       setWon(false);
       setAnswer(null);
-      setError('');
+      setError("");
     } catch (e: any) {
       setError(e.message);
     }
@@ -48,7 +56,7 @@ export default function ClassicGame() {
         const ans = await getClassicAnswer(sessionId);
         setAnswer(ans);
       }
-      setError('');
+      setError("");
     } catch (e: any) {
       setError(e.message);
     }
@@ -75,7 +83,8 @@ export default function ClassicGame() {
       <div className="flex flex-col items-center gap-6 py-8">
         <h2 className="font-minecraft text-xl text-mc-gold">Classic Mode</h2>
         <p className="text-mc-gray text-sm max-w-md text-center">
-          Guess the Minecraft item, block, or mob! After each guess you'll see which attributes match.
+          Guess the Minecraft item, block, or mob! After each guess you'll see
+          which attributes match.
         </p>
         <GuessLimitSelector value={guessLimit} onChange={setGuessLimit} />
         <button onClick={handleStart} className="mc-btn-primary">
@@ -92,7 +101,8 @@ export default function ClassicGame() {
         <div className="flex gap-4 items-center">
           {guessesRemaining !== null && (
             <span className="font-minecraft text-xs text-mc-gray">
-              Guesses left: <span className="text-mc-gold">{guessesRemaining}</span>
+              Guesses left:{" "}
+              <span className="text-mc-gold">{guessesRemaining}</span>
             </span>
           )}
           {!gameOver && (
@@ -113,7 +123,9 @@ export default function ClassicGame() {
               <tr className="text-xs text-mc-gray font-minecraft">
                 <th className="px-3 py-2 text-left">Name</th>
                 {ATTRIBUTE_LABELS.map(({ key, label }) => (
-                  <th key={key} className="px-3 py-2">{label}</th>
+                  <th key={key} className="px-3 py-2">
+                    {label}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -136,7 +148,11 @@ export default function ClassicGame() {
 
       {/* Game over modal */}
       {gameOver && answer && (
-        <GameOverModal answer={answer} won={won} onPlayAgain={handlePlayAgain} />
+        <GameOverModal
+          answer={answer}
+          won={won}
+          onPlayAgain={handlePlayAgain}
+        />
       )}
     </div>
   );

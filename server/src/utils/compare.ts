@@ -1,9 +1,12 @@
-import { ClassicEntity, AttributeFeedback } from '../types';
+import { ClassicEntity, AttributeFeedback } from "../types";
 
 /**
  * Compare a single attribute of the guess against the target.
  */
-function compareAttribute(guessVal: unknown, targetVal: unknown): AttributeFeedback {
+function compareAttribute(
+  guessVal: unknown,
+  targetVal: unknown,
+): AttributeFeedback {
   // Array comparison (e.g., dimension)
   if (Array.isArray(guessVal) && Array.isArray(targetVal)) {
     const match =
@@ -24,7 +27,7 @@ function compareAttribute(guessVal: unknown, targetVal: unknown): AttributeFeedb
  */
 export function compareClassicEntities(
   guess: ClassicEntity,
-  target: ClassicEntity
+  target: ClassicEntity,
 ) {
   return {
     name: guess.name,

@@ -1,31 +1,36 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { GameMode } from '../../types';
+import React from "react";
+import { Link } from "react-router-dom";
+import { GameMode } from "../../types";
 
-const MODES: { mode: GameMode; title: string; description: string; icon: string }[] = [
+const MODES: {
+  mode: GameMode;
+  title: string;
+  description: string;
+  icon: string;
+}[] = [
   {
-    mode: 'classic',
-    title: 'Classic',
-    description: 'Guess the item, block, or mob from attribute feedback',
-    icon: '⚔️',
+    mode: "classic",
+    title: "Classic",
+    description: "Guess the item, block, or mob from attribute feedback",
+    icon: "⚔️",
   },
   {
-    mode: 'crafting',
-    title: 'Crafting Grid',
-    description: 'Identify the item from its crafting recipe',
-    icon: '🔨',
+    mode: "crafting",
+    title: "Crafting Grid",
+    description: "Identify the item from its crafting recipe",
+    icon: "🔨",
   },
   {
-    mode: 'texture',
-    title: 'Texture Close-up',
-    description: 'Recognize the block or item from a zoomed-in texture',
-    icon: '🔍',
+    mode: "texture",
+    title: "Texture Close-up",
+    description: "Recognize the block or item from a zoomed-in texture",
+    icon: "🔍",
   },
   {
-    mode: 'sound',
-    title: 'Sound',
-    description: 'Identify the mob, block, or item from its sound',
-    icon: '🔊',
+    mode: "sound",
+    title: "Sound",
+    description: "Identify the mob, block, or item from its sound",
+    icon: "🔊",
   },
 ];
 

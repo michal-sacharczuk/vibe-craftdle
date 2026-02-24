@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import AutocompleteSearch from '../common/AutocompleteSearch';
-import GuessLimitSelector from '../common/GuessLimitSelector';
-import GameOverModal from '../common/GameOverModal';
-import CraftingGrid from './CraftingGrid';
-import { startCrafting, guessCrafting, getCraftingAnswer } from '../../services/api';
-import { AnswerResponse, SearchResult } from '../../types';
+import React, { useState } from "react";
+import AutocompleteSearch from "../common/AutocompleteSearch";
+import GuessLimitSelector from "../common/GuessLimitSelector";
+import GameOverModal from "../common/GameOverModal";
+import CraftingGrid from "./CraftingGrid";
+import {
+  startCrafting,
+  guessCrafting,
+  getCraftingAnswer,
+} from "../../services/api";
+import { AnswerResponse, SearchResult } from "../../types";
 
 export default function CraftingGame() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -12,11 +16,14 @@ export default function CraftingGame() {
   const [guessesRemaining, setGuessesRemaining] = useState<number | null>(null);
   const [grid, setGrid] = useState<(string | null)[][]>([]);
   const [revealedSlots, setRevealedSlots] = useState<number[]>([]);
+  const [ingredientIcons, setIngredientIcons] = useState<
+    Record<string, string>
+  >({});
   const [pastGuesses, setPastGuesses] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
   const [answer, setAnswer] = useState<AnswerResponse | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function handleStart() {
     try {
@@ -25,11 +32,12 @@ export default function CraftingGame() {
       setGuessesRemaining(res.guessesRemaining);
       setGrid(res.grid);
       setRevealedSlots(res.revealedSlots);
+      setIngredientIcons(res.ingredientIcons || {});
       setPastGuesses([]);
       setGameOver(false);
       setWon(false);
       setAnswer(null);
-      setError('');
+      setError("");
     } catch (e: any) {
       setError(e.message);
     }
@@ -41,6 +49,10 @@ export default function CraftingGame() {
       const res = await guessCrafting(sessionId, item.name);
       setGrid(res.grid);
       setRevealedSlots(res.revealedSlots);
+      setIngredientIcons((prev) => ({
+        ...prev,
+        ...(res.ingredientIcons || {}),
+      }));
       setGuessesRemaining(res.guessesRemaining);
       setPastGuesses((prev) => [...prev, item.name]);
 
@@ -54,7 +66,7 @@ export default function CraftingGame() {
         const ans = await getCraftingAnswer(sessionId);
         setAnswer(ans);
       }
-      setError('');
+      setError("");
     } catch (e: any) {
       setError(e.message);
     }
@@ -78,9 +90,12 @@ export default function CraftingGame() {
   if (!sessionId) {
     return (
       <div className="flex flex-col items-center gap-6 py-8">
-        <h2 className="font-minecraft text-xl text-mc-gold">Crafting Grid Mode</h2>
+        <h2 className="font-minecraft text-xl text-mc-gold">
+          Crafting Grid Mode
+        </h2>
         <p className="text-mc-gray text-sm max-w-md text-center">
-          Identify the item from its crafting recipe! One ingredient is revealed after each wrong guess.
+          Identify the item from its crafting recipe! One ingredient is revealed
+          after each wrong guess.
         </p>
         <GuessLimitSelector value={guessLimit} onChange={setGuessLimit} />
         <button onClick={handleStart} className="mc-btn-primary">
@@ -110,24 +125,37 @@ export default function CraftingGame() {
 
       {error && <p className="text-mc-red text-xs">{error}</p>}
 
-      <CraftingGrid grid={grid} revealedSlots={revealedSlots} />
+      <CraftingGrid
+        grid={grid}
+        revealedSlots={revealedSlots}
+        ingredientIcons={ingredientIcons}
+      />
 
       {/* Past guesses */}
       {pastGuesses.length > 0 && (
         <div className="text-xs text-mc-gray">
           <span className="font-minecraft">Guesses: </span>
           {pastGuesses.map((g, i) => (
-            <span key={i} className="text-mc-red mx-1">{g}</span>
+            <span key={i} className="text-mc-red mx-1">
+              {g}
+            </span>
           ))}
         </div>
       )}
 
       {!gameOver && (
-        <AutocompleteSearch onSelect={handleGuess} placeholder="Guess the crafted item..." />
+        <AutocompleteSearch
+          onSelect={handleGuess}
+          placeholder="Guess the crafted item..."
+        />
       )}
 
       {gameOver && answer && (
-        <GameOverModal answer={answer} won={won} onPlayAgain={handlePlayAgain} />
+        <GameOverModal
+          answer={answer}
+          won={won}
+          onPlayAgain={handlePlayAgain}
+        />
       )}
     </div>
   );

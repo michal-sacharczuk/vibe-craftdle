@@ -1,37 +1,86 @@
 [
   {
-    "id": "creeper_hiss",
+    "id": "creeper_fuse",
     "entityId": "creeper",
     "name": "Creeper",
-    "soundFile": "/sounds/creeper.ogg",
+    "soundFile": "https://minecraft.wiki/images/Fuse.ogg?64b6b",
+    "category": "Mob"
+  },
+  {
+    "id": "zombie_idle",
+    "entityId": "zombie",
+    "name": "Zombie",
+    "soundFile": "https://minecraft.wiki/images/Zombie_idle1.ogg?5d58f",
+    "category": "Mob"
+  },
+  {
+    "id": "skeleton_idle",
+    "entityId": "skeleton",
+    "name": "Skeleton",
+    "soundFile": "https://minecraft.wiki/images/Skeleton_idle1.ogg?b0f88",
+    "category": "Mob"
+  },
+  {
+    "id": "spider_idle",
+    "entityId": "spider",
+    "name": "Spider",
+    "soundFile": "https://minecraft.wiki/images/Spider_idle1.ogg?77177",
     "category": "Mob"
   },
   {
     "id": "enderman_idle",
     "entityId": "enderman",
     "name": "Enderman",
-    "soundFile": "/sounds/enderman.ogg",
+    "soundFile": "https://minecraft.wiki/images/Enderman_idle1.ogg?ee326",
     "category": "Mob"
   },
   {
-    "id": "ghast_scream",
+    "id": "ghast_moan",
     "entityId": "ghast",
     "name": "Ghast",
-    "soundFile": "/sounds/ghast.ogg",
+    "soundFile": "https://minecraft.wiki/images/Ghast_affectionate_scream.ogg?ca03a",
     "category": "Mob"
   },
   {
-    "id": "blaze_breath",
-    "entityId": "blaze",
-    "name": "Blaze",
-    "soundFile": "/sounds/blaze.ogg",
+    "id": "cat_meow",
+    "entityId": "cat",
+    "name": "Cat",
+    "soundFile": "https://minecraft.wiki/images/Cat.ogg?99eac",
     "category": "Mob"
   },
   {
-    "id": "wolf_bark",
-    "entityId": "wolf",
-    "name": "Wolf",
-    "soundFile": "/sounds/wolf.ogg",
+    "id": "pig_idle",
+    "entityId": "pig",
+    "name": "Pig",
+    "soundFile": "https://minecraft.wiki/images/Pig_idle1.ogg?88ae8",
+    "category": "Mob"
+  },
+  {
+    "id": "cow_idle",
+    "entityId": "cow",
+    "name": "Cow",
+    "soundFile": "https://minecraft.wiki/images/Cow_idle1.ogg?0f8ca",
+    "category": "Mob"
+  },
+  {
+    "id": "sheep_idle",
+    "entityId": "sheep",
+    "name": "Sheep",
+    "soundFile": "https://minecraft.wiki/images/Sheep1.ogg?dcccf",
+    "category": "Mob"
+  },
+  {
+    "id": "chicken_idle",
+    "entityId": "chicken",
+    "name": "Chicken",
+    "soundFile": "https://minecraft.wiki/images/Chicken_idle1.ogg?a6b33",
+    "category": "Mob"
+  },
+  {
+    "id": "villager_idle",
+    "entityId": "villager",
+    "name": "Villager",
+    "soundFile": "https://minecraft.wiki/images/Villager_idle1.ogg?bfbee",
     "category": "Mob"
   }
 ]

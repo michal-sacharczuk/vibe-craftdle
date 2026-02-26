@@ -26,10 +26,13 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
 }
 
 // Search
-export function searchItems(query: string): Promise<SearchResult[]> {
-  return request<SearchResult[]>(
-    `/items/search?q=${encodeURIComponent(query)}`,
-  );
+export function searchItems(
+  query: string,
+  mode?: string,
+): Promise<SearchResult[]> {
+  let url = `/items/search?q=${encodeURIComponent(query)}`;
+  if (mode) url += `&mode=${encodeURIComponent(mode)}`;
+  return request<SearchResult[]>(url);
 }
 
 // Classic

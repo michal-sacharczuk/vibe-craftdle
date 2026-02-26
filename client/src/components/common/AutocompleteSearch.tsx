@@ -6,15 +6,18 @@ interface AutocompleteSearchProps {
   onSelect: (item: SearchResult) => void;
   disabled?: boolean;
   placeholder?: string;
+  /** Optional game mode to filter search results (e.g. "crafting") */
+  mode?: string;
 }
 
 export default function AutocompleteSearch({
   onSelect,
   disabled,
   placeholder,
+  mode,
 }: AutocompleteSearchProps) {
   const { query, results, isOpen, loading, search, setIsOpen, clear } =
-    useAutocomplete();
+    useAutocomplete(mode);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

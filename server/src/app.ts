@@ -1,6 +1,10 @@
 import express from "express";
 import cors from "cors";
-import { loadAllData, searchEntities } from "./data/dataLoader";
+import {
+  loadAllData,
+  searchEntities,
+  searchCraftableItems,
+} from "./data/dataLoader";
 import classicRoutes from "./routes/classicRoutes";
 import craftingRoutes from "./routes/craftingRoutes";
 import textureRoutes from "./routes/textureRoutes";
@@ -25,10 +29,14 @@ app.use("/api/sound", soundRoutes);
 // Search endpoint
 app.get("/api/items/search", (req, res) => {
   const query = (req.query.q as string) || "";
+  const mode = (req.query.mode as string) || "";
   if (query.length < 1) {
     return res.json([]);
   }
-  const results = searchEntities(query, 10);
+  const results =
+    mode === "crafting"
+      ? searchCraftableItems(query, 10)
+      : searchEntities(query, 10);
   res.json(results);
 });
 

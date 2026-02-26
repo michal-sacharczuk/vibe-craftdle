@@ -14,6 +14,8 @@ interface GameLayoutProps {
   placeholder: string;
   /** Game state from useGame hook */
   game: GameState & GameActions;
+  /** Optional game mode for search filtering (e.g. "crafting") */
+  searchMode?: string;
   /** The main game content (grid, texture crop, sound player, attribute table, etc.) */
   children: React.ReactNode;
 }
@@ -30,6 +32,7 @@ export default function GameLayout({
   description,
   placeholder,
   game,
+  searchMode,
   children,
 }: GameLayoutProps) {
   const {
@@ -102,7 +105,11 @@ export default function GameLayout({
 
       {/* Guess input */}
       {!gameOver && (
-        <AutocompleteSearch onSelect={guess} placeholder={placeholder} />
+        <AutocompleteSearch
+          onSelect={guess}
+          placeholder={placeholder}
+          mode={searchMode}
+        />
       )}
 
       {/* Game over modal */}

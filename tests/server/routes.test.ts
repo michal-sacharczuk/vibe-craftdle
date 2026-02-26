@@ -34,6 +34,29 @@ describe("API Routes", () => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeLessThanOrEqual(10);
     });
+
+    it("returns only craftable items when mode=crafting", async () => {
+      const res = await request(app).get(
+        "/api/items/search?q=sword&mode=crafting",
+      );
+      expect(res.status).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+      // Results should only be items (no mobs) that have a crafting recipe
+      for (const item of res.body) {
+        expect(item.type).not.toBe("hostile");
+        expect(item.type).not.toBe("neutral");
+        expect(item.type).not.toBe("passive");
+      }
+    });
+
+    it("does not return mobs when mode=crafting", async () => {
+      // Search for a mob name with crafting mode — should return nothing
+      const res = await request(app).get(
+        "/api/items/search?q=creeper&mode=crafting",
+      );
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual([]);
+    });
   });
 
   describe("Classic mode routes", () => {

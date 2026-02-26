@@ -62,7 +62,7 @@ describe("useAutocomplete", () => {
       jest.advanceTimersByTime(250);
     });
 
-    expect(mockSearch).toHaveBeenCalledWith("Sto");
+    expect(mockSearch).toHaveBeenCalledWith("Sto", undefined);
     expect(result.current.results).toHaveLength(1);
     expect(result.current.isOpen).toBe(true);
     expect(result.current.loading).toBe(false);
@@ -127,6 +127,21 @@ describe("useAutocomplete", () => {
 
     // Only the last call should fire
     expect(mockSearch).toHaveBeenCalledTimes(1);
-    expect(mockSearch).toHaveBeenCalledWith("Sto");
+    expect(mockSearch).toHaveBeenCalledWith("Sto", undefined);
+  });
+
+  it("passes mode parameter to searchItems", async () => {
+    mockSearch.mockResolvedValue([
+      { id: "1", name: "Stone Sword", textureUrl: "", type: "tool" },
+    ]);
+
+    const { result } = renderHook(() => useAutocomplete("crafting"));
+    act(() => result.current.search("Sto"));
+
+    await act(async () => {
+      jest.advanceTimersByTime(250);
+    });
+
+    expect(mockSearch).toHaveBeenCalledWith("Sto", "crafting");
   });
 });

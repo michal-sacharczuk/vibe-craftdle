@@ -46,6 +46,7 @@ export default function CraftingGame() {
       description="Identify the item from its crafting recipe! One ingredient is revealed after each wrong guess."
       placeholder="Guess the crafted item..."
       game={game}
+      searchMode="crafting"
     >
       <CraftingGrid
         grid={grid}

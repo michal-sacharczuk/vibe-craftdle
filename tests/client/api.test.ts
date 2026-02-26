@@ -54,6 +54,18 @@ describe("searchItems", () => {
     );
     expect(result).toEqual([{ id: "1", name: "Stone" }]);
   });
+
+  it("appends mode parameter when provided", async () => {
+    mockFetch.mockReturnValue(jsonOk([{ id: "2", name: "Sword" }]));
+    const result = await searchItems("sword", "crafting");
+    expect(mockFetch).toHaveBeenCalledWith(
+      "/api/items/search?q=sword&mode=crafting",
+      expect.objectContaining({
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    expect(result).toEqual([{ id: "2", name: "Sword" }]);
+  });
 });
 
 // ----- classic -----

@@ -4,6 +4,24 @@ All notable changes to the Craftdle project are documented in this file.
 
 ---
 
+## [0.4.1] - 2026-02-26
+
+### Added
+
+- **Crafting-only search**: The crafting game mode dropdown now only shows items that have crafting recipes (no mobs, no uncraftable items).
+- **Mode-filtered search API**: `/api/items/search` accepts an optional `mode` query parameter; `mode=crafting` filters to craftable items only.
+- **Data validation**: `dataLoader` now filters out entities with missing/empty texture URLs, recipes referencing invalid items, and sounds referencing invalid mobs at load time.
+- **New tests**: Added `dataLoader.test.ts` with 11 tests for data validation, `searchEntities`, and `searchCraftableItems`. Added route test for `mode=crafting`. Added client tests for mode parameter in `searchItems` and `useAutocomplete`. Total: 133 tests (82 server + 51 client).
+
+### Changed
+
+- `searchItems()` API function now accepts an optional `mode` parameter.
+- `useAutocomplete` hook now accepts an optional `mode` parameter, forwarded to `searchItems`.
+- `AutocompleteSearch` and `GameLayout` components accept an optional `mode`/`searchMode` prop for mode-specific filtering.
+- `CraftingGame` passes `searchMode="crafting"` to `GameLayout`.
+
+---
+
 ## [0.4.0] - 2026-02-26
 
 ### Added

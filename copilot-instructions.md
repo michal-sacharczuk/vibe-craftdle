@@ -526,3 +526,4 @@ Both frontend and backend must have tests using **Jest**.
 - ensure all code is well-documented with comments and JSDoc where appropriate
 - maintain a clean and consistent code style across the project
 - prioritize modularity and separation of concerns in both frontend and backend codebases
+- after finishing implementation stop the server and client and run all tests to ensure everything is working correctly

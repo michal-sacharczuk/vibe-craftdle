@@ -4,6 +4,15 @@ All notable changes to the Craftdle project are documented in this file.
 
 ---
 
+## [0.3.2] - 2026-02-26
+
+### Fixed
+
+- **Image aspect ratio**: added `object-contain` to `<img>` tags in `AutocompleteSearch.tsx` and `GameOverModal.tsx` so non-square images (e.g., mob textures) are no longer stretched/squished.
+- **Missing image on crafting win screen**: `getCraftingAnswer` now looks up the item's real `textureUrl` and `wikiUrl` from `items.json` instead of returning a nonexistent local `/textures/` path.
+
+---
+
 ## [0.3.1] - 2026-02-26
 
 ### Changed

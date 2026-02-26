@@ -78,7 +78,7 @@ export default function GameOverModal({
             <img
               src={answer.textureUrl}
               alt={answer.name}
-              className="w-16 h-16 mx-auto mb-2 pixelated"
+              className="w-16 h-16 mx-auto mb-2 pixelated object-contain"
               style={{ imageRendering: "pixelated" }}
             />
           )}

@@ -61,7 +61,7 @@ export default function AutocompleteSearch({
                 <img
                   src={item.textureUrl}
                   alt=""
-                  className="w-6 h-6 flex-shrink-0"
+                  className="w-6 h-6 flex-shrink-0 object-contain"
                   style={{ imageRendering: "pixelated" }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = "none";

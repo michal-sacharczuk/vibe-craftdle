@@ -1,4 +1,4 @@
-import { getRecipes, getIngredientIcons } from "../data/dataLoader";
+import { getRecipes, getIngredientIcons, getItems } from "../data/dataLoader";
 import {
   createSession,
   getSession,
@@ -154,10 +154,12 @@ export function getCraftingAnswer(
 
   session.solved = true;
 
+  const item = getItems().find((i) => i.id === recipe.itemId);
+
   return {
     id: recipe.itemId,
     name: recipe.name,
-    textureUrl: `/textures/${recipe.itemId}.png`,
-    wikiUrl: `https://minecraft.wiki/w/${recipe.name.replace(/ /g, "_")}`,
+    textureUrl: item?.textureUrl ?? `/textures/${recipe.itemId}.png`,
+    wikiUrl: item?.wikiUrl ?? `https://minecraft.wiki/w/${recipe.name.replace(/ /g, "_")}`,
   };
 }

@@ -1,226 +1,359 @@
 [
   {
-    "id": "creeper_fuse",
-    "entityId": "creeper",
-    "name": "Creeper",
-    "soundFile": "https://minecraft.wiki/images/Fuse.ogg?64b6b",
+    "id": "allay_sound",
+    "entityId": "allay",
+    "name": "Allay",
+    "soundFile": "https://minecraft.wiki/images/Allay_idle_with_item1.ogg?9cd04",
     "category": "Mob"
   },
   {
-    "id": "zombie_idle",
-    "entityId": "zombie",
-    "name": "Zombie",
-    "soundFile": "https://minecraft.wiki/images/Zombie_idle1.ogg?5d58f",
+    "id": "armadillo_sound",
+    "entityId": "armadillo",
+    "name": "Armadillo",
+    "soundFile": "https://minecraft.wiki/images/Armadillo_ambient1.ogg?249a4",
     "category": "Mob"
   },
   {
-    "id": "skeleton_idle",
-    "entityId": "skeleton",
-    "name": "Skeleton",
-    "soundFile": "https://minecraft.wiki/images/Skeleton_idle1.ogg?b0f88",
-    "category": "Mob"
-  },
-  {
-    "id": "spider_idle",
-    "entityId": "spider",
-    "name": "Spider",
-    "soundFile": "https://minecraft.wiki/images/Spider_idle1.ogg?77177",
-    "category": "Mob"
-  },
-  {
-    "id": "enderman_idle",
-    "entityId": "enderman",
-    "name": "Enderman",
-    "soundFile": "https://minecraft.wiki/images/Enderman_idle1.ogg?ee326",
-    "category": "Mob"
-  },
-  {
-    "id": "ghast_moan",
-    "entityId": "ghast",
-    "name": "Ghast",
-    "soundFile": "https://minecraft.wiki/images/Ghast_affectionate_scream.ogg?ca03a",
-    "category": "Mob"
-  },
-  {
-    "id": "cat_meow",
-    "entityId": "cat",
-    "name": "Cat",
-    "soundFile": "https://minecraft.wiki/images/Cat.ogg?99eac",
-    "category": "Mob"
-  },
-  {
-    "id": "pig_idle",
-    "entityId": "pig",
-    "name": "Pig",
-    "soundFile": "https://minecraft.wiki/images/Pig_idle1.ogg?88ae8",
-    "category": "Mob"
-  },
-  {
-    "id": "cow_idle",
-    "entityId": "cow",
-    "name": "Cow",
-    "soundFile": "https://minecraft.wiki/images/Cow_idle1.ogg?0f8ca",
-    "category": "Mob"
-  },
-  {
-    "id": "sheep_idle",
-    "entityId": "sheep",
-    "name": "Sheep",
-    "soundFile": "https://minecraft.wiki/images/Sheep1.ogg?dcccf",
-    "category": "Mob"
-  },
-  {
-    "id": "chicken_idle",
-    "entityId": "chicken",
-    "name": "Chicken",
-    "soundFile": "https://minecraft.wiki/images/Chicken_idle1.ogg?a6b33",
-    "category": "Mob"
-  },
-  {
-    "id": "villager_idle",
-    "entityId": "villager",
-    "name": "Villager",
-    "soundFile": "https://minecraft.wiki/images/Villager_idle1.ogg?bfbee",
-    "category": "Mob"
-  },
-  {
-    "id": "wither_idle",
-    "entityId": "wither",
-    "name": "Wither",
-    "soundFile": "https://minecraft.wiki/images/Wither_idle1.ogg?f2080",
-    "category": "Mob"
-  },
-  {
-    "id": "phantom_idle",
-    "entityId": "phantom",
-    "name": "Phantom",
-    "soundFile": "https://minecraft.wiki/images/Phantom_idle1.ogg?d6cf8",
-    "category": "Mob"
-  },
-  {
-    "id": "warden_idle",
-    "entityId": "warden",
-    "name": "Warden",
-    "soundFile": "https://minecraft.wiki/images/Warden_nearby_close1.ogg?64c3a",
-    "category": "Mob"
-  },
-  {
-    "id": "witch_idle",
-    "entityId": "witch",
-    "name": "Witch",
-    "soundFile": "https://minecraft.wiki/images/Witch_idle1.ogg?0fb18",
-    "category": "Mob"
-  },
-  {
-    "id": "guardian_idle",
-    "entityId": "guardian",
-    "name": "Guardian",
-    "soundFile": "https://minecraft.wiki/images/Guardian_idle1.ogg?945d4",
-    "category": "Mob"
-  },
-  {
-    "id": "shulker_idle",
-    "entityId": "shulker",
-    "name": "Shulker",
-    "soundFile": "https://minecraft.wiki/images/Shulker_idle1.ogg?8ab5d",
-    "category": "Mob"
-  },
-  {
-    "id": "bee_idle",
-    "entityId": "bee",
-    "name": "Bee",
-    "soundFile": "https://minecraft.wiki/images/Bee_loop1.ogg?7ea0a",
-    "category": "Mob"
-  },
-  {
-    "id": "dolphin_idle",
-    "entityId": "dolphin",
-    "name": "Dolphin",
-    "soundFile": "https://minecraft.wiki/images/Dolphin_idle1.ogg?11f4b",
-    "category": "Mob"
-  },
-  {
-    "id": "horse_idle",
-    "entityId": "horse",
-    "name": "Horse",
-    "soundFile": "https://minecraft.wiki/images/Horse_idle1.ogg?d2d5a",
-    "category": "Mob"
-  },
-  {
-    "id": "bat_idle",
-    "entityId": "bat",
-    "name": "Bat",
-    "soundFile": "https://minecraft.wiki/images/Bat_idle1.ogg?91bd9",
-    "category": "Mob"
-  },
-  {
-    "id": "fox_idle",
-    "entityId": "fox",
-    "name": "Fox",
-    "soundFile": "https://minecraft.wiki/images/Fox_idle1.ogg?62260",
-    "category": "Mob"
-  },
-  {
-    "id": "goat_idle",
-    "entityId": "goat",
-    "name": "Goat",
-    "soundFile": "https://minecraft.wiki/images/Goat_idle1.ogg?c3ab9",
-    "category": "Mob"
-  },
-  {
-    "id": "frog_idle",
-    "entityId": "frog",
-    "name": "Frog",
-    "soundFile": "https://minecraft.wiki/images/Frog_idle1.ogg?bfd60",
-    "category": "Mob"
-  },
-  {
-    "id": "axolotl_idle",
+    "id": "axolotl_sound",
     "entityId": "axolotl",
     "name": "Axolotl",
     "soundFile": "https://minecraft.wiki/images/Axolotl_idle1.ogg?c158f",
     "category": "Mob"
   },
   {
-    "id": "parrot_idle",
+    "id": "bat_sound",
+    "entityId": "bat",
+    "name": "Bat",
+    "soundFile": "https://minecraft.wiki/images/Bat_idle1.ogg?91bd9",
+    "category": "Mob"
+  },
+  {
+    "id": "camel_sound",
+    "entityId": "camel",
+    "name": "Camel",
+    "soundFile": "https://minecraft.wiki/images/Camel_ambient1.ogg?ed4be",
+    "category": "Mob"
+  },
+  {
+    "id": "camel_husk_sound",
+    "entityId": "camel_husk",
+    "name": "Camel Husk",
+    "soundFile": "https://minecraft.wiki/images/Camel_Husk_ambient1.ogg?2f03b",
+    "category": "Mob"
+  },
+  {
+    "id": "cat_sound",
+    "entityId": "cat",
+    "name": "Cat",
+    "soundFile": "https://minecraft.wiki/images/Cat_idle1.ogg?6c2ec",
+    "category": "Mob"
+  },
+  {
+    "id": "chicken_sound",
+    "entityId": "chicken",
+    "name": "Chicken",
+    "soundFile": "https://minecraft.wiki/images/Chicken_idle1.ogg?a6b33",
+    "category": "Mob"
+  },
+  {
+    "id": "cow_sound",
+    "entityId": "cow",
+    "name": "Cow",
+    "soundFile": "https://minecraft.wiki/images/Cow_idle1.ogg?0f8ca",
+    "category": "Mob"
+  },
+  {
+    "id": "dolphin_sound",
+    "entityId": "dolphin",
+    "name": "Dolphin",
+    "soundFile": "https://minecraft.wiki/images/Dolphin_idle1.ogg?11f4b",
+    "category": "Mob"
+  },
+  {
+    "id": "donkey_sound",
+    "entityId": "donkey",
+    "name": "Donkey",
+    "soundFile": "https://minecraft.wiki/images/Donkey_idle1.ogg?d49a6",
+    "category": "Mob"
+  },
+  {
+    "id": "fox_sound",
+    "entityId": "fox",
+    "name": "Fox",
+    "soundFile": "https://minecraft.wiki/images/Fox_idle1.ogg?62260",
+    "category": "Mob"
+  },
+  {
+    "id": "frog_sound",
+    "entityId": "frog",
+    "name": "Frog",
+    "soundFile": "https://minecraft.wiki/images/Frog_idle1.ogg?bfd60",
+    "category": "Mob"
+  },
+  {
+    "id": "glow_squid_sound",
+    "entityId": "glow_squid",
+    "name": "Glow Squid",
+    "soundFile": "https://minecraft.wiki/images/Glow_Squid_ambient1.ogg?d2c72",
+    "category": "Mob"
+  },
+  {
+    "id": "goat_sound",
+    "entityId": "goat",
+    "name": "Goat",
+    "soundFile": "https://minecraft.wiki/images/Goat_idle1.ogg?c3ab9",
+    "category": "Mob"
+  },
+  {
+    "id": "horse_sound",
+    "entityId": "horse",
+    "name": "Horse",
+    "soundFile": "https://minecraft.wiki/images/Horse_idle1.ogg?d2d5a",
+    "category": "Mob"
+  },
+  {
+    "id": "llama_sound",
+    "entityId": "llama",
+    "name": "Llama",
+    "soundFile": "https://minecraft.wiki/images/Llama_idle1.ogg?fb5df",
+    "category": "Mob"
+  },
+  {
+    "id": "nautilus_sound",
+    "entityId": "nautilus",
+    "name": "Nautilus",
+    "soundFile": "https://minecraft.wiki/images/Nautilus_ambient1.ogg?a72ff",
+    "category": "Mob"
+  },
+  {
+    "id": "ocelot_sound",
+    "entityId": "ocelot",
+    "name": "Ocelot",
+    "soundFile": "https://minecraft.wiki/images/Ocelot_idle1.ogg?c03c5",
+    "category": "Mob"
+  },
+  {
+    "id": "panda_sound",
+    "entityId": "panda",
+    "name": "Panda",
+    "soundFile": "https://minecraft.wiki/images/Panda_idle1.ogg?f77dd",
+    "category": "Mob"
+  },
+  {
+    "id": "parrot_sound",
     "entityId": "parrot",
     "name": "Parrot",
     "soundFile": "https://minecraft.wiki/images/Parrot_idle1.ogg?c8851",
     "category": "Mob"
   },
   {
-    "id": "drowned_idle",
-    "entityId": "drowned",
-    "name": "Drowned",
-    "soundFile": "https://minecraft.wiki/images/Drowned_idle1.ogg?9cae1",
+    "id": "pig_sound",
+    "entityId": "pig",
+    "name": "Pig",
+    "soundFile": "https://minecraft.wiki/images/Pig_idle1.ogg?88ae8",
     "category": "Mob"
   },
   {
-    "id": "pillager_idle",
+    "id": "rabbit_sound",
+    "entityId": "rabbit",
+    "name": "Rabbit",
+    "soundFile": "https://minecraft.wiki/images/Rabbit_idle1.ogg?00fe7",
+    "category": "Mob"
+  },
+  {
+    "id": "sheep_sound",
+    "entityId": "sheep",
+    "name": "Sheep",
+    "soundFile": "https://minecraft.wiki/images/Sheep1.ogg?dcccf",
+    "category": "Mob"
+  },
+  {
+    "id": "squid_sound",
+    "entityId": "squid",
+    "name": "Squid",
+    "soundFile": "https://minecraft.wiki/images/Squid_idle1.ogg?bffc4",
+    "category": "Mob"
+  },
+  {
+    "id": "turtle_sound",
+    "entityId": "turtle",
+    "name": "Turtle",
+    "soundFile": "https://minecraft.wiki/images/Turtle_idle1.ogg?fec94",
+    "category": "Mob"
+  },
+  {
+    "id": "wolf_sound",
+    "entityId": "wolf",
+    "name": "Wolf",
+    "soundFile": "https://minecraft.wiki/images/Wolf_idle1.ogg?fe9b2",
+    "category": "Mob"
+  },
+  {
+    "id": "guardian_sound",
+    "entityId": "guardian",
+    "name": "Guardian",
+    "soundFile": "https://minecraft.wiki/images/Guardian_idle1.ogg?945d4",
+    "category": "Mob"
+  },
+  {
+    "id": "silverfish_sound",
+    "entityId": "silverfish",
+    "name": "Silverfish",
+    "soundFile": "https://minecraft.wiki/images/Silverfish_idle1.ogg?2d862",
+    "category": "Mob"
+  },
+  {
+    "id": "spider_sound",
+    "entityId": "spider",
+    "name": "Spider",
+    "soundFile": "https://minecraft.wiki/images/Spider_idle1.ogg?77177",
+    "category": "Mob"
+  },
+  {
+    "id": "wither_sound",
+    "entityId": "wither",
+    "name": "Wither",
+    "soundFile": "https://minecraft.wiki/images/Wither_idle1.ogg?f2080",
+    "category": "Mob"
+  },
+  {
+    "id": "enderman_sound",
+    "entityId": "enderman",
+    "name": "Enderman",
+    "soundFile": "https://minecraft.wiki/images/Enderman_idle1.ogg?ee326",
+    "category": "Mob"
+  },
+  {
+    "id": "shulker_sound",
+    "entityId": "shulker",
+    "name": "Shulker",
+    "soundFile": "https://minecraft.wiki/images/Shulker_idle1.ogg?8ab5d",
+    "category": "Mob"
+  },
+  {
+    "id": "blaze_sound",
+    "entityId": "blaze",
+    "name": "Blaze",
+    "soundFile": "https://minecraft.wiki/images/Blaze_idle1.ogg?9e066",
+    "category": "Mob"
+  },
+  {
+    "id": "ghast_sound",
+    "entityId": "ghast",
+    "name": "Ghast",
+    "soundFile": "https://minecraft.wiki/images/Ghast_idle1.ogg?6400a",
+    "category": "Mob"
+  },
+  {
+    "id": "phantom_sound",
+    "entityId": "phantom",
+    "name": "Phantom",
+    "soundFile": "https://minecraft.wiki/images/Phantom_idle1.ogg?d6cf8",
+    "category": "Mob"
+  },
+  {
+    "id": "vex_sound",
+    "entityId": "vex",
+    "name": "Vex",
+    "soundFile": "https://minecraft.wiki/images/Vex_idle1.ogg?a84ff",
+    "category": "Mob"
+  },
+  {
+    "id": "evoker_sound",
+    "entityId": "evoker",
+    "name": "Evoker",
+    "soundFile": "https://minecraft.wiki/images/Evoker_idle1.ogg?03646",
+    "category": "Mob"
+  },
+  {
+    "id": "husk_sound",
+    "entityId": "husk",
+    "name": "Husk",
+    "soundFile": "https://minecraft.wiki/images/Husk_idle1.ogg?13315",
+    "category": "Mob"
+  },
+  {
+    "id": "pillager_sound",
     "entityId": "pillager",
     "name": "Pillager",
     "soundFile": "https://minecraft.wiki/images/Pillager_idle1.ogg?f1c6f",
     "category": "Mob"
   },
   {
-    "id": "hoglin_idle",
-    "entityId": "hoglin",
-    "name": "Hoglin",
-    "soundFile": "https://minecraft.wiki/images/Hoglin_idle1.ogg?8fab5",
+    "id": "ravager_sound",
+    "entityId": "ravager",
+    "name": "Ravager",
+    "soundFile": "https://minecraft.wiki/images/Ravager_idle1.ogg?c9f09",
     "category": "Mob"
   },
   {
-    "id": "piglin_idle",
+    "id": "skeleton_sound",
+    "entityId": "skeleton",
+    "name": "Skeleton",
+    "soundFile": "https://minecraft.wiki/images/Skeleton_idle1.ogg?b0f88",
+    "category": "Mob"
+  },
+  {
+    "id": "stray_sound",
+    "entityId": "stray",
+    "name": "Stray",
+    "soundFile": "https://minecraft.wiki/images/Stray_idle1.ogg?1e079",
+    "category": "Mob"
+  },
+  {
+    "id": "vindicator_sound",
+    "entityId": "vindicator",
+    "name": "Vindicator",
+    "soundFile": "https://minecraft.wiki/images/Vindicator_idle1.ogg?0d6a3",
+    "category": "Mob"
+  },
+  {
+    "id": "warden_sound",
+    "entityId": "warden",
+    "name": "Warden",
+    "soundFile": "https://minecraft.wiki/images/Warden_ambient1.ogg?c4b75",
+    "category": "Mob"
+  },
+  {
+    "id": "witch_sound",
+    "entityId": "witch",
+    "name": "Witch",
+    "soundFile": "https://minecraft.wiki/images/Witch_idle1.ogg?0fb18",
+    "category": "Mob"
+  },
+  {
+    "id": "zoglin_sound",
+    "entityId": "zoglin",
+    "name": "Zoglin",
+    "soundFile": "https://minecraft.wiki/images/Zoglin_idle1.ogg?bf2d5",
+    "category": "Mob"
+  },
+  {
+    "id": "zombie_sound",
+    "entityId": "zombie",
+    "name": "Zombie",
+    "soundFile": "https://minecraft.wiki/images/Zombie_idle1.ogg?5d58f",
+    "category": "Mob"
+  },
+  {
+    "id": "villager_sound",
+    "entityId": "villager",
+    "name": "Villager",
+    "soundFile": "https://minecraft.wiki/images/Villager_idle1.ogg?bfbee",
+    "category": "Mob"
+  },
+  {
+    "id": "drowned_sound",
+    "entityId": "drowned",
+    "name": "Drowned",
+    "soundFile": "https://minecraft.wiki/images/Drowned_idle1.ogg?9cae1",
+    "category": "Mob"
+  },
+  {
+    "id": "piglin_sound",
     "entityId": "piglin",
     "name": "Piglin",
     "soundFile": "https://minecraft.wiki/images/Piglin_idle1.ogg?9e0f3",
-    "category": "Mob"
-  },
-  {
-    "id": "strider_idle",
-    "entityId": "strider",
-    "name": "Strider",
-    "soundFile": "https://minecraft.wiki/images/Strider_idle1.ogg?80911",
     "category": "Mob"
   }
 ]

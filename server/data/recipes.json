@@ -1,16 +1,82 @@
 [
   {
-    "itemId": "diamond_sword",
-    "name": "Diamond Sword",
+    "itemId": "decorated_pot",
+    "name": "Decorated Pot",
     "grid": [
       [
         null,
-        "diamond",
+        "any_pottery_sherd",
+        null
+      ],
+      [
+        "any_pottery_sherd",
+        null,
+        "any_pottery_sherd"
+      ],
+      [
+        null,
+        "any_pottery_sherd",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "armor_sta",
+    "name": "Armor Sta",
+    "grid": [
+      [
+        "stick",
+        "stick",
+        "stick"
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        "stick",
+        "smooth_stone_slab",
+        "stick"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow4",
+    "name": "Arrow,4",
+    "grid": [
+      [
+        null,
+        "flint",
         null
       ],
       [
         null,
-        "diamond",
+        "stick",
+        null
+      ],
+      [
+        null,
+        "feather",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "woode",
+    "name": "Woode",
+    "grid": [
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ],
+      [
+        "any_planks",
+        "stick",
         null
       ],
       [
@@ -22,220 +88,132 @@
     "shapeless": false
   },
   {
-    "itemId": "iron_sword",
-    "name": "Iron Sword",
+    "itemId": "matchi",
+    "name": "Matchi",
     "grid": [
       [
-        null,
-        "iron_ingot",
-        null
+        "latex",
+        "matching_dye",
+        "latex"
       ],
       [
-        null,
-        "iron_ingot",
-        null
+        "latex",
+        "helium",
+        "latex"
       ],
       [
-        null,
-        "stick",
-        null
+        "latex",
+        "lead",
+        "latex"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "stone_sword",
-    "name": "Stone Sword",
+    "itemId": "white_balloo",
+    "name": "White Balloo",
     "grid": [
       [
-        null,
-        "cobblestone",
-        null
+        "latex",
+        "bone_meal_lapis_lazuli_cocoa_beans_ink_sac",
+        "latex"
       ],
       [
-        null,
-        "cobblestone",
-        null
+        "latex",
+        "helium",
+        "latex"
       ],
       [
-        null,
-        "stick",
-        null
+        "latex",
+        "lead",
+        "latex"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "wooden_sword",
-    "name": "Wooden Sword",
+    "itemId": "oak_boat",
+    "name": "Oak Boat",
     "grid": [
       [
         null,
+        null,
+        null
+      ],
+      [
         "oak_planks",
-        null
-      ],
-      [
         null,
-        "oak_planks",
-        null
+        "oak_planks"
       ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "diamond_pickaxe",
-    "name": "Diamond Pickaxe",
-    "grid": [
-      [
-        "diamond",
-        "diamond",
-        "diamond"
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "iron_pickaxe",
-    "name": "Iron Pickaxe",
-    "grid": [
-      [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "stone_pickaxe",
-    "name": "Stone Pickaxe",
-    "grid": [
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "wooden_pickaxe",
-    "name": "Wooden Pickaxe",
-    "grid": [
       [
         "oak_planks",
         "oak_planks",
         "oak_planks"
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "diamond_axe",
-    "name": "Diamond Axe",
+    "itemId": "oak_boat_spruce_boat_birch_boat_ju",
+    "name": "Oak Boat; Spruce Boat; Birch Boat; Ju",
     "grid": [
       [
-        "diamond",
-        "diamond",
-        null
-      ],
-      [
-        "diamond",
-        "stick",
-        null
-      ],
-      [
         null,
-        "stick",
+        null,
         null
+      ],
+      [
+        "oak_planks_spruce_planks_birch_planks_jungle_planks_acacia_planks_dark_oak_planks",
+        "wooden_shovel",
+        "oak_planks_spruce_planks_birch_planks_jungle_planks_acacia_planks_dark_oak_planks"
+      ],
+      [
+        "oak_planks_spruce_planks_birch_planks_jungle_planks_acacia_planks_dark_oak_planks",
+        "oak_planks_spruce_planks_birch_planks_jungle_planks_acacia_planks_dark_oak_planks",
+        "oak_planks_spruce_planks_birch_planks_jungle_planks_acacia_planks_dark_oak_planks"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "iron_axe",
-    "name": "Iron Axe",
+    "itemId": "bolt_armor_trim_smithi",
+    "name": "Bolt Armor Trim Smithi",
     "grid": [
       [
-        "iron_ingot",
-        "iron_ingot",
-        null
+        "diamond",
+        "bolt_armor_trim",
+        "diamond"
       ],
       [
-        "iron_ingot",
-        "stick",
-        null
+        "diamond",
+        "block_of_copper_waxed_block_of_copper",
+        "diamond"
       ],
       [
-        null,
-        "stick",
-        null
+        "diamond",
+        "diamond",
+        "diamond"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "diamond_shovel",
-    "name": "Diamond Shovel",
+    "itemId": "book",
+    "name": "Book",
     "grid": [
       [
         null,
-        "diamond",
+        "paper",
         null
       ],
       [
         null,
-        "stick",
+        "paper",
         null
       ],
       [
         null,
-        "stick",
+        "paper",
         null
       ]
     ],
@@ -264,265 +242,23 @@
     "shapeless": false
   },
   {
-    "itemId": "shield",
-    "name": "Shield",
-    "grid": [
-      [
-        "oak_planks",
-        "iron_ingot",
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        null,
-        "oak_planks",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "fishing_rod",
-    "name": "Fishing Rod",
+    "itemId": "bowl4",
+    "name": "Bowl,4",
     "grid": [
       [
         null,
-        null,
-        "stick"
-      ],
-      [
-        null,
-        "stick",
-        "string"
-      ],
-      [
-        "stick",
-        null,
-        "string"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "shears",
-    "name": "Shears",
-    "grid": [
-      [
-        null,
-        "iron_ingot",
-        null
-      ],
-      [
-        "iron_ingot",
         null,
         null
       ],
       [
+        "any_planks",
         null,
+        "any_planks"
+      ],
+      [
         null,
+        "any_planks",
         null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "flint_and_steel",
-    "name": "Flint and Steel",
-    "grid": [
-      [
-        "iron_ingot",
-        null,
-        null
-      ],
-      [
-        null,
-        "flint",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "crafting_table",
-    "name": "Crafting Table",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "furnace",
-    "name": "Furnace",
-    "grid": [
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ],
-      [
-        "cobblestone",
-        null,
-        "cobblestone"
-      ],
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "chest",
-    "name": "Chest",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        null,
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "enchanting_table",
-    "name": "Enchanting Table",
-    "grid": [
-      [
-        null,
-        "book",
-        null
-      ],
-      [
-        "diamond",
-        "obsidian",
-        "diamond"
-      ],
-      [
-        "obsidian",
-        "obsidian",
-        "obsidian"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "bookshelf",
-    "name": "Bookshelf",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        "book",
-        "book",
-        "book"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "piston",
-    "name": "Piston",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        "cobblestone",
-        "iron_ingot",
-        "cobblestone"
-      ],
-      [
-        "cobblestone",
-        "redstone",
-        "cobblestone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "tnt",
-    "name": "TNT",
-    "grid": [
-      [
-        "gunpowder",
-        "sand",
-        "gunpowder"
-      ],
-      [
-        "sand",
-        "gunpowder",
-        "sand"
-      ],
-      [
-        "gunpowder",
-        "sand",
-        "gunpowder"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "golden_apple",
-    "name": "Golden Apple",
-    "grid": [
-      [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
-      ],
-      [
-        "gold_ingot",
-        "apple",
-        "gold_ingot"
-      ],
-      [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
       ]
     ],
     "shapeless": false
@@ -532,6 +268,11 @@
     "name": "Bread",
     "grid": [
       [
+        null,
+        null,
+        null
+      ],
+      [
         "wheat",
         "wheat",
         "wheat"
@@ -540,98 +281,27 @@
         null,
         null,
         null
-      ],
-      [
-        null,
-        null,
-        null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "cookie",
-    "name": "Cookie",
-    "grid": [
-      [
-        "wheat",
-        "cocoa_beans",
-        "wheat"
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "cake",
-    "name": "Cake",
-    "grid": [
-      [
-        "milk_bucket",
-        "milk_bucket",
-        "milk_bucket"
-      ],
-      [
-        "sugar",
-        "egg",
-        "sugar"
-      ],
-      [
-        "wheat",
-        "wheat",
-        "wheat"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "stick",
-    "name": "Stick",
+    "itemId": "brush",
+    "name": "Brush",
     "grid": [
       [
         null,
-        "oak_planks",
+        "feather",
         null
       ],
       [
         null,
-        "oak_planks",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "torch",
-    "name": "Torch",
-    "grid": [
-      [
-        null,
-        "coal",
+        "copper_ingot",
         null
       ],
       [
         null,
         "stick",
-        null
-      ],
-      [
-        null,
-        null,
         null
       ]
     ],
@@ -642,6 +312,11 @@
     "name": "Bucket",
     "grid": [
       [
+        null,
+        null,
+        null
+      ],
+      [
         "iron_ingot",
         null,
         "iron_ingot"
@@ -650,6 +325,177 @@
         null,
         "iron_ingot",
         null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bu",
+    "name": "Bu",
+    "grid": [
+      [
+        null,
+        "string",
+        null
+      ],
+      [
+        null,
+        "leather",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "carrot_o",
+    "name": "Carrot o",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "fishing_rod_damaged_fishing_rod",
+        null
+      ],
+      [
+        null,
+        null,
+        "carrot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chai",
+    "name": "Chai",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "fire",
+        null,
+        "fire"
+      ],
+      [
+        "fire",
+        null,
+        "fire"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "charcoal",
+    "name": "Charcoal",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "carbon7",
+        "hydrogen4",
+        "oxygen"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": true
+  },
+  {
+    "itemId": "clock",
+    "name": "Clock",
+    "grid": [
+      [
+        null,
+        "gold_ingot",
+        null
+      ],
+      [
+        "gold_ingot",
+        "redstone_dust",
+        "gold_ingot"
+      ],
+      [
+        null,
+        "gold_ingot",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "coast_armor_trim_smithi",
+    "name": "Coast Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "coast_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "cobblestone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "brow",
+    "name": "Brow",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "cocoa_beans",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cookie8",
+    "name": "Cookie,8",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "wheat",
+        "cocoa_beans",
+        "wheat"
       ],
       [
         null,
@@ -670,7 +516,7 @@
       ],
       [
         "iron_ingot",
-        "redstone",
+        "redstone_dust",
         "iron_ingot"
       ],
       [
@@ -682,148 +528,16 @@
     "shapeless": false
   },
   {
-    "itemId": "clock",
-    "name": "Clock",
+    "itemId": "copper_axe",
+    "name": "Copper Axe",
     "grid": [
       [
-        null,
-        "gold_ingot",
+        "copper_ingot",
+        "copper_ingot",
         null
       ],
       [
-        "gold_ingot",
-        "redstone",
-        "gold_ingot"
-      ],
-      [
-        null,
-        "gold_ingot",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "diamond_helmet",
-    "name": "Diamond Helmet",
-    "grid": [
-      [
-        "diamond",
-        "diamond",
-        "diamond"
-      ],
-      [
-        "diamond",
-        null,
-        "diamond"
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "diamond_chestplate",
-    "name": "Diamond Chestplate",
-    "grid": [
-      [
-        "diamond",
-        null,
-        "diamond"
-      ],
-      [
-        "diamond",
-        "diamond",
-        "diamond"
-      ],
-      [
-        "diamond",
-        "diamond",
-        "diamond"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "diamond_leggings",
-    "name": "Diamond Leggings",
-    "grid": [
-      [
-        "diamond",
-        "diamond",
-        "diamond"
-      ],
-      [
-        "diamond",
-        null,
-        "diamond"
-      ],
-      [
-        "diamond",
-        null,
-        "diamond"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "diamond_boots",
-    "name": "Diamond Boots",
-    "grid": [
-      [
-        "diamond",
-        null,
-        "diamond"
-      ],
-      [
-        "diamond",
-        null,
-        "diamond"
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "oak_planks",
-    "name": "Oak Planks",
-    "grid": [
-      [
-        "oak_log",
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "stone_axe",
-    "name": "Stone Axe",
-    "grid": [
-      [
-        "cobblestone",
-        "cobblestone",
-        null
-      ],
-      [
-        "cobblestone",
+        "copper_ingot",
         "stick",
         null
       ],
@@ -836,56 +550,78 @@
     "shapeless": false
   },
   {
-    "itemId": "wooden_axe",
-    "name": "Wooden Axe",
+    "itemId": "copper_boots",
+    "name": "Copper Boots",
     "grid": [
       [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        "oak_planks",
-        "stick",
-        null
-      ],
-      [
         null,
-        "stick",
+        null,
         null
+      ],
+      [
+        "copper_ingot",
+        null,
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        null,
+        "copper_ingot"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "golden_axe",
-    "name": "Golden Axe",
+    "itemId": "copper_chestplate",
+    "name": "Copper Chestplate",
     "grid": [
       [
-        "gold_ingot",
-        "gold_ingot",
-        null
-      ],
-      [
-        "gold_ingot",
-        "stick",
-        null
-      ],
-      [
+        "copper_ingot",
         null,
-        "stick",
-        null
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "iron_hoe",
-    "name": "Iron Hoe",
+    "itemId": "copper_helmet",
+    "name": "Copper Helmet",
     "grid": [
       [
-        "iron_ingot",
-        "iron_ingot",
+        null,
+        null,
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        null,
+        "copper_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_hoe",
+    "name": "Copper Hoe",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
         null
       ],
       [
@@ -902,12 +638,78 @@
     "shapeless": false
   },
   {
-    "itemId": "stone_hoe",
-    "name": "Stone Hoe",
+    "itemId": "copper_i",
+    "name": "Copper I",
     "grid": [
       [
-        "cobblestone",
-        "cobblestone",
+        "copper_nugget",
+        "copper_nugget",
+        "copper_nugget"
+      ],
+      [
+        "copper_nugget",
+        "copper_nugget",
+        "copper_nugget"
+      ],
+      [
+        "copper_nugget",
+        "copper_nugget",
+        "copper_nugget"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_leggi",
+    "name": "Copper Leggi",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        null,
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        null,
+        "copper_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_pickaxe",
+    "name": "Copper Pickaxe",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_shovel",
+    "name": "Copper Shovel",
+    "grid": [
+      [
+        null,
+        "copper_ingot",
         null
       ],
       [
@@ -924,13 +726,13 @@
     "shapeless": false
   },
   {
-    "itemId": "wooden_hoe",
-    "name": "Wooden Hoe",
+    "itemId": "copper_spear",
+    "name": "Copper Spear",
     "grid": [
       [
-        "oak_planks",
-        "oak_planks",
-        null
+        null,
+        null,
+        "copper_ingot"
       ],
       [
         null,
@@ -938,157 +740,25 @@
         null
       ],
       [
-        null,
         "stick",
+        null,
         null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "golden_hoe",
-    "name": "Golden Hoe",
-    "grid": [
-      [
-        "gold_ingot",
-        "gold_ingot",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "stone_shovel",
-    "name": "Stone Shovel",
+    "itemId": "copper_sword",
+    "name": "Copper Sword",
     "grid": [
       [
         null,
-        "cobblestone",
+        "copper_ingot",
         null
       ],
       [
         null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "wooden_shovel",
-    "name": "Wooden Shovel",
-    "grid": [
-      [
-        null,
-        "oak_planks",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "iron_shovel",
-    "name": "Iron Shovel",
-    "grid": [
-      [
-        null,
-        "iron_ingot",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "golden_shovel",
-    "name": "Golden Shovel",
-    "grid": [
-      [
-        null,
-        "gold_ingot",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "golden_sword",
-    "name": "Golden Sword",
-    "grid": [
-      [
-        null,
-        "gold_ingot",
-        null
-      ],
-      [
-        null,
-        "gold_ingot",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "golden_pickaxe",
-    "name": "Golden Pickaxe",
-    "grid": [
-      [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
-      ],
-      [
-        null,
-        "stick",
+        "copper_ingot",
         null
       ],
       [
@@ -1122,6 +792,1040 @@
     "shapeless": false
   },
   {
+    "itemId": "diamo",
+    "name": "Diamo",
+    "grid": [
+      [
+        "diamond",
+        "diamond",
+        null
+      ],
+      [
+        "diamond",
+        "stick",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "du",
+    "name": "Du",
+    "grid": [
+      [
+        "diamond",
+        "dune_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "sandstone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "e",
+    "name": "E",
+    "grid": [
+      [
+        "block_of_gold",
+        "block_of_gold",
+        "block_of_gold"
+      ],
+      [
+        "block_of_gold",
+        "apple",
+        "block_of_gold"
+      ],
+      [
+        "block_of_gold",
+        "block_of_gold",
+        "block_of_gold"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "eye_armor_trim_smithi",
+    "name": "Eye Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "eye_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "end_stone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "fishi",
+    "name": "Fishi",
+    "grid": [
+      [
+        null,
+        null,
+        "stick"
+      ],
+      [
+        null,
+        "stick",
+        "string"
+      ],
+      [
+        "stick",
+        null,
+        "string"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "fli",
+    "name": "Fli",
+    "grid": [
+      [
+        "iron_ingot",
+        null,
+        null
+      ],
+      [
+        null,
+        "flint",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "flow_armor_trim_smithi",
+    "name": "Flow Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "flow_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "breeze_rod",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "glass_bottle3",
+    "name": "Glass Bottle,3",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "glass",
+        null,
+        "glass"
+      ],
+      [
+        null,
+        "glass",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "glisteri",
+    "name": "Glisteri",
+    "grid": [
+      [
+        "gold_nugget",
+        "gold_nugget",
+        "gold_nugget"
+      ],
+      [
+        "gold_nugget",
+        "melon_slice",
+        "gold_nugget"
+      ],
+      [
+        "gold_nugget",
+        "gold_nugget",
+        "gold_nugget"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "white_glow_stick_gray_glow_stick_brow",
+    "name": "White Glow Stick; Gray Glow Stick; Brow",
+    "grid": [
+      [
+        "polyethylene",
+        "hydrogen_peroxide",
+        "polyethylene"
+      ],
+      [
+        "polyethylene",
+        "white_dye_gray_dye_brown_dye_red_dye_orange_dye_yellow_dye_lime_dye_green_dye_cyan_dye_light_blue_dye_blue_dye_purple_dye_magenta_dye_pink_dye",
+        "polyethylene"
+      ],
+      [
+        "polyethylene",
+        "luminol",
+        "polyethylene"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "white_glow_stick_blue_glow_stick_brow",
+    "name": "White Glow Stick; Blue Glow Stick; Brow",
+    "grid": [
+      [
+        "polyethylene",
+        "hydrogen_peroxide",
+        "polyethylene"
+      ],
+      [
+        "polyethylene",
+        "bone_meal_lapis_lazuli_cocoa_beans",
+        "polyethylene"
+      ],
+      [
+        "polyethylene",
+        "luminol",
+        "polyethylene"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "gold_i",
+    "name": "Gold I",
+    "grid": [
+      [
+        "gold_nugget",
+        "gold_nugget",
+        "gold_nugget"
+      ],
+      [
+        "gold_nugget",
+        "gold_nugget",
+        "gold_nugget"
+      ],
+      [
+        "gold_nugget",
+        "gold_nugget",
+        "gold_nugget"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "golde",
+    "name": "Golde",
+    "grid": [
+      [
+        "gold_ingot",
+        "gold_ingot",
+        "gold_ingot"
+      ],
+      [
+        "gold_ingot",
+        "apple",
+        "gold_ingot"
+      ],
+      [
+        "gold_ingot",
+        "gold_ingot",
+        "gold_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "iro",
+    "name": "Iro",
+    "grid": [
+      [
+        null,
+        null,
+        "iron_ingot_gold_ingot_diamond"
+      ],
+      [
+        "iron_ingot_gold_ingot_diamond",
+        "any_wool",
+        "iron_ingot_gold_ingot_diamond"
+      ],
+      [
+        "iron_ingot_gold_ingot_diamond",
+        "iron_ingot_gold_ingot_diamond",
+        "iron_ingot_gold_ingot_diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "host_armor_trim_smithi",
+    "name": "Host Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "host_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "terracotta",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "i",
+    "name": "I",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "iron",
+        "sulfur",
+        "oxygen4"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": true
+  },
+  {
+    "itemId": "lead_2",
+    "name": "Lead, 2",
+    "grid": [
+      [
+        "string",
+        "string",
+        null
+      ],
+      [
+        "string",
+        "string",
+        null
+      ],
+      [
+        null,
+        null,
+        "string"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "leather",
+    "name": "Leather",
+    "grid": [
+      [
+        "rabbit_hide",
+        "rabbit_hide",
+        null
+      ],
+      [
+        "rabbit_hide",
+        "rabbit_hide",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mace",
+    "name": "Mace",
+    "grid": [
+      [
+        null,
+        "heavy_core",
+        null
+      ],
+      [
+        null,
+        "breeze_rod",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "map_map_be_locator_map",
+    "name": "Map; Map BE; Locator Map",
+    "grid": [
+      [
+        "paper",
+        "paper",
+        "paper"
+      ],
+      [
+        "paper",
+        "map_map_be_locator_map",
+        "paper"
+      ],
+      [
+        "paper",
+        "paper",
+        "paper"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mi",
+    "name": "Mi",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "iron_ingot",
+        null,
+        "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        "iron_ingot",
+        "iron_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mushroom_stew",
+    "name": "Mushroom Stew",
+    "grid": [
+      [
+        "brown_mushroomred_mushroom",
+        "brown_mushroomred_mushroom",
+        "brown_mushroomred_mushroom"
+      ],
+      [
+        "red_mushroombrown_mushroom",
+        "red_mushroombrown_mushroom",
+        "red_mushroombrown_mushroom"
+      ],
+      [
+        "bowlbowl",
+        "bowlbowl",
+        "bowlbowl"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "music_disc_5",
+    "name": "Music Disc 5",
+    "grid": [
+      [
+        "disc_fragment_5",
+        "disc_fragment_5",
+        "disc_fragment_5"
+      ],
+      [
+        "disc_fragment_5",
+        "disc_fragment_5",
+        "disc_fragment_5"
+      ],
+      [
+        "disc_fragment_5",
+        "disc_fragment_5",
+        "disc_fragment_5"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "name_tag",
+    "name": "Name Tag",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "any_nugget",
+        null
+      ],
+      [
+        "paper",
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "netherite_upgrade",
+    "name": "Netherite Upgrade",
+    "grid": [
+      [
+        "diamond",
+        "netherite_upgrade",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "netherrack",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "pai",
+    "name": "Pai",
+    "grid": [
+      [
+        "stick",
+        "stick",
+        "stick"
+      ],
+      [
+        "stick",
+        "any_wool",
+        "stick"
+      ],
+      [
+        "stick",
+        "stick",
+        "stick"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "paper3",
+    "name": "Paper,3",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "sugar_cane",
+        "sugar_cane",
+        "sugar_cane"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of",
+    "name": "Arrow of",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_night_vision_lingering_potion_of_night_vision_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_rege",
+    "name": "Arrow of Rege",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_regeneration_lingering_potion_of_regeneration_enhanced_lingering_potion_of_regeneration_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_stre",
+    "name": "Arrow of Stre",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_strength_lingering_potion_of_strength_enhanced_lingering_potion_of_strength_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_the_turtle_master_8_arrow_of_the_turtle_master_e",
+    "name": "Arrow of the Turtle Master, 8; Arrow of the Turtle Master E",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_the_turtle_master_lingering_potion_of_the_turtle_master_enhanced_lingering_potion_of_the_turtle_master_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_water_breathi",
+    "name": "Arrow of Water Breathi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_water_breathing_lingering_potion_of_water_breathing_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_weak",
+    "name": "Arrow of Weak",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_weakness_lingering_potion_of_weakness_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "rabbit_stew",
+    "name": "Rabbit Stew",
+    "grid": [
+      [
+        null,
+        "cooked_rabbit",
+        null
+      ],
+      [
+        "carrot",
+        "baked_potato",
+        "any_mushroom"
+      ],
+      [
+        null,
+        "bowl",
+        null
+      ]
+    ],
+    "shapeless": true
+  },
+  {
+    "itemId": "raiser_armor_trim_smithi",
+    "name": "Raiser Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "raiser_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "terracotta",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "recovery_compass",
+    "name": "Recovery Compass",
+    "grid": [
+      [
+        "echo_shard",
+        "echo_shard",
+        "echo_shard"
+      ],
+      [
+        "echo_shard",
+        "compass",
+        "echo_shard"
+      ],
+      [
+        "echo_shard",
+        "echo_shard",
+        "echo_shard"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "rib_armor_trim_smithi",
+    "name": "Rib Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "rib_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "netherrack",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "saddle",
+    "name": "Saddle",
+    "grid": [
+      [
+        null,
+        "leather",
+        null
+      ],
+      [
+        "leather",
+        "iron_ingot",
+        "leather"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "se",
+    "name": "Se",
+    "grid": [
+      [
+        "diamond",
+        "sentry_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "cobblestone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "shaper_armor_trim_smithi",
+    "name": "Shaper Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "shaper_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "terracotta",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "shears",
+    "name": "Shears",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "iron_ingot",
+        null
+      ],
+      [
+        "iron_ingot",
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "shield",
+    "name": "Shield",
+    "grid": [
+      [
+        "any_planks",
+        "iron_ingot",
+        "any_planks"
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ],
+      [
+        null,
+        "any_planks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "sile",
+    "name": "Sile",
+    "grid": [
+      [
+        "diamond",
+        "silence_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "cobbled_deepslate",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "s",
+    "name": "S",
+    "grid": [
+      [
+        "diamond",
+        "snout_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "blackstone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "sparkler",
+    "name": "Sparkler",
+    "grid": [
+      [
+        null,
+        "chloride",
+        null
+      ],
+      [
+        null,
+        "magnesium",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "spectral_arrow2",
+    "name": "Spectral Arrow,2",
+    "grid": [
+      [
+        null,
+        "glowstone_dust",
+        null
+      ],
+      [
+        "glowstone_dust",
+        "arrow",
+        "glowstone_dust"
+      ],
+      [
+        null,
+        "glowstone_dust",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "spire_armor_trim_smithi",
+    "name": "Spire Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "spire_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "purpur_block",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
     "itemId": "spyglass",
     "name": "Spyglass",
     "grid": [
@@ -1144,62 +1848,84 @@
     "shapeless": false
   },
   {
-    "itemId": "lead",
-    "name": "Lead",
+    "itemId": "stick4",
+    "name": "Stick,4",
     "grid": [
       [
-        "string",
-        "string",
-        null
-      ],
-      [
-        "string",
-        "slime_ball",
+        null,
+        null,
         null
       ],
       [
         null,
+        "any_planks",
+        null
+      ],
+      [
         null,
-        "string"
+        "any_planks",
+        null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "map",
-    "name": "Map",
+    "itemId": "stick",
+    "name": "Stick",
     "grid": [
       [
-        "paper",
-        "paper",
-        "paper"
+        null,
+        null,
+        null
       ],
       [
-        "paper",
-        "compass",
-        "paper"
+        null,
+        "bamboo",
+        null
       ],
       [
-        "paper",
-        "paper",
-        "paper"
+        null,
+        "bamboo",
+        null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "carrot_on_a_stick",
-    "name": "Carrot on a Stick",
+    "itemId": "sto",
+    "name": "Sto",
     "grid": [
       [
-        "fishing_rod",
-        "carrot",
+        "any_stonetier_block",
+        "any_stonetier_block",
+        null
+      ],
+      [
+        "any_stonetier_block",
+        "stick",
         null
       ],
       [
         null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "sugar",
+    "name": "Sugar",
+    "grid": [
+      [
+        null,
         null,
         null
+      ],
+      [
+        "carbon6",
+        "hydrogen12",
+        "oxygen6"
       ],
       [
         null,
@@ -1210,18 +1936,568 @@
     "shapeless": true
   },
   {
-    "itemId": "iron_helmet",
-    "name": "Iron Helmet",
+    "itemId": "tide_armor_trim_smithi",
+    "name": "Tide Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "tide_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "prismarine",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "vex_armor_trim_smithi",
+    "name": "Vex Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "vex_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "cobblestone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "ward_armor_trim_smithi",
+    "name": "Ward Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "ward_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "cobbled_deepslate",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "warped_fu",
+    "name": "Warped Fu",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "fishing_rod_damaged_fishing_rod",
+        null
+      ],
+      [
+        null,
+        null,
+        "warped_fungus"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_splashi",
+    "name": "Arrow of Splashi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_water_bottle",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "wayfi",
+    "name": "Wayfi",
+    "grid": [
+      [
+        "diamond",
+        "wayfinder_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "terracotta",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "wild_armor_trim_smithi",
+    "name": "Wild Armor Trim Smithi",
+    "grid": [
+      [
+        "diamond",
+        "wild_armor_trim",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "mossy_cobblestone",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "wolf_armor",
+    "name": "Wolf Armor",
+    "grid": [
+      [
+        "armadillo_scute",
+        null,
+        null
+      ],
+      [
+        "armadillo_scute",
+        "armadillo_scute",
+        "armadillo_scute"
+      ],
+      [
+        "armadillo_scute",
+        null,
+        "armadillo_scute"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "respaw",
+    "name": "Respaw",
+    "grid": [
+      [
+        "crying_obsidian",
+        "crying_obsidian",
+        "crying_obsidian"
+      ],
+      [
+        "glowstone",
+        "glowstone",
+        "glowstone"
+      ],
+      [
+        "crying_obsidian",
+        "crying_obsidian",
+        "crying_obsidian"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "t",
+    "name": "T",
+    "grid": [
+      [
+        "gunpowder",
+        "sand_red_sand",
+        "gunpowder"
+      ],
+      [
+        "sand_red_sand",
+        "gunpowder",
+        "sand_red_sand"
+      ],
+      [
+        "gunpowder",
+        "sand_red_sand",
+        "gunpowder"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "tipped_arrow_8",
+    "name": "Tipped Arrow, 8",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "awkward_lingering_potion",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_decay_8",
+    "name": "Arrow of Decay, 8",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_decay",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_fire_resista",
+    "name": "Arrow of Fire Resista",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_fire_resistance_lingering_potion_of_fire_resistance_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_harmi",
+    "name": "Arrow of Harmi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_harming_lingering_potion_of_harming_enhanced",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_heali",
+    "name": "Arrow of Heali",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_healing_lingering_potion_of_healing_enhanced",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_i",
+    "name": "Arrow of I",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_infestation",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_leapi",
+    "name": "Arrow of Leapi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_leaping_lingering_potion_of_leaping_enhanced_lingering_potion_of_leaping_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_oozi",
+    "name": "Arrow of Oozi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_oozing",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_poiso",
+    "name": "Arrow of Poiso",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_poison_lingering_potion_of_poison_enhanced_lingering_potion_of_poison_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_slow_falli",
+    "name": "Arrow of Slow Falli",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_slow_falling_lingering_potion_of_slow_falling_extended",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_slow",
+    "name": "Arrow of Slow",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_slowness_lingering_potion_of_slowness_extended_lingering_potion_of_slowness_enhanced",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_weavi",
+    "name": "Arrow of Weavi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_weaving",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "arrow_of_wi",
+    "name": "Arrow of Wi",
+    "grid": [
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "lingering_potion_of_wind_charging",
+        "arrow"
+      ],
+      [
+        "arrow",
+        "arrow",
+        "arrow"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "activator_rail6",
+    "name": "Activator Rail,6",
     "grid": [
       [
         "iron_ingot",
-        "iron_ingot",
+        "stick",
         "iron_ingot"
       ],
       [
         "iron_ingot",
-        null,
+        "redstone_torch",
         "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        "stick",
+        "iron_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "a",
+    "name": "A",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "andesite",
+        "andesite",
+        "andesite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bamboo_mosaic",
+    "name": "Bamboo Mosaic",
+    "grid": [
+      [
+        null,
+        "bamboo_slab",
+        null
+      ],
+      [
+        null,
+        "bamboo_slab",
+        null
       ],
       [
         null,
@@ -1232,62 +2508,436 @@
     "shapeless": false
   },
   {
-    "itemId": "iron_chestplate",
-    "name": "Iron Chestplate",
+    "itemId": "bamboo_mosaic_slab6",
+    "name": "Bamboo Mosaic Slab,6",
     "grid": [
       [
-        "iron_ingot",
         null,
-        "iron_ingot"
+        null,
+        null
       ],
       [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
+        null,
+        null,
+        null
       ],
       [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
+        "bamboo_mosaic",
+        "bamboo_mosaic",
+        "bamboo_mosaic"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "iron_leggings",
-    "name": "Iron Leggings",
+    "itemId": "bamboo_mosaic_stairs4",
+    "name": "Bamboo Mosaic Stairs,4",
     "grid": [
       [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
+        "bamboo_mosaic",
+        null,
+        null
       ],
       [
-        "iron_ingot",
-        null,
-        "iron_ingot"
+        "bamboo_mosaic",
+        "bamboo_mosaic",
+        null
       ],
       [
-        "iron_ingot",
-        null,
-        "iron_ingot"
+        "bamboo_mosaic",
+        "bamboo_mosaic",
+        "bamboo_mosaic"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "iron_boots",
-    "name": "Iron Boots",
+    "itemId": "barrel",
+    "name": "Barrel",
+    "grid": [
+      [
+        "any_planks",
+        "any_wooden_slab",
+        "any_planks"
+      ],
+      [
+        "any_planks",
+        null,
+        "any_planks"
+      ],
+      [
+        "any_planks",
+        "any_wooden_slab",
+        "any_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "beaco",
+    "name": "Beaco",
+    "grid": [
+      [
+        "glass",
+        "glass",
+        "glass"
+      ],
+      [
+        "glass",
+        "nether_star",
+        "glass"
+      ],
+      [
+        "obsidian",
+        "obsidian",
+        "obsidian"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "beehive",
+    "name": "Beehive",
+    "grid": [
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ],
+      [
+        "honeycomb",
+        "honeycomb",
+        "honeycomb"
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "blacksto",
+    "name": "Blacksto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "blackstone",
+        "blackstone",
+        "blackstone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "blast_fur",
+    "name": "Blast Fur",
     "grid": [
       [
         "iron_ingot",
-        null,
+        "iron_ingot",
         "iron_ingot"
       ],
       [
         "iron_ingot",
-        null,
+        "furnace",
         "iron_ingot"
+      ],
+      [
+        "smooth_stone",
+        "smooth_stone",
+        "smooth_stone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "block_of_amethyst",
+    "name": "Block of Amethyst",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "amethyst_shard",
+        "amethyst_shard",
+        null
+      ],
+      [
+        "amethyst_shard",
+        "amethyst_shard",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "block_of_bamboo",
+    "name": "Block of Bamboo",
+    "grid": [
+      [
+        "bamboo",
+        "bamboo",
+        "bamboo"
+      ],
+      [
+        "bamboo",
+        "bamboo",
+        "bamboo"
+      ],
+      [
+        "bamboo",
+        "bamboo",
+        "bamboo"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "block_of_copper",
+    "name": "Block of Copper",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "block_of_diamo",
+    "name": "Block of Diamo",
+    "grid": [
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      [
+        "diamond",
+        "diamond",
+        "diamond"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "block_of_quartz",
+    "name": "Block of Quartz",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "nether_quartz",
+        "nether_quartz",
+        null
+      ],
+      [
+        "nether_quartz",
+        "nether_quartz",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "quartz_bricks4",
+    "name": "Quartz Bricks,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "block_of_quartz",
+        "block_of_quartz",
+        null
+      ],
+      [
+        "block_of_quartz",
+        "block_of_quartz",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "quartz_pillar2",
+    "name": "Quartz Pillar,2",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "block_of_quartz",
+        null
+      ],
+      [
+        null,
+        "block_of_quartz",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "quartz_slab6",
+    "name": "Quartz Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "any_quartz_block",
+        "any_quartz_block",
+        "any_quartz_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "quartz_stairs4",
+    "name": "Quartz Stairs,4",
+    "grid": [
+      [
+        "any_quartz_block",
+        null,
+        null
+      ],
+      [
+        "any_quartz_block",
+        "any_quartz_block",
+        null
+      ],
+      [
+        "any_quartz_block",
+        "any_quartz_block",
+        "any_quartz_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "block_of_resi",
+    "name": "Block of Resi",
+    "grid": [
+      [
+        "resin_clump",
+        "resin_clump",
+        "resin_clump"
+      ],
+      [
+        "resin_clump",
+        "resin_clump",
+        "resin_clump"
+      ],
+      [
+        "resin_clump",
+        "resin_clump",
+        "resin_clump"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "blue_ice",
+    "name": "Blue Ice",
+    "grid": [
+      [
+        "packed_ice",
+        "packed_ice",
+        "packed_ice"
+      ],
+      [
+        "packed_ice",
+        "packed_ice",
+        "packed_ice"
+      ],
+      [
+        "packed_ice",
+        "packed_ice",
+        "packed_ice"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bookshelf",
+    "name": "Bookshelf",
+    "grid": [
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ],
+      [
+        "book",
+        "book",
+        "book"
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "brewi",
+    "name": "Brewi",
+    "grid": [
+      [
+        null,
+        "blaze_rod",
+        null
+      ],
+      [
+        "any_stonetier_block",
+        "any_stonetier_block",
+        "any_stonetier_block"
       ],
       [
         null,
@@ -1298,18 +2948,128 @@
     "shapeless": false
   },
   {
-    "itemId": "golden_helmet",
-    "name": "Golden Helmet",
+    "itemId": "brick_slab6",
+    "name": "Brick Slab,6",
     "grid": [
       [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
+        null,
+        null,
+        null
       ],
       [
-        "gold_ingot",
         null,
-        "gold_ingot"
+        null,
+        null
+      ],
+      [
+        "bricks",
+        "bricks",
+        "bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "brick_stairs4",
+    "name": "Brick Stairs,4",
+    "grid": [
+      [
+        "bricks",
+        null,
+        null
+      ],
+      [
+        "bricks",
+        "bricks",
+        null
+      ],
+      [
+        "bricks",
+        "bricks",
+        "bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "brick_wall6",
+    "name": "Brick Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "bricks",
+        "bricks",
+        "bricks"
+      ],
+      [
+        "bricks",
+        "bricks",
+        "bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bricks",
+    "name": "Bricks",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "brick",
+        "brick",
+        null
+      ],
+      [
+        "brick",
+        "brick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cake",
+    "name": "Cake",
+    "grid": [
+      [
+        "milk_bucket",
+        "milk_bucket",
+        "milk_bucket"
+      ],
+      [
+        "sugar",
+        "any_egg",
+        "sugar"
+      ],
+      [
+        "wheat",
+        "wheat",
+        "wheat"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "calibrated_sculk_se",
+    "name": "Calibrated Sculk Se",
+    "grid": [
+      [
+        null,
+        "amethyst_shard",
+        null
+      ],
+      [
+        "amethyst_shard",
+        "sculk_sensor",
+        "amethyst_shard"
       ],
       [
         null,
@@ -1320,62 +3080,40 @@
     "shapeless": false
   },
   {
-    "itemId": "golden_chestplate",
-    "name": "Golden Chestplate",
+    "itemId": "campfire",
+    "name": "Campfire",
     "grid": [
       [
-        "gold_ingot",
         null,
-        "gold_ingot"
+        "stick",
+        null
       ],
       [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
+        "stick",
+        "coal_charcoal",
+        "stick"
       ],
       [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
+        "any_log_or_stem",
+        "any_log_or_stem",
+        "any_log_or_stem"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "golden_leggings",
-    "name": "Golden Leggings",
+    "itemId": "ca",
+    "name": "Ca",
     "grid": [
       [
-        "gold_ingot",
-        "gold_ingot",
-        "gold_ingot"
+        null,
+        "string",
+        null
       ],
       [
-        "gold_ingot",
         null,
-        "gold_ingot"
-      ],
-      [
-        "gold_ingot",
-        null,
-        "gold_ingot"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "golden_boots",
-    "name": "Golden Boots",
-    "grid": [
-      [
-        "gold_ingot",
-        null,
-        "gold_ingot"
-      ],
-      [
-        "gold_ingot",
-        null,
-        "gold_ingot"
+        "honeycomb",
+        null
       ],
       [
         null,
@@ -1386,18 +3124,304 @@
     "shapeless": false
   },
   {
-    "itemId": "leather_helmet",
-    "name": "Leather Helmet",
+    "itemId": "blue_carpet_brow",
+    "name": "Blue Carpet; Brow",
     "grid": [
       [
-        "leather",
-        "leather",
-        "leather"
+        "white_carpet",
+        "white_carpet",
+        "white_carpet"
       ],
       [
-        "leather",
+        "white_carpet",
+        "lapis_lazuli_cocoa_beans_ink_sac",
+        "white_carpet"
+      ],
+      [
+        "white_carpet",
+        "white_carpet",
+        "white_carpet"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cartography_table",
+    "name": "Cartography Table",
+    "grid": [
+      [
+        "paper",
+        "paper",
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cauldro",
+    "name": "Cauldro",
+    "grid": [
+      [
+        "iron_ingot",
         null,
-        "leather"
+        "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        null,
+        "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        "iron_ingot",
+        "iron_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chest",
+    "name": "Chest",
+    "grid": [
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ],
+      [
+        "any_planks",
+        null,
+        "any_planks"
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_bookshelf",
+    "name": "Chiseled Bookshelf",
+    "grid": [
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ],
+      [
+        "any_wooden_slab",
+        "any_wooden_slab",
+        "any_wooden_slab"
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_deepslate",
+    "name": "Chiseled Deepslate",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "cobbled_deepslate_slab",
+        null
+      ],
+      [
+        null,
+        "cobbled_deepslate_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled",
+    "name": "Chiseled",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "nether_brick_slab",
+        null
+      ],
+      [
+        null,
+        "nether_brick_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_polished_blacksto",
+    "name": "Chiseled Polished Blacksto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "polished_blackstone_slab",
+        null
+      ],
+      [
+        null,
+        "polished_blackstone_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_quartz_block",
+    "name": "Chiseled Quartz Block",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "quartz_slab",
+        null
+      ],
+      [
+        null,
+        "quartz_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_red_sa",
+    "name": "Chiseled Red Sa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "red_sandstone_slab",
+        null
+      ],
+      [
+        null,
+        "red_sandstone_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_resi",
+    "name": "Chiseled Resi",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "resin_brick_slab",
+        null
+      ],
+      [
+        null,
+        "resin_brick_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_sa",
+    "name": "Chiseled Sa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "sandstone_slab",
+        null
+      ],
+      [
+        null,
+        "sandstone_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_sto",
+    "name": "Chiseled Sto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "stone_brick_slab",
+        null
+      ],
+      [
+        null,
+        "stone_brick_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "chiseled_tuff",
+    "name": "Chiseled Tuff",
+    "grid": [
+      [
+        null,
+        "tuff_slab",
+        null
+      ],
+      [
+        null,
+        "tuff_slab",
+        null
       ],
       [
         null,
@@ -1408,62 +3432,18 @@
     "shapeless": false
   },
   {
-    "itemId": "leather_chestplate",
-    "name": "Leather Chestplate",
+    "itemId": "chiseled_tuff_bricks",
+    "name": "Chiseled Tuff Bricks",
     "grid": [
       [
-        "leather",
         null,
-        "leather"
+        "tuff_brick_slab",
+        null
       ],
       [
-        "leather",
-        "leather",
-        "leather"
-      ],
-      [
-        "leather",
-        "leather",
-        "leather"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "leather_leggings",
-    "name": "Leather Leggings",
-    "grid": [
-      [
-        "leather",
-        "leather",
-        "leather"
-      ],
-      [
-        "leather",
         null,
-        "leather"
-      ],
-      [
-        "leather",
-        null,
-        "leather"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "leather_boots",
-    "name": "Leather Boots",
-    "grid": [
-      [
-        "leather",
-        null,
-        "leather"
-      ],
-      [
-        "leather",
-        null,
-        "leather"
+        "tuff_brick_slab",
+        null
       ],
       [
         null,
@@ -1474,18 +3454,1206 @@
     "shapeless": false
   },
   {
-    "itemId": "turtle_helmet",
-    "name": "Turtle Helmet",
+    "itemId": "clay",
+    "name": "Clay",
     "grid": [
       [
-        "scute",
-        "scute",
-        "scute"
+        null,
+        null,
+        null
       ],
       [
-        "scute",
+        "clay_ball",
+        "clay_ball",
+        null
+      ],
+      [
+        "clay_ball",
+        "clay_ball",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "coarse_dirt4",
+    "name": "Coarse Dirt,4",
+    "grid": [
+      [
         null,
-        "scute"
+        null,
+        null
+      ],
+      [
+        "dirt",
+        "gravel",
+        null
+      ],
+      [
+        "gravel",
+        "dirt",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cobbled_deepslate_slab6",
+    "name": "Cobbled Deepslate Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        "cobbled_deepslate"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cobbled_deepslate_stairs4",
+    "name": "Cobbled Deepslate Stairs,4",
+    "grid": [
+      [
+        "cobbled_deepslate",
+        null,
+        null
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        null
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        "cobbled_deepslate"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cobbled_deepslate_wall6",
+    "name": "Cobbled Deepslate Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        "cobbled_deepslate"
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        "cobbled_deepslate"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cobblesto",
+    "name": "Cobblesto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "blue_torch_red_torch_purple_torch_gree",
+    "name": "Blue Torch; Red Torch; Purple Torch; Gree",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "cerium_chloride_mercuric_chloride_potassium_chloride_tungsten_chloride",
+        null
+      ],
+      [
+        null,
+        "torch",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "composter",
+    "name": "Composter",
+    "grid": [
+      [
+        "any_wooden_slab",
+        null,
+        "any_wooden_slab"
+      ],
+      [
+        "any_wooden_slab",
+        null,
+        "any_wooden_slab"
+      ],
+      [
+        "any_wooden_slab",
+        "any_wooden_slab",
+        "any_wooden_slab"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "co",
+    "name": "Co",
+    "grid": [
+      [
+        "nautilus_shell",
+        "nautilus_shell",
+        "nautilus_shell"
+      ],
+      [
+        "nautilus_shell",
+        "heart_of_the_sea",
+        "nautilus_shell"
+      ],
+      [
+        "nautilus_shell",
+        "nautilus_shell",
+        "nautilus_shell"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_bars16",
+    "name": "Copper Bars,16",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_chai",
+    "name": "Copper Chai",
+    "grid": [
+      [
+        null,
+        "copper_nugget",
+        null
+      ],
+      [
+        null,
+        "copper_ingot",
+        null
+      ],
+      [
+        null,
+        "copper_nugget",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_chest",
+    "name": "Copper Chest",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "chest",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_door_3",
+    "name": "Copper Door, 3",
+    "grid": [
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_la",
+    "name": "Copper La",
+    "grid": [
+      [
+        "copper_nugget",
+        "copper_nugget",
+        "copper_nugget"
+      ],
+      [
+        "copper_nugget",
+        "copper_torch",
+        "copper_nugget"
+      ],
+      [
+        "copper_nugget",
+        "copper_nugget",
+        "copper_nugget"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_torch_4",
+    "name": "Copper Torch, 4",
+    "grid": [
+      [
+        null,
+        "copper_nugget",
+        null
+      ],
+      [
+        null,
+        "coal_charcoal",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_torch",
+    "name": "Copper Torch",
+    "grid": [
+      [
+        null,
+        "copper_nugget",
+        null
+      ],
+      [
+        null,
+        "coal_charcoal",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_trapdoor",
+    "name": "Copper Trapdoor",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_trapdoor_2",
+    "name": "Copper Trapdoor, 2",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        "copper_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "copper_trapdoor2",
+    "name": "Copper Trapdoor,2",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ],
+      [
+        "copper_ingot",
+        "copper_ingot",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "crafter",
+    "name": "Crafter",
+    "grid": [
+      [
+        "iron_ingot",
+        "iron_ingot",
+        "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        "crafting_table",
+        "iron_ingot"
+      ],
+      [
+        "redstone_dust",
+        "dropper",
+        "redstone_dust"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "crafti",
+    "name": "Crafti",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "creaki",
+    "name": "Creaki",
+    "grid": [
+      [
+        null,
+        "pale_oak_log",
+        null
+      ],
+      [
+        null,
+        "block_of_resin",
+        null
+      ],
+      [
+        null,
+        "pale_oak_log",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cut_red_sa",
+    "name": "Cut Red Sa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "red_sandstone",
+        "red_sandstone",
+        null
+      ],
+      [
+        "red_sandstone",
+        "red_sandstone",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "cut_sa",
+    "name": "Cut Sa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "sandstone",
+        "sandstone",
+        null
+      ],
+      [
+        "sandstone",
+        "sandstone",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "dark_prismari",
+    "name": "Dark Prismari",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "dark_prismarine",
+        "dark_prismarine",
+        "dark_prismarine"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "daylight_detector",
+    "name": "Daylight Detector",
+    "grid": [
+      [
+        "glass",
+        "glass",
+        "glass"
+      ],
+      [
+        "nether_quartz",
+        "nether_quartz",
+        "nether_quartz"
+      ],
+      [
+        "any_wooden_slab",
+        "any_wooden_slab",
+        "any_wooden_slab"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_brick_slab6",
+    "name": "Deepslate Brick Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        "deepslate_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_brick_stairs4",
+    "name": "Deepslate Brick Stairs,4",
+    "grid": [
+      [
+        "deepslate_bricks",
+        null,
+        null
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        null
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        "deepslate_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_brick_wall6",
+    "name": "Deepslate Brick Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        "deepslate_bricks"
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        "deepslate_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_bricks4",
+    "name": "Deepslate Bricks,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        null
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_tile_slab6",
+    "name": "Deepslate Tile Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "deepslate_tiles",
+        "deepslate_tiles",
+        "deepslate_tiles"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_tile_stairs4",
+    "name": "Deepslate Tile Stairs,4",
+    "grid": [
+      [
+        "deepslate_tiles",
+        null,
+        null
+      ],
+      [
+        "deepslate_tiles",
+        "deepslate_tiles",
+        null
+      ],
+      [
+        "deepslate_tiles",
+        "deepslate_tiles",
+        "deepslate_tiles"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_tile_wall6",
+    "name": "Deepslate Tile Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "deepslate_tiles",
+        "deepslate_tiles",
+        "deepslate_tiles"
+      ],
+      [
+        "deepslate_tiles",
+        "deepslate_tiles",
+        "deepslate_tiles"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "deepslate_tiles4",
+    "name": "Deepslate Tiles,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        null
+      ],
+      [
+        "deepslate_bricks",
+        "deepslate_bricks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "detector_rail6",
+    "name": "Detector Rail,6",
+    "grid": [
+      [
+        "iron_ingot",
+        null,
+        "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        "stone_pressure_plate",
+        "iron_ingot"
+      ],
+      [
+        "iron_ingot",
+        "redstone_dust",
+        "iron_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diorite2",
+    "name": "Diorite,2",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "cobblestone",
+        "nether_quartz",
+        null
+      ],
+      [
+        "nether_quartz",
+        "cobblestone",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diorite_slab6",
+    "name": "Diorite Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "diorite",
+        "diorite",
+        "diorite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diorite_stairs4",
+    "name": "Diorite Stairs,4",
+    "grid": [
+      [
+        "diorite",
+        null,
+        null
+      ],
+      [
+        "diorite",
+        "diorite",
+        null
+      ],
+      [
+        "diorite",
+        "diorite",
+        "diorite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "diorite_wall6",
+    "name": "Diorite Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "diorite",
+        "diorite",
+        "diorite"
+      ],
+      [
+        "diorite",
+        "diorite",
+        "diorite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "dispe",
+    "name": "Dispe",
+    "grid": [
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        "bow",
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        "redstone_dust",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "dried_ghast",
+    "name": "Dried Ghast",
+    "grid": [
+      [
+        "ghast_tear",
+        "ghast_tear",
+        "ghast_tear"
+      ],
+      [
+        "ghast_tear",
+        "soul_sand",
+        "ghast_tear"
+      ],
+      [
+        "ghast_tear",
+        "ghast_tear",
+        "ghast_tear"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "dried_kelp_block",
+    "name": "Dried Kelp Block",
+    "grid": [
+      [
+        "dried_kelp",
+        "dried_kelp",
+        "dried_kelp"
+      ],
+      [
+        "dried_kelp",
+        "dried_kelp",
+        "dried_kelp"
+      ],
+      [
+        "dried_kelp",
+        "dried_kelp",
+        "dried_kelp"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "dripsto",
+    "name": "Dripsto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "pointed_dripstone",
+        "pointed_dripstone",
+        null
+      ],
+      [
+        "pointed_dripstone",
+        "pointed_dripstone",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "dropper",
+    "name": "Dropper",
+    "grid": [
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        null,
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        "redstone_dust",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "fletchi",
+    "name": "Fletchi",
+    "grid": [
+      [
+        "flint",
+        "flint",
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "flower_pot",
+    "name": "Flower Pot",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "brick",
+        null,
+        "brick"
+      ],
+      [
+        null,
+        "brick",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "fur",
+    "name": "Fur",
+    "grid": [
+      [
+        "any_stonetier_block",
+        "any_stonetier_block",
+        "any_stonetier_block"
+      ],
+      [
+        "any_stonetier_block",
+        null,
+        "any_stonetier_block"
+      ],
+      [
+        "any_stonetier_block",
+        "any_stonetier_block",
+        "any_stonetier_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "glass_pa",
+    "name": "Glass Pa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "glass",
+        "glass",
+        "glass"
+      ],
+      [
+        "glass",
+        "glass",
+        "glass"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "glowsto",
+    "name": "Glowsto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "glowstone_dust",
+        "glowstone_dust",
+        null
+      ],
+      [
+        "glowstone_dust",
+        "glowstone_dust",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "gra",
+    "name": "Gra",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "granite",
+        "granite",
+        "granite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "gri",
+    "name": "Gri",
+    "grid": [
+      [
+        "stick",
+        "stone_slab",
+        "stick"
+      ],
+      [
+        "any_planks",
+        null,
+        "any_planks"
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "harde",
+    "name": "Harde",
+    "grid": [
+      [
+        "aluminum_oxide",
+        "aluminum_oxide",
+        "aluminum_oxide"
+      ],
+      [
+        "glass",
+        "glass",
+        "glass"
+      ],
+      [
+        "boron_trioxide",
+        "boron_trioxide",
+        "boron_trioxide"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "hay_bale",
+    "name": "Hay Bale",
+    "grid": [
+      [
+        "wheat",
+        "wheat",
+        "wheat"
+      ],
+      [
+        "wheat",
+        "wheat",
+        "wheat"
+      ],
+      [
+        "wheat",
+        "wheat",
+        "wheat"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "heavy_weighted_pressure_plate",
+    "name": "Heavy Weighted Pressure Plate",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "iron_ingot",
+        "iron_ingot",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "ho",
+    "name": "Ho",
+    "grid": [
+      [
+        "honey_bottle",
+        "honey_bottle",
+        null
+      ],
+      [
+        "honey_bottle",
+        "honey_bottle",
+        null
       ],
       [
         null,
@@ -1518,89 +4686,23 @@
     "shapeless": false
   },
   {
-    "itemId": "dropper",
-    "name": "Dropper",
+    "itemId": "jack_ola",
+    "name": "Jack o'La",
     "grid": [
       [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ],
-      [
-        "cobblestone",
         null,
-        "cobblestone"
+        null,
+        null
       ],
       [
-        "cobblestone",
-        "redstone",
-        "cobblestone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "dispenser",
-    "name": "Dispenser",
-    "grid": [
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
+        null,
+        "carved_pumpkin",
+        null
       ],
       [
-        "cobblestone",
-        "bow",
-        "cobblestone"
-      ],
-      [
-        "cobblestone",
-        "redstone",
-        "cobblestone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "observer",
-    "name": "Observer",
-    "grid": [
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ],
-      [
-        "redstone",
-        "redstone",
-        "quartz"
-      ],
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "note_block",
-    "name": "Note Block",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "redstone",
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
+        null,
+        "torch",
+        null
       ]
     ],
     "shapeless": false
@@ -1610,378 +4712,48 @@
     "name": "Jukebox",
     "grid": [
       [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
+        "any_planks",
+        "any_planks",
+        "any_planks"
       ],
       [
-        "oak_planks",
+        "any_planks",
         "diamond",
-        "oak_planks"
+        "any_planks"
       ],
       [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
+        "any_planks",
+        "any_planks",
+        "any_planks"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "beacon",
-    "name": "Beacon",
-    "grid": [
-      [
-        "glass",
-        "glass",
-        "glass"
-      ],
-      [
-        "glass",
-        "nether_star",
-        "glass"
-      ],
-      [
-        "obsidian",
-        "obsidian",
-        "obsidian"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "brewing_stand",
-    "name": "Brewing Stand",
-    "grid": [
-      [
-        null,
-        "blaze_rod",
-        null
-      ],
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "composter",
-    "name": "Composter",
-    "grid": [
-      [
-        "oak_planks",
-        null,
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        null,
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "barrel",
-    "name": "Barrel",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        null,
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "smoker",
-    "name": "Smoker",
-    "grid": [
-      [
-        null,
-        "oak_log",
-        null
-      ],
-      [
-        "oak_log",
-        "furnace",
-        "oak_log"
-      ],
-      [
-        null,
-        "oak_log",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "blast_furnace",
-    "name": "Blast Furnace",
-    "grid": [
-      [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
-      ],
-      [
-        "iron_ingot",
-        "furnace",
-        "iron_ingot"
-      ],
-      [
-        "stone",
-        "stone",
-        "stone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "stonecutter",
-    "name": "Stonecutter",
-    "grid": [
-      [
-        null,
-        "iron_ingot",
-        null
-      ],
-      [
-        "stone",
-        "stone",
-        "stone"
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "grindstone",
-    "name": "Grindstone",
+    "itemId": "ladder3",
+    "name": "Ladder,3",
     "grid": [
       [
         "stick",
-        "stone",
+        null,
         "stick"
       ],
       [
-        "oak_planks",
-        null,
-        "oak_planks"
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "smithing_table",
-    "name": "Smithing Table",
-    "grid": [
-      [
-        "iron_ingot",
-        "iron_ingot",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "fletching_table",
-    "name": "Fletching Table",
-    "grid": [
-      [
-        "flint",
-        "flint",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "cartography_table",
-    "name": "Cartography Table",
-    "grid": [
-      [
-        "paper",
-        "paper",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "loom",
-    "name": "Loom",
-    "grid": [
-      [
-        "string",
-        "string",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "lectern",
-    "name": "Lectern",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        null,
-        "bookshelf",
-        null
-      ],
-      [
-        null,
-        "oak_planks",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "target",
-    "name": "Target",
-    "grid": [
-      [
-        null,
-        "redstone",
-        null
-      ],
-      [
-        "redstone",
-        "wheat",
-        "redstone"
-      ],
-      [
-        null,
-        "redstone",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "campfire",
-    "name": "Campfire",
-    "grid": [
-      [
-        null,
         "stick",
-        null
-      ],
-      [
         "stick",
-        "coal",
         "stick"
       ],
       [
-        "oak_log",
-        "oak_log",
-        "oak_log"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "soul_campfire",
-    "name": "Soul Campfire",
-    "grid": [
-      [
+        "stick",
         null,
-        "stick",
-        null
-      ],
-      [
-        "stick",
-        "soul_sand",
         "stick"
-      ],
-      [
-        "oak_log",
-        "oak_log",
-        "oak_log"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "lantern",
-    "name": "Lantern",
+    "itemId": "la",
+    "name": "La",
     "grid": [
       [
         "iron_nugget",
@@ -2002,30 +4774,74 @@
     "shapeless": false
   },
   {
-    "itemId": "chain",
-    "name": "Chain",
+    "itemId": "lecter",
+    "name": "Lecter",
     "grid": [
       [
+        "any_wooden_slab",
+        "any_wooden_slab",
+        "any_wooden_slab"
+      ],
+      [
         null,
-        "iron_nugget",
+        "bookshelf",
         null
       ],
       [
         null,
-        "iron_ingot",
-        null
-      ],
-      [
-        null,
-        "iron_nugget",
+        "any_wooden_slab",
         null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "lightning_rod",
-    "name": "Lightning Rod",
+    "itemId": "lever",
+    "name": "Lever",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "cobblestone",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "light_weighted_pressure_plate",
+    "name": "Light Weighted Pressure Plate",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "gold_ingot",
+        "gold_ingot",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "light",
+    "name": "Light",
     "grid": [
       [
         null,
@@ -2046,8 +4862,822 @@
     "shapeless": false
   },
   {
-    "itemId": "rail",
-    "name": "Rail",
+    "itemId": "lodesto",
+    "name": "Lodesto",
+    "grid": [
+      [
+        "chiseled_stone_bricks",
+        "chiseled_stone_bricks",
+        "chiseled_stone_bricks"
+      ],
+      [
+        "chiseled_stone_bricks",
+        "netherite_ingot",
+        "chiseled_stone_bricks"
+      ],
+      [
+        "chiseled_stone_bricks",
+        "chiseled_stone_bricks",
+        "chiseled_stone_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "loom",
+    "name": "Loom",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "string",
+        "string",
+        null
+      ],
+      [
+        "any_planks",
+        "any_planks",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "melo",
+    "name": "Melo",
+    "grid": [
+      [
+        "melon_slice",
+        "melon_slice",
+        "melon_slice"
+      ],
+      [
+        "melon_slice",
+        "melon_slice",
+        "melon_slice"
+      ],
+      [
+        "melon_slice",
+        "melon_slice",
+        "melon_slice"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "moss_carpet3",
+    "name": "Moss Carpet,3",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "moss_block",
+        "moss_block",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mossy_cobblesto",
+    "name": "Mossy Cobblesto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "mossy_cobblestone",
+        "mossy_cobblestone",
+        "mossy_cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mossy_sto",
+    "name": "Mossy Sto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "mossy_stone_bricks",
+        "mossy_stone_bricks",
+        "mossy_stone_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mud_brick_slab6",
+    "name": "Mud Brick Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "mud_bricks",
+        "mud_bricks",
+        "mud_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mud_brick_stairs4",
+    "name": "Mud Brick Stairs,4",
+    "grid": [
+      [
+        "mud_bricks",
+        null,
+        null
+      ],
+      [
+        "mud_bricks",
+        "mud_bricks",
+        null
+      ],
+      [
+        "mud_bricks",
+        "mud_bricks",
+        "mud_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mud_brick_wall6",
+    "name": "Mud Brick Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "mud_bricks",
+        "mud_bricks",
+        "mud_bricks"
+      ],
+      [
+        "mud_bricks",
+        "mud_bricks",
+        "mud_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "mud_bricks4",
+    "name": "Mud Bricks,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "packed_mud",
+        "packed_mud",
+        null
+      ],
+      [
+        "packed_mud",
+        "packed_mud",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "",
+    "name": "",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "nether_bricks",
+        "nether_bricks",
+        "nether_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "nether_brick_wall",
+    "name": "Nether Brick Wall",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "nether_bricks",
+        "nether_bricks",
+        "nether_bricks"
+      ],
+      [
+        "nether_bricks",
+        "nether_bricks",
+        "nether_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "observer",
+    "name": "Observer",
+    "grid": [
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ],
+      [
+        "redstone_dust",
+        "redstone_dust",
+        "nether_quartz"
+      ],
+      [
+        "cobblestone",
+        "cobblestone",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "packed_ice",
+    "name": "Packed Ice",
+    "grid": [
+      [
+        "ice",
+        "ice",
+        "ice"
+      ],
+      [
+        "ice",
+        "ice",
+        "ice"
+      ],
+      [
+        "ice",
+        "ice",
+        "ice"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "pisto",
+    "name": "Pisto",
+    "grid": [
+      [
+        "any_planks",
+        "any_planks",
+        "any_planks"
+      ],
+      [
+        "cobblestone",
+        "iron_ingot",
+        "cobblestone"
+      ],
+      [
+        "cobblestone",
+        "redstone_dust",
+        "cobblestone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "bamboo_pla",
+    "name": "Bamboo Pla",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "block_of_bamboo_block_of_stripped_bamboo",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_a",
+    "name": "Polished A",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "andesite",
+        "andesite",
+        null
+      ],
+      [
+        "andesite",
+        "andesite",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_basalt4",
+    "name": "Polished Basalt,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "basalt",
+        "basalt",
+        null
+      ],
+      [
+        "basalt",
+        "basalt",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_blacksto",
+    "name": "Polished Blacksto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "blackstone",
+        "blackstone",
+        null
+      ],
+      [
+        "blackstone",
+        "blackstone",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_deepslate4",
+    "name": "Polished Deepslate,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        null
+      ],
+      [
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_deepslate_slab6",
+    "name": "Polished Deepslate Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        "polished_deepslate"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_deepslate_stairs4",
+    "name": "Polished Deepslate Stairs,4",
+    "grid": [
+      [
+        "polished_deepslate",
+        null,
+        null
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        null
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        "polished_deepslate"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_deepslate_wall6",
+    "name": "Polished Deepslate Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        "polished_deepslate"
+      ],
+      [
+        "polished_deepslate",
+        "polished_deepslate",
+        "polished_deepslate"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_diorite4",
+    "name": "Polished Diorite,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "diorite",
+        "diorite",
+        null
+      ],
+      [
+        "diorite",
+        "diorite",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_diorite_slab6",
+    "name": "Polished Diorite Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_diorite",
+        "polished_diorite",
+        "polished_diorite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_diorite_stairs4",
+    "name": "Polished Diorite Stairs,4",
+    "grid": [
+      [
+        "polished_diorite",
+        null,
+        null
+      ],
+      [
+        "polished_diorite",
+        "polished_diorite",
+        null
+      ],
+      [
+        "polished_diorite",
+        "polished_diorite",
+        "polished_diorite"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_gra",
+    "name": "Polished Gra",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "granite",
+        "granite",
+        null
+      ],
+      [
+        "granite",
+        "granite",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_tuff4",
+    "name": "Polished Tuff,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "tuff",
+        "tuff",
+        null
+      ],
+      [
+        "tuff",
+        "tuff",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_tuff_slab6",
+    "name": "Polished Tuff Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
+        "polished_tuff"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_tuff_stairs4",
+    "name": "Polished Tuff Stairs,4",
+    "grid": [
+      [
+        "polished_tuff",
+        null,
+        null
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
+        null
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
+        "polished_tuff"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "polished_tuff_wall6",
+    "name": "Polished Tuff Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
+        "polished_tuff"
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
+        "polished_tuff"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "powered_rail6",
+    "name": "Powered Rail,6",
+    "grid": [
+      [
+        "gold_ingot",
+        null,
+        "gold_ingot"
+      ],
+      [
+        "gold_ingot",
+        "stick",
+        "gold_ingot"
+      ],
+      [
+        "gold_ingot",
+        "redstone_dust",
+        "gold_ingot"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "prismari",
+    "name": "Prismari",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "prismarine_bricks",
+        "prismarine_bricks",
+        "prismarine_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "purpur_block_4",
+    "name": "Purpur Block ,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "popped_chorus_fruit",
+        "popped_chorus_fruit",
+        null
+      ],
+      [
+        "popped_chorus_fruit",
+        "popped_chorus_fruit",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "purpur_pillar",
+    "name": "Purpur Pillar",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "purpur_slab",
+        null
+      ],
+      [
+        null,
+        "purpur_slab",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "purpur_slab6",
+    "name": "Purpur Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "any_purpur_block",
+        "any_purpur_block",
+        "any_purpur_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "purpur_stairs4",
+    "name": "Purpur Stairs,4",
+    "grid": [
+      [
+        "any_purpur_block",
+        null,
+        null
+      ],
+      [
+        "any_purpur_block",
+        "any_purpur_block",
+        null
+      ],
+      [
+        "any_purpur_block",
+        "any_purpur_block",
+        "any_purpur_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "rail16",
+    "name": "Rail,16",
     "grid": [
       [
         "iron_ingot",
@@ -2068,199 +5698,133 @@
     "shapeless": false
   },
   {
-    "itemId": "powered_rail",
-    "name": "Powered Rail",
+    "itemId": "red",
+    "name": "Red",
     "grid": [
       [
-        "gold_ingot",
         null,
-        "gold_ingot"
+        null,
+        null
       ],
       [
-        "gold_ingot",
-        "stick",
-        "gold_ingot"
+        null,
+        null,
+        null
       ],
       [
-        "gold_ingot",
-        "redstone",
-        "gold_ingot"
+        "red_nether_bricks",
+        "red_nether_bricks",
+        "red_nether_bricks"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "detector_rail",
-    "name": "Detector Rail",
+    "itemId": "red_sa",
+    "name": "Red Sa",
     "grid": [
       [
-        "iron_ingot",
         null,
-        "iron_ingot"
+        null,
+        null
       ],
       [
-        "iron_ingot",
-        "stone",
-        "iron_ingot"
+        "red_sand",
+        "red_sand",
+        null
       ],
       [
-        "iron_ingot",
-        "redstone",
-        "iron_ingot"
+        "red_sand",
+        "red_sand",
+        null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "activator_rail",
-    "name": "Activator Rail",
+    "itemId": "redsto",
+    "name": "Redsto",
     "grid": [
       [
-        "iron_ingot",
-        "stick",
-        "iron_ingot"
-      ],
-      [
-        "iron_ingot",
+        null,
         "redstone_torch",
-        "iron_ingot"
+        null
       ],
       [
-        "iron_ingot",
-        "stick",
-        "iron_ingot"
+        "redstone_torch",
+        "nether_quartz",
+        "redstone_torch"
+      ],
+      [
+        "stone",
+        "stone",
+        "stone"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "ladder",
-    "name": "Ladder",
+    "itemId": "resi",
+    "name": "Resi",
     "grid": [
       [
-        "stick",
         null,
-        "stick"
-      ],
-      [
-        "stick",
-        "stick",
-        "stick"
-      ],
-      [
-        "stick",
         null,
-        "stick"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "iron_bars",
-    "name": "Iron Bars",
-    "grid": [
-      [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
-      ],
-      [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
+        null
       ],
       [
         null,
         null,
         null
+      ],
+      [
+        "resin_bricks",
+        "resin_bricks",
+        "resin_bricks"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "glass_pane",
-    "name": "Glass Pane",
+    "itemId": "sa",
+    "name": "Sa",
     "grid": [
       [
-        "glass",
-        "glass",
-        "glass"
-      ],
-      [
-        "glass",
-        "glass",
-        "glass"
-      ],
-      [
         null,
         null,
+        null
+      ],
+      [
+        "sand",
+        "sand",
+        null
+      ],
+      [
+        "sand",
+        "sand",
         null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "redstone_lamp",
-    "name": "Redstone Lamp",
+    "itemId": "sea_la",
+    "name": "Sea La",
     "grid": [
       [
-        null,
-        "redstone",
-        null
+        "prismarine_shard",
+        "prismarine_crystals",
+        "prismarine_shard"
       ],
       [
-        "redstone",
-        "glowstone",
-        "redstone"
+        "prismarine_crystals",
+        "prismarine_crystals",
+        "prismarine_crystals"
       ],
       [
-        null,
-        "redstone",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "trapped_chest",
-    "name": "Trapped Chest",
-    "grid": [
-      [
-        "chest",
-        "tripwire_hook",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "ender_chest",
-    "name": "Ender Chest",
-    "grid": [
-      [
-        "obsidian",
-        "obsidian",
-        "obsidian"
-      ],
-      [
-        "obsidian",
-        "eye_of_ender",
-        "obsidian"
-      ],
-      [
-        "obsidian",
-        "obsidian",
-        "obsidian"
+        "prismarine_shard",
+        "prismarine_crystals",
+        "prismarine_shard"
       ]
     ],
     "shapeless": false
@@ -2288,58 +5852,185 @@
     "shapeless": false
   },
   {
-    "itemId": "painting",
-    "name": "Painting",
+    "itemId": "slime_block",
+    "name": "Slime Block",
     "grid": [
       [
-        "stick",
-        "stick",
-        "stick"
+        "slimeball",
+        "slimeball",
+        "slimeball"
       ],
       [
-        "stick",
-        "white_wool",
-        "stick"
+        "slimeball",
+        "slimeball",
+        "slimeball"
       ],
       [
-        "stick",
-        "stick",
-        "stick"
+        "slimeball",
+        "slimeball",
+        "slimeball"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "item_frame",
-    "name": "Item Frame",
+    "itemId": "smithi",
+    "name": "Smithi",
     "grid": [
       [
-        "stick",
-        "stick",
-        "stick"
+        "iron_ingot",
+        "iron_ingot",
+        null
       ],
       [
-        "stick",
-        "leather",
-        "stick"
+        "any_planks",
+        "any_planks",
+        null
       ],
       [
-        "stick",
-        "stick",
-        "stick"
+        "any_planks",
+        "any_planks",
+        null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "armor_stand",
-    "name": "Armor Stand",
+    "itemId": "smoker",
+    "name": "Smoker",
     "grid": [
       [
-        "stick",
-        "stick",
-        "stick"
+        null,
+        "any_log_or_stem",
+        null
       ],
+      [
+        "any_log_or_stem",
+        "furnace",
+        "any_log_or_stem"
+      ],
+      [
+        null,
+        "any_log_or_stem",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "smooth_quartz_slab6",
+    "name": "Smooth Quartz Slab,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "smooth_quartz_block",
+        "smooth_quartz_block",
+        "smooth_quartz_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "smooth_quartz_stairs4",
+    "name": "Smooth Quartz Stairs,4",
+    "grid": [
+      [
+        "smooth_quartz_block",
+        null,
+        null
+      ],
+      [
+        "smooth_quartz_block",
+        "smooth_quartz_block",
+        null
+      ],
+      [
+        "smooth_quartz_block",
+        "smooth_quartz_block",
+        "smooth_quartz_block"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "smooth_red_sa",
+    "name": "Smooth Red Sa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "smooth_red_sandstone",
+        "smooth_red_sandstone",
+        "smooth_red_sandstone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "smooth_sa",
+    "name": "Smooth Sa",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "smooth_sandstone",
+        "smooth_sandstone",
+        "smooth_sandstone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "smooth_sto",
+    "name": "Smooth Sto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "smooth_stone",
+        "smooth_stone",
+        "smooth_stone"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "soul_campfire",
+    "name": "Soul Campfire",
+    "grid": [
       [
         null,
         "stick",
@@ -2347,47 +6038,228 @@
       ],
       [
         "stick",
+        "soul_sand_soul_soil",
+        "stick"
+      ],
+      [
+        "any_log_or_stem",
+        "any_log_or_stem",
+        "any_log_or_stem"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "soul_la",
+    "name": "Soul La",
+    "grid": [
+      [
+        "iron_nugget",
+        "iron_nugget",
+        "iron_nugget"
+      ],
+      [
+        "iron_nugget",
+        "soul_torch",
+        "iron_nugget"
+      ],
+      [
+        "iron_nugget",
+        "iron_nugget",
+        "iron_nugget"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "soul_torch_4",
+    "name": "Soul Torch, 4",
+    "grid": [
+      [
+        null,
+        "coal_charcoal",
+        null
+      ],
+      [
+        null,
+        "stick",
+        null
+      ],
+      [
+        null,
+        "soul_soil_soul_sand",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "white_stai",
+    "name": "White Stai",
+    "grid": [
+      [
+        "glass",
+        "glass",
+        "glass"
+      ],
+      [
+        "glass",
+        "bone_meal_lapis_lazuli_cocoa_beans_ink_sac",
+        "glass"
+      ],
+      [
+        "glass",
+        "glass",
+        "glass"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "blue_stai",
+    "name": "Blue Stai",
+    "grid": [
+      [
+        "glass_pane",
+        "glass_pane",
+        "glass_pane"
+      ],
+      [
+        "glass_pane",
+        "lapis_lazuli_cocoa_beans_ink_sac",
+        "glass_pane"
+      ],
+      [
+        "glass_pane",
+        "glass_pane",
+        "glass_pane"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "white_terracotta8_blue_terracotta8_brow",
+    "name": "White Terracotta,8; Blue Terracotta,8; Brow",
+    "grid": [
+      [
+        "terracotta",
+        "terracotta",
+        "terracotta"
+      ],
+      [
+        "terracotta",
+        "bone_meal_lapis_lazuli_cocoa_beans_ink_sac",
+        "terracotta"
+      ],
+      [
+        "terracotta",
+        "terracotta",
+        "terracotta"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "sticky_pisto",
+    "name": "Sticky Pisto",
+    "grid": [
+      [
+        null,
+        "slimeball",
+        null
+      ],
+      [
+        null,
+        "piston",
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "butto",
+    "name": "Butto",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
         "stone",
-        "stick"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "flower_pot",
-    "name": "Flower Pot",
-    "grid": [
-      [
-        "brick",
-        null,
-        "brick"
-      ],
-      [
-        null,
-        "brick",
         null
       ],
       [
         null,
-        null,
+        "stone",
         null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "oak_sign",
-    "name": "Oak Sign",
+    "itemId": "target",
+    "name": "Target",
     "grid": [
       [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
+        null,
+        "redstone_dust",
+        null
       ],
       [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
+        "redstone_dust",
+        "hay_bale",
+        "redstone_dust"
+      ],
+      [
+        null,
+        "redstone_dust",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "ti",
+    "name": "Ti",
+    "grid": [
+      [
+        null,
+        "amethyst_shard",
+        null
+      ],
+      [
+        "amethyst_shard",
+        "glass",
+        "amethyst_shard"
+      ],
+      [
+        null,
+        "amethyst_shard",
+        null
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "torch_4",
+    "name": "Torch, 4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "coal_charcoal",
+        null
       ],
       [
         null,
@@ -2398,17 +6270,17 @@
     "shapeless": false
   },
   {
-    "itemId": "redstone_torch",
-    "name": "Redstone Torch",
+    "itemId": "trapped_chest",
+    "name": "Trapped Chest",
     "grid": [
       [
         null,
-        "redstone",
+        null,
         null
       ],
       [
-        null,
-        "stick",
+        "tripwire_hook",
+        "chest",
         null
       ],
       [
@@ -2420,8 +6292,8 @@
     "shapeless": false
   },
   {
-    "itemId": "tripwire_hook",
-    "name": "Tripwire Hook",
+    "itemId": "tripwire_hook2",
+    "name": "Tripwire Hook,2",
     "grid": [
       [
         null,
@@ -2435,44 +6307,105 @@
       ],
       [
         null,
-        "oak_planks",
+        "any_planks",
         null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "lever",
-    "name": "Lever",
+    "itemId": "tuff_brick_slab6",
+    "name": "Tuff Brick Slab,6",
     "grid": [
       [
         null,
-        "stick",
-        null
-      ],
-      [
         null,
-        "cobblestone",
         null
       ],
       [
         null,
         null,
+        null
+      ],
+      [
+        "tuff_bricks",
+        "tuff_bricks",
+        "tuff_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "tuff_brick_stairs4",
+    "name": "Tuff Brick Stairs,4",
+    "grid": [
+      [
+        "tuff_bricks",
+        null,
+        null
+      ],
+      [
+        "tuff_bricks",
+        "tuff_bricks",
+        null
+      ],
+      [
+        "tuff_bricks",
+        "tuff_bricks",
+        "tuff_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "tuff_brick_wall6",
+    "name": "Tuff Brick Wall,6",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "tuff_bricks",
+        "tuff_bricks",
+        "tuff_bricks"
+      ],
+      [
+        "tuff_bricks",
+        "tuff_bricks",
+        "tuff_bricks"
+      ]
+    ],
+    "shapeless": false
+  },
+  {
+    "itemId": "tuff_bricks4",
+    "name": "Tuff Bricks,4",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
+        null
+      ],
+      [
+        "polished_tuff",
+        "polished_tuff",
         null
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "stone_button",
-    "name": "Stone Button",
+    "itemId": "tuff_slab6",
+    "name": "Tuff Slab,6",
     "grid": [
       [
-        "stone",
-        null,
-        null
-      ],
-      [
         null,
         null,
         null
@@ -2481,154 +6414,71 @@
         null,
         null,
         null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "stone_pressure_plate",
-    "name": "Stone Pressure Plate",
-    "grid": [
-      [
-        "stone",
-        "stone",
-        null
       ],
       [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
+        "tuff",
+        "tuff",
+        "tuff"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "iron_door",
-    "name": "Iron Door",
+    "itemId": "tuff_stairs4",
+    "name": "Tuff Stairs,4",
     "grid": [
       [
-        "iron_ingot",
-        "iron_ingot",
+        "tuff",
+        null,
         null
       ],
       [
-        "iron_ingot",
-        "iron_ingot",
+        "tuff",
+        "tuff",
         null
       ],
       [
-        "iron_ingot",
-        "iron_ingot",
-        null
+        "tuff",
+        "tuff",
+        "tuff"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "oak_door",
-    "name": "Oak Door",
+    "itemId": "tuff_wall6",
+    "name": "Tuff Wall,6",
     "grid": [
       [
-        "oak_planks",
-        "oak_planks",
+        null,
+        null,
         null
       ],
       [
-        "oak_planks",
-        "oak_planks",
-        null
+        "tuff",
+        "tuff",
+        "tuff"
       ],
       [
-        "oak_planks",
-        "oak_planks",
-        null
+        "tuff",
+        "tuff",
+        "tuff"
       ]
     ],
     "shapeless": false
   },
   {
-    "itemId": "oak_fence",
-    "name": "Oak Fence",
+    "itemId": "u",
+    "name": "U",
     "grid": [
       [
-        "oak_planks",
-        "stick",
-        "oak_planks"
-      ],
-      [
-        "oak_planks",
-        "stick",
-        "oak_planks"
-      ],
-      [
         null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "oak_fence_gate",
-    "name": "Oak Fence Gate",
-    "grid": [
-      [
-        "stick",
-        "oak_planks",
-        "stick"
-      ],
-      [
-        "stick",
-        "oak_planks",
-        "stick"
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "oak_stairs",
-    "name": "Oak Stairs",
-    "grid": [
-      [
-        "oak_planks",
-        null,
+        "sodium",
         null
       ],
       [
-        "oak_planks",
-        "oak_planks",
-        null
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "oak_slab",
-    "name": "Oak Slab",
-    "grid": [
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
         null,
-        null,
+        "tnt",
         null
       ],
       [
@@ -2640,443 +6490,25 @@
     "shapeless": false
   },
   {
-    "itemId": "cobblestone_stairs",
-    "name": "Cobblestone Stairs",
+    "itemId": "white_wool",
+    "name": "White Wool",
     "grid": [
       [
-        "cobblestone",
-        null,
-        null
-      ],
-      [
-        "cobblestone",
-        "cobblestone",
-        null
-      ],
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "cobblestone_slab",
-    "name": "Cobblestone Slab",
-    "grid": [
-      [
-        "cobblestone",
-        "cobblestone",
-        "cobblestone"
-      ],
-      [
         null,
         null,
         null
       ],
       [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "stone_bricks",
-    "name": "Stone Bricks",
-    "grid": [
-      [
-        "stone",
-        "stone",
-        null
-      ],
-      [
-        "stone",
-        "stone",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "hay_bale",
-    "name": "Hay Bale",
-    "grid": [
-      [
-        "wheat",
-        "wheat",
-        "wheat"
-      ],
-      [
-        "wheat",
-        "wheat",
-        "wheat"
-      ],
-      [
-        "wheat",
-        "wheat",
-        "wheat"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "bricks",
-    "name": "Bricks",
-    "grid": [
-      [
-        "brick",
-        "brick",
-        null
-      ],
-      [
-        "brick",
-        "brick",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "nether_bricks",
-    "name": "Nether Bricks",
-    "grid": [
-      [
-        "nether_brick",
-        "nether_brick",
-        null
-      ],
-      [
-        "nether_brick",
-        "nether_brick",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "quartz_block",
-    "name": "Block of Quartz",
-    "grid": [
-      [
-        "quartz",
-        "quartz",
-        null
-      ],
-      [
-        "quartz",
-        "quartz",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "scaffolding",
-    "name": "Scaffolding",
-    "grid": [
-      [
-        "bamboo",
         "string",
-        "bamboo"
-      ],
-      [
-        "bamboo",
-        null,
-        "bamboo"
-      ],
-      [
-        "bamboo",
-        null,
-        "bamboo"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "anvil",
-    "name": "Anvil",
-    "grid": [
-      [
-        "iron_block",
-        "iron_block",
-        "iron_block"
-      ],
-      [
-        null,
-        "iron_ingot",
+        "string",
         null
       ],
       [
-        "iron_ingot",
-        "iron_ingot",
-        "iron_ingot"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "white_bed",
-    "name": "White Bed",
-    "grid": [
-      [
-        "white_wool",
-        "white_wool",
-        "white_wool"
-      ],
-      [
-        "oak_planks",
-        "oak_planks",
-        "oak_planks"
-      ],
-      [
-        null,
-        null,
+        "string",
+        "string",
         null
       ]
     ],
     "shapeless": false
-  },
-  {
-    "itemId": "pumpkin_pie",
-    "name": "Pumpkin Pie",
-    "grid": [
-      [
-        "pumpkin",
-        "sugar",
-        "egg"
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "golden_carrot",
-    "name": "Golden Carrot",
-    "grid": [
-      [
-        "gold_nugget",
-        "gold_nugget",
-        "gold_nugget"
-      ],
-      [
-        "gold_nugget",
-        "carrot",
-        "gold_nugget"
-      ],
-      [
-        "gold_nugget",
-        "gold_nugget",
-        "gold_nugget"
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "paper",
-    "name": "Paper",
-    "grid": [
-      [
-        "sugar_cane",
-        "sugar_cane",
-        "sugar_cane"
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "book",
-    "name": "Book",
-    "grid": [
-      [
-        "paper",
-        null,
-        null
-      ],
-      [
-        "paper",
-        null,
-        null
-      ],
-      [
-        "paper",
-        "leather",
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "eye_of_ender",
-    "name": "Eye of Ender",
-    "grid": [
-      [
-        "blaze_powder",
-        "ender_pearl",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "arrow",
-    "name": "Arrow",
-    "grid": [
-      [
-        null,
-        "flint",
-        null
-      ],
-      [
-        null,
-        "stick",
-        null
-      ],
-      [
-        null,
-        "feather",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "spectral_arrow",
-    "name": "Spectral Arrow",
-    "grid": [
-      [
-        null,
-        "glowstone_dust",
-        null
-      ],
-      [
-        "glowstone_dust",
-        "arrow",
-        "glowstone_dust"
-      ],
-      [
-        null,
-        "glowstone_dust",
-        null
-      ]
-    ],
-    "shapeless": false
-  },
-  {
-    "itemId": "firework_rocket",
-    "name": "Firework Rocket",
-    "grid": [
-      [
-        "paper",
-        "gunpowder",
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "bone_meal",
-    "name": "Bone Meal",
-    "grid": [
-      [
-        "bone",
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
-  },
-  {
-    "itemId": "sugar",
-    "name": "Sugar",
-    "grid": [
-      [
-        "sugar_cane",
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ],
-      [
-        null,
-        null,
-        null
-      ]
-    ],
-    "shapeless": true
   }
 ]

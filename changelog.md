@@ -4,6 +4,27 @@ All notable changes to the Craftdle project are documented in this file.
 
 ---
 
+## [0.5.0] - 2026-03-09
+
+### Changed
+
+- **Dynamic data fetching**: Replaced all hardcoded item/mob/recipe/sound arrays in `scripts/fetch-wiki-data.ts` with dynamic discovery from the minecraft.wiki MediaWiki API. The script now:
+  - Discovers items, blocks, mobs, and biomes by recursively traversing wiki categories.
+  - Parses infobox templates (`{{Infobox item`, `{{Infobox block`, `{{Infobox entity`) from page wikitext to extract attributes (renewable, stackable, versionAdded, type, dimension).
+  - Extracts crafting recipes from `{{Crafting` templates embedded in item pages.
+  - Resolves Invicon texture URLs, mob render URLs, and sound files via the wiki image API.
+  - Classifies entity types (Weapon, Tool, Armor, Food, Block, Item) from both wiki categories and item names.
+  - Parses version history from `{{HistoryLine` templates, mapping pre-1.0 versions to "1.0".
+  - Automatically filters out removed features, Education Edition exclusives, joke items, redirects, and concept pages.
+- **Comprehensive data validation**: Enhanced `dataLoader.ts` with per-game-mode filtering. Items missing required properties for a game mode are excluded from that mode's pool:
+  - Classic mode: requires id, name, type, dimension, stackable, renewable, versionAdded, textureUrl (and behavior for mobs).
+  - Crafting mode: requires a valid recipe with a 3×3 grid containing at least one ingredient, linked to an existing item.
+  - Texture mode: requires a valid textureUrl.
+  - Sound mode: requires a valid soundFile and a matching mob with a valid textureUrl.
+- Data yields significantly more content: ~946 items/blocks (was ~245), ~83 mobs (was ~68), ~84 biomes (was 5), ~296 recipes (was ~80), ~51 sounds (was ~30).
+
+---
+
 ## [0.4.1] - 2026-02-26
 
 ### Added

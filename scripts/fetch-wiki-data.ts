@@ -1,11 +1,17 @@
 #!/usr/bin/env ts-node
 /**
- * Craftdle Wiki Data Fetcher
+ * Craftdle Wiki Data Fetcher v2 (Dynamic)
  *
- * Queries the minecraft.wiki MediaWiki API to resolve real image and sound URLs,
- * then generates comprehensive game data JSON files.
+ * Dynamically discovers and fetches game data from the minecraft.wiki
+ * MediaWiki API. Queries categories for items, blocks, mobs, and biomes,
+ * then parses infobox templates from page wikitext to extract structured
+ * game attributes.
  *
- * Usage: cd scripts && npx ts-node fetch-wiki-data.ts
+ * All hardcoded data arrays have been removed. Entity discovery is driven
+ * entirely by wiki category membership, so new items/mobs added to the
+ * latest Minecraft version are picked up automatically.
+ *
+ * Usage: npx ts-node scripts/fetch-wiki-data.ts
  */
 
 import * as https from "https";
@@ -13,6 +19,8 @@ import * as fs from "fs";
 import * as path from "path";
 
 const WIKI_API = "https://minecraft.wiki/api.php";
+const USER_AGENT = "Craftdle/2.0 (game data fetcher)";
+const RATE_LIMIT_MS = 200;
 
 // ─── HTTP Helpers ───────────────────────────────────────────────
 
@@ -20,30 +28,26 @@ function httpsGet(url: string, maxRedirects = 5): Promise<string> {
   return new Promise((resolve, reject) => {
     if (maxRedirects <= 0) return reject(new Error("Too many redirects"));
     https
-      .get(
-        url,
-        { headers: { "User-Agent": "Craftdle/1.0 (game data fetcher)" } },
-        (res) => {
-          if (
-            (res.statusCode === 301 ||
-              res.statusCode === 302 ||
-              res.statusCode === 308) &&
-            res.headers.location
-          ) {
-            return httpsGet(res.headers.location, maxRedirects - 1)
-              .then(resolve)
-              .catch(reject);
-          }
-          if (res.statusCode !== 200) {
-            res.resume();
-            return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
-          }
-          let data = "";
-          res.on("data", (chunk) => (data += chunk));
-          res.on("end", () => resolve(data));
-          res.on("error", reject);
-        },
-      )
+      .get(url, { headers: { "User-Agent": USER_AGENT } }, (res) => {
+        if (
+          (res.statusCode === 301 ||
+            res.statusCode === 302 ||
+            res.statusCode === 308) &&
+          res.headers.location
+        ) {
+          return httpsGet(res.headers.location, maxRedirects - 1)
+            .then(resolve)
+            .catch(reject);
+        }
+        if (res.statusCode !== 200) {
+          res.resume();
+          return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
+        }
+        let data = "";
+        res.on("data", (chunk: string) => (data += chunk));
+        res.on("end", () => resolve(data));
+        res.on("error", reject);
+      })
       .on("error", reject);
   });
 }
@@ -59,7 +63,7 @@ function delay(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-// ─── Wiki API Functions ─────────────────────────────────────────
+// ─── Wiki Image Helpers ─────────────────────────────────────────
 
 /**
  * Batch-query imageinfo for multiple File: titles.
@@ -92,11 +96,11 @@ async function batchGetImageUrls(
       }
     } catch (e) {
       console.error(
-        `  Batch query failed for chunk ${i}: ${(e as Error).message}`,
+        `  Batch imageinfo failed for chunk ${i}: ${(e as Error).message}`,
       );
     }
 
-    if (i + 50 < filenames.length) await delay(200); // rate limit
+    if (i + 50 < filenames.length) await delay(RATE_LIMIT_MS);
   }
 
   return result;
@@ -131,4809 +135,904 @@ async function searchImages(
   }
 }
 
-// ─── Data Definitions ───────────────────────────────────────────
+// ─── Category Discovery ─────────────────────────────────────────
 
-interface ItemDef {
-  id: string;
-  name: string;
-  type: "Block" | "Item" | "Tool" | "Weapon" | "Armor" | "Food";
-  dimension: string[];
-  stackable: boolean;
-  renewable: boolean;
-  versionAdded: string;
-  inviconFile: string; // wiki filename for Invicon
+/** Categories to skip during recursive traversal */
+function shouldSkipCategory(catName: string): boolean {
+  const lower = catName.toLowerCase();
+  return (
+    lower.includes("removed") ||
+    lower.includes("education edition") ||
+    lower.includes("joke") ||
+    lower.includes("april fools") ||
+    lower.includes("unimplemented") ||
+    lower.includes("unused") ||
+    lower.includes("mentioned") ||
+    lower.includes("debug") ||
+    lower.includes("upcoming") ||
+    lower.includes("planned") ||
+    lower.includes("china") ||
+    lower.includes("legacy console") ||
+    lower.includes("bedrock edition") ||
+    lower.includes("exclusive")
+  );
 }
 
-interface MobDef {
-  id: string;
-  name: string;
-  dimension: string[];
-  behavior: "Hostile" | "Passive" | "Neutral";
-  renewable: boolean;
-  versionAdded: string;
-  imageSearchPrefix: string; // prefix to search wiki for render
+/**
+ * Fetch all page titles from a wiki category.
+ * Handles pagination via cmcontinue.
+ */
+async function fetchCategoryMembers(
+  category: string,
+  type: "page" | "subcat" = "page",
+): Promise<string[]> {
+  const members: string[] = [];
+  let cmcontinue: string | undefined;
+
+  do {
+    const params: Record<string, string> = {
+      action: "query",
+      list: "categorymembers",
+      cmtitle: `Category:${category}`,
+      cmlimit: "500",
+      cmtype: type,
+    };
+    if (cmcontinue) params.cmcontinue = cmcontinue;
+
+    try {
+      const json = await wikiQuery(params);
+      const cm = json.query?.categorymembers || [];
+      for (const m of cm) {
+        members.push(m.title);
+      }
+      cmcontinue = json.continue?.cmcontinue;
+    } catch (e) {
+      console.error(
+        `  Error fetching Category:${category}: ${(e as Error).message}`,
+      );
+      break;
+    }
+    if (cmcontinue) await delay(RATE_LIMIT_MS);
+  } while (cmcontinue);
+
+  return members;
 }
 
-interface RecipeDef {
+/**
+ * Recursively discover all pages from a set of categories.
+ * Traverses subcategories up to maxDepth levels.
+ */
+async function fetchPagesFromCategories(
+  categories: string[],
+  maxDepth = 2,
+): Promise<Set<string>> {
+  const allPages = new Set<string>();
+  const visitedCats = new Set<string>();
+
+  async function traverse(category: string, depth: number) {
+    if (depth <= 0 || visitedCats.has(category)) return;
+    visitedCats.add(category);
+
+    const pages = await fetchCategoryMembers(category, "page");
+    for (const p of pages) allPages.add(p);
+    if (pages.length > 0) {
+      console.log(`    Category:${category}: ${pages.length} pages`);
+    }
+
+    if (depth > 1) {
+      const subcats = await fetchCategoryMembers(category, "subcat");
+      for (const sc of subcats) {
+        const catName = sc.replace("Category:", "");
+        if (shouldSkipCategory(catName)) continue;
+        await traverse(catName, depth - 1);
+        await delay(RATE_LIMIT_MS);
+      }
+    }
+  }
+
+  for (const cat of categories) {
+    await traverse(cat, maxDepth);
+  }
+
+  return allPages;
+}
+
+// ─── Wikitext Fetching ──────────────────────────────────────────
+
+/**
+ * Batch fetch raw wikitext for multiple pages.
+ * Returns Map of title → wikitext content.
+ */
+async function batchFetchWikitext(
+  titles: string[],
+): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+
+  for (let i = 0; i < titles.length; i += 50) {
+    const batch = titles.slice(i, i + 50);
+    const titleStr = batch.join("|");
+
+    try {
+      const json = await wikiQuery({
+        action: "query",
+        titles: titleStr,
+        prop: "revisions",
+        rvprop: "content",
+        rvslots: "main",
+      });
+
+      if (json.query?.pages) {
+        for (const page of Object.values(json.query.pages) as any[]) {
+          if (page.missing !== undefined) continue;
+          const content =
+            page.revisions?.[0]?.slots?.main?.["*"] ||
+            page.revisions?.[0]?.["*"];
+          if (content && typeof content === "string") {
+            result.set(page.title, content);
+          }
+        }
+      }
+    } catch (e) {
+      console.error(
+        `  Error fetching wikitext batch ${i}: ${(e as Error).message}`,
+      );
+    }
+    if (i + 50 < titles.length) await delay(RATE_LIMIT_MS);
+  }
+
+  return result;
+}
+
+/**
+ * Batch fetch categories for multiple pages.
+ * Returns Map of title → array of category names (without "Category:" prefix).
+ */
+async function batchFetchCategories(
+  titles: string[],
+): Promise<Map<string, string[]>> {
+  const result = new Map<string, string[]>();
+
+  for (let i = 0; i < titles.length; i += 50) {
+    const batch = titles.slice(i, i + 50);
+    const titleStr = batch.join("|");
+
+    try {
+      const json = await wikiQuery({
+        action: "query",
+        titles: titleStr,
+        prop: "categories",
+        cllimit: "max",
+      });
+
+      if (json.query?.pages) {
+        for (const page of Object.values(json.query.pages) as any[]) {
+          if (page.missing !== undefined) continue;
+          const cats = (page.categories || []).map((c: any) =>
+            c.title.replace("Category:", ""),
+          );
+          result.set(page.title, cats);
+        }
+      }
+    } catch (e) {
+      console.error(
+        `  Error fetching categories batch ${i}: ${(e as Error).message}`,
+      );
+    }
+    if (i + 50 < titles.length) await delay(RATE_LIMIT_MS);
+  }
+
+  return result;
+}
+
+// ─── Wikitext Parsing ───────────────────────────────────────────
+
+/**
+ * Extract a simple parameter value from an infobox template in wikitext.
+ * Handles the common `| paramName = value` format and strips wiki markup.
+ */
+function extractParam(wikitext: string, paramName: string): string | undefined {
+  const escaped = paramName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`\\|\\s*${escaped}\\s*=\\s*([^|}\\n]+)`, "i");
+  const match = wikitext.match(regex);
+  if (!match) return undefined;
+
+  let value = match[1].trim();
+  // Strip wiki links: [[link|text]] → text, [[link]] → link
+  value = value.replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1");
+  // Strip remaining templates
+  value = value.replace(/\{\{[^}]*\}\}/g, "");
+  // Strip HTML tags
+  value = value.replace(/<[^>]*>/g, "");
+  // Strip bold/italic markers
+  value = value.replace(/'''?/g, "");
+  return value.trim() || undefined;
+}
+
+/** Parse a Yes/No string to boolean, with a default fallback. */
+function parseBoolean(
+  value: string | undefined,
+  defaultValue: boolean,
+): boolean {
+  if (!value) return defaultValue;
+  const lower = value.toLowerCase().trim();
+  if (lower.startsWith("yes") || lower === "true" || lower === "1") return true;
+  if (lower.startsWith("no") || lower === "false" || lower === "0")
+    return false;
+  return defaultValue;
+}
+
+/** Parse stackable field (Yes/No/Yes (64)/etc.) to boolean. */
+function parseStackable(value: string | undefined): boolean {
+  if (!value) return true;
+  const lower = value.toLowerCase().trim();
+  if (lower.startsWith("no") || lower === "false" || lower === "0")
+    return false;
+  return true;
+}
+
+/**
+ * Extract the first Java Edition version this entity was added in.
+ * Searches the History section (HistoryLine templates) and infobox.
+ */
+function extractVersionAdded(wikitext: string): string {
+  // Method 1: Find HistoryLine entries with numeric versions.
+  // The wiki uses {{HistoryLine||VERSION|...}} for version-specific changes.
+  // First grab the Java Edition section if present.
+  const javaEdIdx = wikitext.indexOf("Java Edition");
+  const searchArea = javaEdIdx !== -1 ? wikitext.slice(javaEdIdx) : wikitext;
+
+  const versionMatch = searchArea.match(
+    /\{\{HistoryLine\|\|(\d+\.\d+(?:\.\d+)?)/,
+  );
+  if (versionMatch) return normalizeVersion(versionMatch[1]);
+
+  // Method 2: Look for HistoryLine with labelled sections like "java indev"
+  // which means the item existed since pre-release → treat as 1.0
+  if (
+    /\{\{HistoryLine\|java\s+(classic|indev|infdev|alpha|beta)/i.test(wikitext)
+  ) {
+    return "1.0";
+  }
+
+  // Method 3: Look for any HistoryLine with a version anywhere on the page
+  const anyMatch = wikitext.match(/\{\{HistoryLine\|\|(\d+\.\d+(?:\.\d+)?)/);
+  if (anyMatch) return normalizeVersion(anyMatch[1]);
+
+  // Method 4: Look for version in infobox parameters
+  for (const param of ["added", "first", "firstver", "version"]) {
+    const val = extractParam(wikitext, param);
+    if (val) {
+      const verMatch = val.match(/(\d+\.\d+(?:\.\d+)?)/);
+      if (verMatch) return normalizeVersion(verMatch[1]);
+    }
+  }
+
+  return "";
+}
+
+/**
+ * Normalize a version string:
+ * - Pre-1.0 versions (0.x) map to "1.0" (existed since first full release)
+ * - Simplify to major.minor: "1.16.2" → "1.16"
+ */
+function normalizeVersion(version: string): string {
+  const parts = version.split(".");
+  const major = parseInt(parts[0], 10);
+  if (major < 1) return "1.0";
+  return parts.length >= 2 ? `${parts[0]}.${parts[1]}` : version;
+}
+
+/** Check if a page has an item/block/entity infobox template */
+function hasInfobox(wikitext: string): boolean {
+  return /\{\{Infobox\s+(item|block|entity|biome)/i.test(wikitext);
+}
+
+/** Check if wikitext is a redirect page */
+function isRedirect(wikitext: string): boolean {
+  return /^#REDIRECT/i.test(wikitext.trim());
+}
+
+// ─── Entity Classification ──────────────────────────────────────
+
+/** Classify an item/block's type based on its wiki categories and name. */
+function classifyEntityType(
+  pageCategories: string[],
+  isFromBlockSource: boolean,
+  itemName: string,
+): string {
+  const catStr = pageCategories.join("|").toLowerCase();
+  const nameLower = itemName.toLowerCase();
+
+  // Name-based checks (most specific)
+  if (/sword|crossbow|trident|mace/.test(nameLower)) return "Weapon";
+  if (/\bbow\b/.test(nameLower) && !nameLower.includes("bowl")) return "Weapon";
+  if (/helmet|chestplate|legging|boots|cap\b|tunic\b/.test(nameLower))
+    return "Armor";
+  if (/pickaxe|shovel|hoe\b|shears|fishing rod|spyglass/.test(nameLower))
+    return "Tool";
+
+  // Category-based checks
+  if (catStr.includes("combat")) return "Weapon";
+  if (catStr.includes("armor")) return "Armor";
+  if (/tool(?:s|$)/i.test(catStr)) return "Tool";
+  if (catStr.includes("food") || catStr.includes("foodstuff")) return "Food";
+  if (isFromBlockSource) return "Block";
+  return "Item";
+}
+
+/** Determine mob behavior from wiki categories. */
+function determineMobBehavior(pageCategories: string[]): string {
+  const catStr = pageCategories.join("|").toLowerCase();
+  if (catStr.includes("hostile")) return "Hostile";
+  if (catStr.includes("passive")) return "Passive";
+  if (catStr.includes("neutral")) return "Neutral";
+  return "";
+}
+
+/** Determine which dimensions an entity belongs to from categories + infobox. */
+function determineDimensions(
+  pageCategories: string[],
+  wikitext: string,
+): string[] {
+  const dims = new Set<string>();
+
+  for (const cat of pageCategories) {
+    const lower = cat.toLowerCase();
+    if (lower.includes("nether")) dims.add("Nether");
+    if (
+      lower.includes("the end") ||
+      lower.includes("end dimension") ||
+      lower === "end mobs" ||
+      lower === "end blocks"
+    )
+      dims.add("End");
+  }
+
+  // Check infobox for environment/dimension info
+  const envParam =
+    extractParam(wikitext, "environment") ||
+    extractParam(wikitext, "dimension");
+  if (envParam) {
+    const lower = envParam.toLowerCase();
+    if (lower.includes("nether")) dims.add("Nether");
+    if (lower.includes("end")) dims.add("End");
+    if (lower.includes("overworld")) dims.add("Overworld");
+  }
+
+  // Default to Overworld if no other dimensions found
+  if (dims.size === 0) dims.add("Overworld");
+
+  return Array.from(dims);
+}
+
+// ─── Recipe Extraction ──────────────────────────────────────────
+
+interface RecipeJson {
   itemId: string;
   name: string;
   grid: (string | null)[][];
   shapeless: boolean;
 }
 
-interface SoundDef {
-  id: string;
-  entityId: string;
-  name: string;
-  searchPrefix: string;
-  category: string;
+/**
+ * Extract all crafting recipes from a page's wikitext.
+ * Parses {{Crafting templates with A1-C3 grid notation.
+ */
+function extractCraftingRecipes(
+  wikitext: string,
+  pageTitle: string,
+): RecipeJson[] {
+  const recipes: RecipeJson[] = [];
+  let searchFrom = 0;
+
+  while (true) {
+    const idx = wikitext.indexOf("{{Crafting", searchFrom);
+    if (idx === -1) break;
+
+    // Find matching closing braces, tracking nesting depth
+    let depth = 0;
+    let endIdx = idx;
+    for (let i = idx; i < wikitext.length - 1; i++) {
+      if (wikitext[i] === "{" && wikitext[i + 1] === "{") {
+        depth++;
+        i++;
+      } else if (wikitext[i] === "}" && wikitext[i + 1] === "}") {
+        depth--;
+        i++;
+        if (depth === 0) {
+          endIdx = i;
+          break;
+        }
+      }
+    }
+
+    const template = wikitext.slice(idx, endIdx + 1);
+    searchFrom = endIdx + 1;
+
+    const recipe = parseCraftingTemplate(template, pageTitle);
+    if (recipe) recipes.push(recipe);
+  }
+
+  return recipes;
 }
 
-// ─── Items ──────────────────────────────────────────────────────
+/** Parse a single {{Crafting template into a RecipeJson. */
+function parseCraftingTemplate(
+  template: string,
+  pageTitle: string,
+): RecipeJson | null {
+  const grid: (string | null)[][] = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ];
 
-const ITEMS: ItemDef[] = [
-  // Weapons
-  {
-    id: "diamond_sword",
-    name: "Diamond Sword",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Sword.png",
-  },
-  {
-    id: "iron_sword",
-    name: "Iron Sword",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Sword.png",
-  },
-  {
-    id: "stone_sword",
-    name: "Stone Sword",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Sword.png",
-  },
-  {
-    id: "wooden_sword",
-    name: "Wooden Sword",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Wooden_Sword.png",
-  },
-  {
-    id: "netherite_sword",
-    name: "Netherite Sword",
-    type: "Weapon",
-    dimension: ["Nether"],
-    stackable: false,
-    renewable: false,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Netherite_Sword.png",
-  },
-  {
-    id: "bow",
-    name: "Bow",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bow.png",
-  },
-  {
-    id: "crossbow",
-    name: "Crossbow",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Crossbow.png",
-  },
-  {
-    id: "trident",
-    name: "Trident",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Trident.png",
-  },
+  // Parse A1-C3 named grid parameters
+  const cols = ["A", "B", "C"];
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      const paramName = `${cols[col]}${row + 1}`;
+      const regex = new RegExp(`\\|\\s*${paramName}\\s*=\\s*([^|}\\n]*)`, "i");
+      const match = template.match(regex);
+      if (match) {
+        let value = match[1]
+          .trim()
+          .replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1")
+          .replace(/\{\{[^}]*\}\}/g, "")
+          .trim();
+        if (value) {
+          grid[row][col] = toId(value);
+        }
+      }
+    }
+  }
 
-  // Tools
-  {
-    id: "diamond_pickaxe",
-    name: "Diamond Pickaxe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Pickaxe.png",
-  },
-  {
-    id: "iron_pickaxe",
-    name: "Iron Pickaxe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Pickaxe.png",
-  },
-  {
-    id: "stone_pickaxe",
-    name: "Stone Pickaxe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Pickaxe.png",
-  },
-  {
-    id: "wooden_pickaxe",
-    name: "Wooden Pickaxe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Wooden_Pickaxe.png",
-  },
-  {
-    id: "netherite_pickaxe",
-    name: "Netherite Pickaxe",
-    type: "Tool",
-    dimension: ["Nether"],
-    stackable: false,
-    renewable: false,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Netherite_Pickaxe.png",
-  },
-  {
-    id: "diamond_axe",
-    name: "Diamond Axe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Axe.png",
-  },
-  {
-    id: "iron_axe",
-    name: "Iron Axe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Axe.png",
-  },
-  {
-    id: "diamond_shovel",
-    name: "Diamond Shovel",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Shovel.png",
-  },
-  {
-    id: "diamond_hoe",
-    name: "Diamond Hoe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Hoe.png",
-  },
-  {
-    id: "shield",
-    name: "Shield",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.9",
-    inviconFile: "Invicon_Shield.png",
-  },
-  {
-    id: "fishing_rod",
-    name: "Fishing Rod",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Fishing_Rod.png",
-  },
-  {
-    id: "shears",
-    name: "Shears",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Shears.png",
-  },
-  {
-    id: "flint_and_steel",
-    name: "Flint and Steel",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Flint_and_Steel.png",
-  },
+  // Must have at least one ingredient
+  const hasIngredients = grid.some((row) => row.some((cell) => cell !== null));
+  if (!hasIngredients) return null;
 
-  // Armor
-  {
-    id: "diamond_helmet",
-    name: "Diamond Helmet",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Helmet.png",
-  },
-  {
-    id: "diamond_chestplate",
-    name: "Diamond Chestplate",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Chestplate.png",
-  },
-  {
-    id: "diamond_leggings",
-    name: "Diamond Leggings",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Leggings.png",
-  },
-  {
-    id: "diamond_boots",
-    name: "Diamond Boots",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond_Boots.png",
-  },
-  {
-    id: "iron_helmet",
-    name: "Iron Helmet",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Helmet.png",
-  },
-  {
-    id: "iron_chestplate",
-    name: "Iron Chestplate",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Chestplate.png",
-  },
-  {
-    id: "iron_leggings",
-    name: "Iron Leggings",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Leggings.png",
-  },
-  {
-    id: "iron_boots",
-    name: "Iron Boots",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Boots.png",
-  },
-  {
-    id: "netherite_chestplate",
-    name: "Netherite Chestplate",
-    type: "Armor",
-    dimension: ["Nether"],
-    stackable: false,
-    renewable: false,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Netherite_Chestplate.png",
-  },
+  // Get output item name
+  const outputMatch = template.match(/\|\s*Output\s*=\s*([^|}\\n]+)/i);
+  const outputName = outputMatch
+    ? outputMatch[1]
+        .trim()
+        .replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1")
+        .trim()
+    : pageTitle;
 
-  // Blocks
-  {
-    id: "oak_planks",
-    name: "Oak Planks",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Planks.png",
-  },
-  {
-    id: "spruce_planks",
-    name: "Spruce Planks",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Spruce_Planks.png",
-  },
-  {
-    id: "birch_planks",
-    name: "Birch Planks",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Birch_Planks.png",
-  },
-  {
-    id: "stone",
-    name: "Stone",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone.png",
-  },
-  {
-    id: "cobblestone",
-    name: "Cobblestone",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cobblestone.png",
-  },
-  {
-    id: "dirt",
-    name: "Dirt",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Dirt.png",
-  },
-  {
-    id: "grass_block",
-    name: "Grass Block",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Grass_Block.png",
-  },
-  {
-    id: "sand",
-    name: "Sand",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Sand.png",
-  },
-  {
-    id: "gravel",
-    name: "Gravel",
-    type: "Block",
-    dimension: ["Overworld", "Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Gravel.png",
-  },
-  {
-    id: "obsidian",
-    name: "Obsidian",
-    type: "Block",
-    dimension: ["Overworld", "Nether", "End"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Obsidian.png",
-  },
-  {
-    id: "tnt",
-    name: "TNT",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_TNT.png",
-  },
-  {
-    id: "crafting_table",
-    name: "Crafting Table",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Crafting_Table.png",
-  },
-  {
-    id: "furnace",
-    name: "Furnace",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Furnace.png",
-  },
-  {
-    id: "chest",
-    name: "Chest",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Chest.png",
-  },
-  {
-    id: "enchanting_table",
-    name: "Enchanting Table",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Enchanting_Table.png",
-  },
-  {
-    id: "anvil",
-    name: "Anvil",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Anvil.png",
-  },
-  {
-    id: "bookshelf",
-    name: "Bookshelf",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bookshelf.png",
-  },
-  {
-    id: "piston",
-    name: "Piston",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.7",
-    inviconFile: "Invicon_Piston.png",
-  },
-  {
-    id: "netherrack",
-    name: "Netherrack",
-    type: "Block",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Netherrack.png",
-  },
-  {
-    id: "glowstone",
-    name: "Glowstone",
-    type: "Block",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Glowstone.png",
-  },
-  {
-    id: "end_stone",
-    name: "End Stone",
-    type: "Block",
-    dimension: ["End"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_End_Stone.png",
-  },
-  {
-    id: "glass",
-    name: "Glass",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Glass.png",
-  },
-  {
-    id: "soul_sand",
-    name: "Soul Sand",
-    type: "Block",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Soul_Sand.png",
-  },
+  // Check shapeless flag
+  const shapeless = /\|\s*shapeless\s*=\s*(true|1|yes)/i.test(template);
 
-  // Items
-  {
-    id: "diamond",
-    name: "Diamond",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Diamond.png",
-  },
-  {
-    id: "emerald",
-    name: "Emerald",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.3",
-    inviconFile: "Invicon_Emerald.png",
-  },
-  {
-    id: "gold_ingot",
-    name: "Gold Ingot",
-    type: "Item",
-    dimension: ["Overworld", "Nether"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Gold_Ingot.png",
-  },
-  {
-    id: "iron_ingot",
-    name: "Iron Ingot",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Ingot.png",
-  },
-  {
-    id: "coal",
-    name: "Coal",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Coal.png",
-  },
-  {
-    id: "redstone",
-    name: "Redstone Dust",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Redstone_Dust.png",
-  },
-  {
-    id: "lapis_lazuli",
-    name: "Lapis Lazuli",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Lapis_Lazuli.png",
-  },
-  {
-    id: "netherite_ingot",
-    name: "Netherite Ingot",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Netherite_Ingot.png",
-  },
-  {
-    id: "ender_pearl",
-    name: "Ender Pearl",
-    type: "Item",
-    dimension: ["Overworld", "End"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Ender_Pearl.png",
-  },
-  {
-    id: "blaze_rod",
-    name: "Blaze Rod",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Blaze_Rod.png",
-  },
-  {
-    id: "eye_of_ender",
-    name: "Eye of Ender",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Eye_of_Ender.png",
-  },
-  {
-    id: "stick",
-    name: "Stick",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stick.png",
-  },
-  {
-    id: "torch",
-    name: "Torch",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Torch.png",
-  },
-  {
-    id: "bucket",
-    name: "Bucket",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bucket.png",
-  },
-  {
-    id: "compass",
-    name: "Compass",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Compass.png",
-  },
-  {
-    id: "clock",
-    name: "Clock",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Clock.png",
-  },
-  {
-    id: "bone",
-    name: "Bone",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bone.png",
-  },
-  {
-    id: "string",
-    name: "String",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_String.png",
-  },
-  {
-    id: "gunpowder",
-    name: "Gunpowder",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Gunpowder.png",
-  },
-  {
-    id: "flint",
-    name: "Flint",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Flint.png",
-  },
-  {
-    id: "book",
-    name: "Book",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Book.png",
-  },
-
-  // Food
-  {
-    id: "golden_apple",
-    name: "Golden Apple",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Apple.png",
-  },
-  {
-    id: "bread",
-    name: "Bread",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bread.png",
-  },
-  {
-    id: "cookie",
-    name: "Cookie",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cookie.png",
-  },
-  {
-    id: "cooked_beef",
-    name: "Steak",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Steak.png",
-  },
-  {
-    id: "apple",
-    name: "Apple",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Apple.png",
-  },
-  {
-    id: "cake",
-    name: "Cake",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.2",
-    inviconFile: "Invicon_Cake.png",
-  },
-  {
-    id: "cooked_porkchop",
-    name: "Cooked Porkchop",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cooked_Porkchop.png",
-  },
-  {
-    id: "melon_slice",
-    name: "Melon Slice",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Melon_Slice.png",
-  },
-  // ── Tools ──
-  {
-    id: "stone_axe",
-    name: "Stone Axe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Axe.png",
-  },
-  {
-    id: "wooden_axe",
-    name: "Wooden Axe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Wooden_Axe.png",
-  },
-  {
-    id: "golden_axe",
-    name: "Golden Axe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Axe.png",
-  },
-  {
-    id: "iron_hoe",
-    name: "Iron Hoe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Hoe.png",
-  },
-  {
-    id: "stone_hoe",
-    name: "Stone Hoe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Hoe.png",
-  },
-  {
-    id: "wooden_hoe",
-    name: "Wooden Hoe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Wooden_Hoe.png",
-  },
-  {
-    id: "golden_hoe",
-    name: "Golden Hoe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Hoe.png",
-  },
-  {
-    id: "stone_shovel",
-    name: "Stone Shovel",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Shovel.png",
-  },
-  {
-    id: "wooden_shovel",
-    name: "Wooden Shovel",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Wooden_Shovel.png",
-  },
-  {
-    id: "iron_shovel",
-    name: "Iron Shovel",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Shovel.png",
-  },
-  {
-    id: "golden_shovel",
-    name: "Golden Shovel",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Shovel.png",
-  },
-  {
-    id: "golden_pickaxe",
-    name: "Golden Pickaxe",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Pickaxe.png",
-  },
-  {
-    id: "spyglass",
-    name: "Spyglass",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Spyglass.png",
-  },
-  {
-    id: "lead",
-    name: "Lead",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.6",
-    inviconFile: "Invicon_Lead.png",
-  },
-  {
-    id: "map",
-    name: "Empty Map",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Empty_Map.png",
-  },
-  {
-    id: "carrot_on_a_stick",
-    name: "Carrot on a Stick",
-    type: "Tool",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Carrot_on_a_Stick.png",
-  },
-  // ── Weapons ──
-  {
-    id: "golden_sword",
-    name: "Golden Sword",
-    type: "Weapon",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Sword.png",
-  },
-  // ── Armor ──
-  {
-    id: "golden_helmet",
-    name: "Golden Helmet",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Helmet.png",
-  },
-  {
-    id: "golden_chestplate",
-    name: "Golden Chestplate",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Chestplate.png",
-  },
-  {
-    id: "golden_leggings",
-    name: "Golden Leggings",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Leggings.png",
-  },
-  {
-    id: "golden_boots",
-    name: "Golden Boots",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Golden_Boots.png",
-  },
-  {
-    id: "leather_helmet",
-    name: "Leather Cap",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Leather_Cap.png",
-  },
-  {
-    id: "leather_chestplate",
-    name: "Leather Tunic",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Leather_Tunic.png",
-  },
-  {
-    id: "leather_leggings",
-    name: "Leather Pants",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Leather_Pants.png",
-  },
-  {
-    id: "leather_boots",
-    name: "Leather Boots",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Leather_Boots.png",
-  },
-  {
-    id: "turtle_helmet",
-    name: "Turtle Shell",
-    type: "Armor",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Turtle_Shell.png",
-  },
-  // ── Blocks ──
-  {
-    id: "hopper",
-    name: "Hopper",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Hopper.png",
-  },
-  {
-    id: "dropper",
-    name: "Dropper",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Dropper.png",
-  },
-  {
-    id: "dispenser",
-    name: "Dispenser",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.2",
-    inviconFile: "Invicon_Dispenser.png",
-  },
-  {
-    id: "observer",
-    name: "Observer",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.11",
-    inviconFile: "Invicon_Observer.png",
-  },
-  {
-    id: "note_block",
-    name: "Note Block",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Note_Block.png",
-  },
-  {
-    id: "jukebox",
-    name: "Jukebox",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Jukebox.png",
-  },
-  {
-    id: "beacon",
-    name: "Beacon",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Beacon.png",
-  },
-  {
-    id: "brewing_stand",
-    name: "Brewing Stand",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Brewing_Stand.png",
-  },
-  {
-    id: "composter",
-    name: "Composter",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Composter.png",
-  },
-  {
-    id: "barrel",
-    name: "Barrel",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Barrel.png",
-  },
-  {
-    id: "smoker",
-    name: "Smoker",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Smoker.png",
-  },
-  {
-    id: "blast_furnace",
-    name: "Blast Furnace",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Blast_Furnace.png",
-  },
-  {
-    id: "stonecutter",
-    name: "Stonecutter",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Stonecutter.png",
-  },
-  {
-    id: "grindstone",
-    name: "Grindstone",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Grindstone.png",
-  },
-  {
-    id: "smithing_table",
-    name: "Smithing Table",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Smithing_Table.png",
-  },
-  {
-    id: "fletching_table",
-    name: "Fletching Table",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Fletching_Table.png",
-  },
-  {
-    id: "cartography_table",
-    name: "Cartography Table",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Cartography_Table.png",
-  },
-  {
-    id: "loom",
-    name: "Loom",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Loom.png",
-  },
-  {
-    id: "lectern",
-    name: "Lectern",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Lectern.png",
-  },
-  {
-    id: "target",
-    name: "Target",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Target.png",
-  },
-  {
-    id: "campfire",
-    name: "Campfire",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Campfire.png",
-  },
-  {
-    id: "soul_campfire",
-    name: "Soul Campfire",
-    type: "Block",
-    dimension: ["Overworld", "Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Soul_Campfire.png",
-  },
-  {
-    id: "lantern",
-    name: "Lantern",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Lantern.png",
-  },
-  {
-    id: "chain",
-    name: "Chain",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Chain.png",
-  },
-  {
-    id: "lightning_rod",
-    name: "Lightning Rod",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Lightning_Rod.png",
-  },
-  {
-    id: "rail",
-    name: "Rail",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Rail.png",
-  },
-  {
-    id: "powered_rail",
-    name: "Powered Rail",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Powered_Rail.png",
-  },
-  {
-    id: "detector_rail",
-    name: "Detector Rail",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Detector_Rail.png",
-  },
-  {
-    id: "activator_rail",
-    name: "Activator Rail",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Activator_Rail.png",
-  },
-  {
-    id: "ladder",
-    name: "Ladder",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Ladder.png",
-  },
-  {
-    id: "iron_bars",
-    name: "Iron Bars",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Bars.png",
-  },
-  {
-    id: "glass_pane",
-    name: "Glass Pane",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Glass_Pane.png",
-  },
-  {
-    id: "redstone_lamp",
-    name: "Redstone Lamp",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.2",
-    inviconFile: "Invicon_Redstone_Lamp.png",
-  },
-  {
-    id: "trapped_chest",
-    name: "Trapped Chest",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Trapped_Chest.png",
-  },
-  {
-    id: "ender_chest",
-    name: "Ender Chest",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.3",
-    inviconFile: "Invicon_Ender_Chest.png",
-  },
-  {
-    id: "shulker_box",
-    name: "Shulker Box",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.11",
-    inviconFile: "Invicon_Shulker_Box.png",
-  },
-  {
-    id: "painting",
-    name: "Painting",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Painting.png",
-  },
-  {
-    id: "item_frame",
-    name: "Item Frame",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Item_Frame.png",
-  },
-  {
-    id: "armor_stand",
-    name: "Armor Stand",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Armor_Stand.png",
-  },
-  {
-    id: "flower_pot",
-    name: "Flower Pot",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Flower_Pot.png",
-  },
-  {
-    id: "oak_sign",
-    name: "Oak Sign",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Sign.png",
-  },
-  {
-    id: "redstone_torch",
-    name: "Redstone Torch",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Redstone_Torch.png",
-  },
-  {
-    id: "tripwire_hook",
-    name: "Tripwire Hook",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.3",
-    inviconFile: "Invicon_Tripwire_Hook.png",
-  },
-  {
-    id: "lever",
-    name: "Lever",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Lever.png",
-  },
-  {
-    id: "stone_button",
-    name: "Stone Button",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Button.png",
-  },
-  {
-    id: "stone_pressure_plate",
-    name: "Stone Pressure Plate",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Pressure_Plate.png",
-  },
-  {
-    id: "iron_door",
-    name: "Iron Door",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Iron_Door.png",
-  },
-  {
-    id: "oak_door",
-    name: "Oak Door",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Door.png",
-  },
-  {
-    id: "oak_fence",
-    name: "Oak Fence",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Fence.png",
-  },
-  {
-    id: "oak_fence_gate",
-    name: "Oak Fence Gate",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Fence_Gate.png",
-  },
-  {
-    id: "oak_stairs",
-    name: "Oak Stairs",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Stairs.png",
-  },
-  {
-    id: "oak_slab",
-    name: "Oak Slab",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Oak_Slab.png",
-  },
-  {
-    id: "cobblestone_stairs",
-    name: "Cobblestone Stairs",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cobblestone_Stairs.png",
-  },
-  {
-    id: "cobblestone_slab",
-    name: "Cobblestone Slab",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cobblestone_Slab.png",
-  },
-  {
-    id: "stone_bricks",
-    name: "Stone Bricks",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Stone_Bricks.png",
-  },
-  {
-    id: "hay_bale",
-    name: "Hay Bale",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.6",
-    inviconFile: "Invicon_Hay_Bale.png",
-  },
-  {
-    id: "bricks",
-    name: "Bricks",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bricks.png",
-  },
-  {
-    id: "nether_bricks",
-    name: "Nether Bricks",
-    type: "Block",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Nether_Bricks.png",
-  },
-  {
-    id: "quartz_block",
-    name: "Block of Quartz",
-    type: "Block",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Block_of_Quartz.png",
-  },
-  {
-    id: "scaffolding",
-    name: "Scaffolding",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Scaffolding.png",
-  },
-  {
-    id: "white_bed",
-    name: "White Bed",
-    type: "Block",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_White_Bed.png",
-  },
-  // ── Items ──
-  {
-    id: "paper",
-    name: "Paper",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Paper.png",
-  },
-  {
-    id: "arrow",
-    name: "Arrow",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Arrow.png",
-  },
-  {
-    id: "spectral_arrow",
-    name: "Spectral Arrow",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.9",
-    inviconFile: "Invicon_Spectral_Arrow.png",
-  },
-  {
-    id: "firework_rocket",
-    name: "Firework Rocket",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Firework_Rocket.png",
-  },
-  {
-    id: "bone_meal",
-    name: "Bone Meal",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Bone_Meal.png",
-  },
-  {
-    id: "sugar",
-    name: "Sugar",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Sugar.png",
-  },
-  {
-    id: "leather",
-    name: "Leather",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Leather.png",
-  },
-  {
-    id: "feather",
-    name: "Feather",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Feather.png",
-  },
-  {
-    id: "glowstone_dust",
-    name: "Glowstone Dust",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Glowstone_Dust.png",
-  },
-  {
-    id: "copper_ingot",
-    name: "Copper Ingot",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Copper_Ingot.png",
-  },
-  {
-    id: "amethyst_shard",
-    name: "Amethyst Shard",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Amethyst_Shard.png",
-  },
-  {
-    id: "gold_nugget",
-    name: "Gold Nugget",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Gold_Nugget.png",
-  },
-  {
-    id: "iron_nugget",
-    name: "Iron Nugget",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.11",
-    inviconFile: "Invicon_Iron_Nugget.png",
-  },
-  {
-    id: "nether_star",
-    name: "Nether Star",
-    type: "Item",
-    dimension: ["Overworld", "Nether", "End"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Nether_Star.png",
-  },
-  {
-    id: "heart_of_the_sea",
-    name: "Heart of the Sea",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Heart_of_the_Sea.png",
-  },
-  {
-    id: "phantom_membrane",
-    name: "Phantom Membrane",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Phantom_Membrane.png",
-  },
-  {
-    id: "honeycomb",
-    name: "Honeycomb",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.15",
-    inviconFile: "Invicon_Honeycomb.png",
-  },
-  {
-    id: "quartz",
-    name: "Nether Quartz",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Nether_Quartz.png",
-  },
-  {
-    id: "echo_shard",
-    name: "Echo Shard",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.19",
-    inviconFile: "Invicon_Echo_Shard.png",
-  },
-  {
-    id: "rabbit_hide",
-    name: "Rabbit Hide",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Rabbit_Hide.png",
-  },
-  {
-    id: "scute",
-    name: "Scute",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Scute.png",
-  },
-  {
-    id: "charcoal",
-    name: "Charcoal",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Charcoal.png",
-  },
-  {
-    id: "raw_iron",
-    name: "Raw Iron",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Raw_Iron.png",
-  },
-  {
-    id: "raw_gold",
-    name: "Raw Gold",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Raw_Gold.png",
-  },
-  {
-    id: "raw_copper",
-    name: "Raw Copper",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Raw_Copper.png",
-  },
-  {
-    id: "slime_ball",
-    name: "Slimeball",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Slimeball.png",
-  },
-  {
-    id: "magma_cream",
-    name: "Magma Cream",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Magma_Cream.png",
-  },
-  {
-    id: "ghast_tear",
-    name: "Ghast Tear",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Ghast_Tear.png",
-  },
-  {
-    id: "ink_sac",
-    name: "Ink Sac",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Ink_Sac.png",
-  },
-  {
-    id: "brick",
-    name: "Brick",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Brick.png",
-  },
-  {
-    id: "nether_brick",
-    name: "Nether Brick",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.5",
-    inviconFile: "Invicon_Nether_Brick.png",
-  },
-  {
-    id: "prismarine_shard",
-    name: "Prismarine Shard",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Prismarine_Shard.png",
-  },
-  {
-    id: "prismarine_crystals",
-    name: "Prismarine Crystals",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Prismarine_Crystals.png",
-  },
-  {
-    id: "nautilus_shell",
-    name: "Nautilus Shell",
-    type: "Item",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Nautilus_Shell.png",
-  },
-  {
-    id: "netherite_scrap",
-    name: "Netherite Scrap",
-    type: "Item",
-    dimension: ["Nether"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.16",
-    inviconFile: "Invicon_Netherite_Scrap.png",
-  },
-  // ── Food ──
-  {
-    id: "pumpkin_pie",
-    name: "Pumpkin Pie",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Pumpkin_Pie.png",
-  },
-  {
-    id: "golden_carrot",
-    name: "Golden Carrot",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Golden_Carrot.png",
-  },
-  {
-    id: "baked_potato",
-    name: "Baked Potato",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.4",
-    inviconFile: "Invicon_Baked_Potato.png",
-  },
-  {
-    id: "dried_kelp",
-    name: "Dried Kelp",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.13",
-    inviconFile: "Invicon_Dried_Kelp.png",
-  },
-  {
-    id: "sweet_berries",
-    name: "Sweet Berries",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Sweet_Berries.png",
-  },
-  {
-    id: "glow_berries",
-    name: "Glow Berries",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.17",
-    inviconFile: "Invicon_Glow_Berries.png",
-  },
-  {
-    id: "cooked_chicken",
-    name: "Cooked Chicken",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cooked_Chicken.png",
-  },
-  {
-    id: "cooked_mutton",
-    name: "Cooked Mutton",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Cooked_Mutton.png",
-  },
-  {
-    id: "cooked_rabbit",
-    name: "Cooked Rabbit",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Cooked_Rabbit.png",
-  },
-  {
-    id: "cooked_cod",
-    name: "Cooked Cod",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cooked_Cod.png",
-  },
-  {
-    id: "cooked_salmon",
-    name: "Cooked Salmon",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Cooked_Salmon.png",
-  },
-  {
-    id: "honey_bottle",
-    name: "Honey Bottle",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.15",
-    inviconFile: "Invicon_Honey_Bottle.png",
-  },
-  {
-    id: "enchanted_golden_apple",
-    name: "Enchanted Golden Apple",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: true,
-    renewable: false,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Enchanted_Golden_Apple.png",
-  },
-  {
-    id: "chorus_fruit",
-    name: "Chorus Fruit",
-    type: "Food",
-    dimension: ["End"],
-    stackable: true,
-    renewable: true,
-    versionAdded: "1.9",
-    inviconFile: "Invicon_Chorus_Fruit.png",
-  },
-  {
-    id: "mushroom_stew",
-    name: "Mushroom Stew",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.0",
-    inviconFile: "Invicon_Mushroom_Stew.png",
-  },
-  {
-    id: "rabbit_stew",
-    name: "Rabbit Stew",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.8",
-    inviconFile: "Invicon_Rabbit_Stew.png",
-  },
-  {
-    id: "beetroot_soup",
-    name: "Beetroot Soup",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.9",
-    inviconFile: "Invicon_Beetroot_Soup.png",
-  },
-  {
-    id: "suspicious_stew",
-    name: "Suspicious Stew",
-    type: "Food",
-    dimension: ["Overworld"],
-    stackable: false,
-    renewable: true,
-    versionAdded: "1.14",
-    inviconFile: "Invicon_Suspicious_Stew.png",
-  },
-];
-
-// ─── Mobs ───────────────────────────────────────────────────────
-
-const MOBS: MobDef[] = [
-  {
-    id: "creeper",
-    name: "Creeper",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Creeper_JE",
-  },
-  {
-    id: "zombie",
-    name: "Zombie",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Zombie_JE",
-  },
-  {
-    id: "skeleton",
-    name: "Skeleton",
-    dimension: ["Overworld", "Nether"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Skeleton_JE",
-  },
-  {
-    id: "spider",
-    name: "Spider",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Spider_JE",
-  },
-  {
-    id: "enderman",
-    name: "Enderman",
-    dimension: ["Overworld", "Nether", "End"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Enderman_JE",
-  },
-  {
-    id: "blaze",
-    name: "Blaze",
-    dimension: ["Nether"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Blaze_JE",
-  },
-  {
-    id: "ghast",
-    name: "Ghast",
-    dimension: ["Nether"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Ghast_JE",
-  },
-  {
-    id: "wither_skeleton",
-    name: "Wither Skeleton",
-    dimension: ["Nether"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.4",
-    imageSearchPrefix: "Wither_Skeleton_JE",
-  },
-  {
-    id: "magma_cube",
-    name: "Magma Cube",
-    dimension: ["Nether"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Magma_Cube_JE",
-  },
-  {
-    id: "wolf",
-    name: "Wolf",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Wolf_JE",
-  },
-  {
-    id: "cat",
-    name: "Cat",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Tuxedo_Cat_JE",
-  },
-  {
-    id: "pig",
-    name: "Pig",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Pig_JE",
-  },
-  {
-    id: "cow",
-    name: "Cow",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Cow_JE",
-  },
-  {
-    id: "sheep",
-    name: "Sheep",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "White_Sheep_JE",
-  },
-  {
-    id: "chicken",
-    name: "Chicken",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Chicken_JE",
-  },
-  {
-    id: "villager",
-    name: "Villager",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Plains_Villager_Base_JE",
-  },
-  {
-    id: "iron_golem",
-    name: "Iron Golem",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.2",
-    imageSearchPrefix: "Iron_Golem_JE",
-  },
-  {
-    id: "ender_dragon",
-    name: "Ender Dragon",
-    dimension: ["End"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Ender_Dragon_JE",
-  },
-  {
-    id: "wither",
-    name: "Wither",
-    dimension: ["Overworld", "Nether", "End"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.4",
-    imageSearchPrefix: "Wither_JE",
-  },
-  {
-    id: "phantom",
-    name: "Phantom",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.13",
-    imageSearchPrefix: "Phantom_JE",
-  },
-  {
-    id: "warden",
-    name: "Warden",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.19",
-    imageSearchPrefix: "Warden_JE",
-  },
-  {
-    id: "slime",
-    name: "Slime",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Slime_JE",
-  },
-  // ── Hostile ──
-  {
-    id: "witch",
-    name: "Witch",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.4",
-    imageSearchPrefix: "Witch_JE",
-  },
-  {
-    id: "guardian",
-    name: "Guardian",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.8",
-    imageSearchPrefix: "Guardian_JE",
-  },
-  {
-    id: "elder_guardian",
-    name: "Elder Guardian",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: false,
-    versionAdded: "1.8",
-    imageSearchPrefix: "Elder_Guardian_JE",
-  },
-  {
-    id: "shulker",
-    name: "Shulker",
-    dimension: ["End"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.9",
-    imageSearchPrefix: "Shulker_JE",
-  },
-  {
-    id: "evoker",
-    name: "Evoker",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.11",
-    imageSearchPrefix: "Evoker_JE",
-  },
-  {
-    id: "vindicator",
-    name: "Vindicator",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.11",
-    imageSearchPrefix: "Vindicator_JE",
-  },
-  {
-    id: "pillager",
-    name: "Pillager",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Pillager_JE",
-  },
-  {
-    id: "ravager",
-    name: "Ravager",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Ravager_JE",
-  },
-  {
-    id: "hoglin",
-    name: "Hoglin",
-    dimension: ["Nether"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.16",
-    imageSearchPrefix: "Hoglin_JE",
-  },
-  {
-    id: "piglin_brute",
-    name: "Piglin Brute",
-    dimension: ["Nether"],
-    behavior: "Hostile",
-    renewable: false,
-    versionAdded: "1.16",
-    imageSearchPrefix: "Piglin_Brute_JE",
-  },
-  {
-    id: "silverfish",
-    name: "Silverfish",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Silverfish_JE",
-  },
-  {
-    id: "cave_spider",
-    name: "Cave Spider",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Cave_Spider_JE",
-  },
-  {
-    id: "drowned",
-    name: "Drowned",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.13",
-    imageSearchPrefix: "Drowned_JE",
-  },
-  {
-    id: "husk",
-    name: "Husk",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.10",
-    imageSearchPrefix: "Husk_JE",
-  },
-  {
-    id: "stray",
-    name: "Stray",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.10",
-    imageSearchPrefix: "Stray_JE",
-  },
-  {
-    id: "breeze",
-    name: "Breeze",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.21",
-    imageSearchPrefix: "Breeze_JE",
-  },
-  {
-    id: "bogged",
-    name: "Bogged",
-    dimension: ["Overworld"],
-    behavior: "Hostile",
-    renewable: true,
-    versionAdded: "1.21",
-    imageSearchPrefix: "Bogged_JE",
-  },
-  // ── Neutral ──
-  {
-    id: "bee",
-    name: "Bee",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.15",
-    imageSearchPrefix: "Bee_JE",
-  },
-  {
-    id: "dolphin",
-    name: "Dolphin",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.13",
-    imageSearchPrefix: "Dolphin_JE",
-  },
-  {
-    id: "llama",
-    name: "Llama",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.11",
-    imageSearchPrefix: "Llama_JE",
-  },
-  {
-    id: "panda",
-    name: "Panda",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Panda_JE",
-  },
-  {
-    id: "polar_bear",
-    name: "Polar Bear",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.10",
-    imageSearchPrefix: "Polar_Bear_JE",
-  },
-  {
-    id: "piglin",
-    name: "Piglin",
-    dimension: ["Nether"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.16",
-    imageSearchPrefix: "Piglin_JE",
-  },
-  {
-    id: "fox",
-    name: "Fox",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Fox_JE",
-  },
-  {
-    id: "goat",
-    name: "Goat",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.17",
-    imageSearchPrefix: "Goat_JE",
-  },
-  {
-    id: "trader_llama",
-    name: "Trader Llama",
-    dimension: ["Overworld"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Trader_Llama_JE",
-  },
-  {
-    id: "zombified_piglin",
-    name: "Zombified Piglin",
-    dimension: ["Nether"],
-    behavior: "Neutral",
-    renewable: true,
-    versionAdded: "1.16",
-    imageSearchPrefix: "Zombified_Piglin_JE",
-  },
-  // ── Passive ──
-  {
-    id: "horse",
-    name: "Horse",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.6",
-    imageSearchPrefix: "Horse_JE",
-  },
-  {
-    id: "donkey",
-    name: "Donkey",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.6",
-    imageSearchPrefix: "Donkey_JE",
-  },
-  {
-    id: "mule",
-    name: "Mule",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.6",
-    imageSearchPrefix: "Mule_JE",
-  },
-  {
-    id: "rabbit",
-    name: "Rabbit",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.8",
-    imageSearchPrefix: "Rabbit_JE",
-  },
-  {
-    id: "squid",
-    name: "Squid",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Squid_JE",
-  },
-  {
-    id: "glow_squid",
-    name: "Glow Squid",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.17",
-    imageSearchPrefix: "Glow_Squid_JE",
-  },
-  {
-    id: "axolotl",
-    name: "Axolotl",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.17",
-    imageSearchPrefix: "Axolotl_JE",
-  },
-  {
-    id: "turtle",
-    name: "Turtle",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.13",
-    imageSearchPrefix: "Turtle_JE",
-  },
-  {
-    id: "parrot",
-    name: "Parrot",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: false,
-    versionAdded: "1.12",
-    imageSearchPrefix: "Parrot_JE",
-  },
-  {
-    id: "bat",
-    name: "Bat",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.4",
-    imageSearchPrefix: "Bat_JE",
-  },
-  {
-    id: "ocelot",
-    name: "Ocelot",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.2",
-    imageSearchPrefix: "Ocelot_JE",
-  },
-  {
-    id: "mooshroom",
-    name: "Mooshroom",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Red_Mooshroom_JE",
-  },
-  {
-    id: "snow_golem",
-    name: "Snow Golem",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.0",
-    imageSearchPrefix: "Snow_Golem_JE",
-  },
-  {
-    id: "allay",
-    name: "Allay",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.19",
-    imageSearchPrefix: "Allay_JE",
-  },
-  {
-    id: "frog",
-    name: "Frog",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.19",
-    imageSearchPrefix: "Temperate_Frog_JE",
-  },
-  {
-    id: "camel",
-    name: "Camel",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.20",
-    imageSearchPrefix: "Camel_JE",
-  },
-  {
-    id: "armadillo",
-    name: "Armadillo",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.20",
-    imageSearchPrefix: "Armadillo_JE",
-  },
-  {
-    id: "sniffer",
-    name: "Sniffer",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.20",
-    imageSearchPrefix: "Sniffer_JE",
-  },
-  {
-    id: "strider",
-    name: "Strider",
-    dimension: ["Nether"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.16",
-    imageSearchPrefix: "Strider_JE",
-  },
-  {
-    id: "wandering_trader",
-    name: "Wandering Trader",
-    dimension: ["Overworld"],
-    behavior: "Passive",
-    renewable: true,
-    versionAdded: "1.14",
-    imageSearchPrefix: "Wandering_Trader_JE",
-  },
-];
-
-// ─── Recipes ────────────────────────────────────────────────────
-
-const RECIPES: RecipeDef[] = [
-  // Swords
-  {
-    itemId: "diamond_sword",
-    name: "Diamond Sword",
-    grid: [
-      [null, "diamond", null],
-      [null, "diamond", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_sword",
-    name: "Iron Sword",
-    grid: [
-      [null, "iron_ingot", null],
-      [null, "iron_ingot", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "stone_sword",
-    name: "Stone Sword",
-    grid: [
-      [null, "cobblestone", null],
-      [null, "cobblestone", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "wooden_sword",
-    name: "Wooden Sword",
-    grid: [
-      [null, "oak_planks", null],
-      [null, "oak_planks", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // Pickaxes
-  {
-    itemId: "diamond_pickaxe",
-    name: "Diamond Pickaxe",
-    grid: [
-      ["diamond", "diamond", "diamond"],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_pickaxe",
-    name: "Iron Pickaxe",
-    grid: [
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "stone_pickaxe",
-    name: "Stone Pickaxe",
-    grid: [
-      ["cobblestone", "cobblestone", "cobblestone"],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "wooden_pickaxe",
-    name: "Wooden Pickaxe",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // Axes
-  {
-    itemId: "diamond_axe",
-    name: "Diamond Axe",
-    grid: [
-      ["diamond", "diamond", null],
-      ["diamond", "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_axe",
-    name: "Iron Axe",
-    grid: [
-      ["iron_ingot", "iron_ingot", null],
-      ["iron_ingot", "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // Shovels
-  {
-    itemId: "diamond_shovel",
-    name: "Diamond Shovel",
-    grid: [
-      [null, "diamond", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // Other tools
-  {
-    itemId: "bow",
-    name: "Bow",
-    grid: [
-      [null, "stick", "string"],
-      ["stick", null, "string"],
-      [null, "stick", "string"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "shield",
-    name: "Shield",
-    grid: [
-      ["oak_planks", "iron_ingot", "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-      [null, "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "fishing_rod",
-    name: "Fishing Rod",
-    grid: [
-      [null, null, "stick"],
-      [null, "stick", "string"],
-      ["stick", null, "string"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "shears",
-    name: "Shears",
-    grid: [
-      [null, "iron_ingot", null],
-      ["iron_ingot", null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "flint_and_steel",
-    name: "Flint and Steel",
-    grid: [
-      ["iron_ingot", null, null],
-      [null, "flint", null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-
-  // Blocks/Utility
-  {
-    itemId: "crafting_table",
-    name: "Crafting Table",
-    grid: [
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "furnace",
-    name: "Furnace",
-    grid: [
-      ["cobblestone", "cobblestone", "cobblestone"],
-      ["cobblestone", null, "cobblestone"],
-      ["cobblestone", "cobblestone", "cobblestone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "chest",
-    name: "Chest",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["oak_planks", null, "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "enchanting_table",
-    name: "Enchanting Table",
-    grid: [
-      [null, "book", null],
-      ["diamond", "obsidian", "diamond"],
-      ["obsidian", "obsidian", "obsidian"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "bookshelf",
-    name: "Bookshelf",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["book", "book", "book"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "piston",
-    name: "Piston",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["cobblestone", "iron_ingot", "cobblestone"],
-      ["cobblestone", "redstone", "cobblestone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "tnt",
-    name: "TNT",
-    grid: [
-      ["gunpowder", "sand", "gunpowder"],
-      ["sand", "gunpowder", "sand"],
-      ["gunpowder", "sand", "gunpowder"],
-    ],
-    shapeless: false,
-  },
-
-  // Food
-  {
-    itemId: "golden_apple",
-    name: "Golden Apple",
-    grid: [
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-      ["gold_ingot", "apple", "gold_ingot"],
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "bread",
-    name: "Bread",
-    grid: [
-      ["wheat", "wheat", "wheat"],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "cookie",
-    name: "Cookie",
-    grid: [
-      ["wheat", "cocoa_beans", "wheat"],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "cake",
-    name: "Cake",
-    grid: [
-      ["milk_bucket", "milk_bucket", "milk_bucket"],
-      ["sugar", "egg", "sugar"],
-      ["wheat", "wheat", "wheat"],
-    ],
-    shapeless: false,
-  },
-
-  // Items
-  {
-    itemId: "stick",
-    name: "Stick",
-    grid: [
-      [null, "oak_planks", null],
-      [null, "oak_planks", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "torch",
-    name: "Torch",
-    grid: [
-      [null, "coal", null],
-      [null, "stick", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "bucket",
-    name: "Bucket",
-    grid: [
-      ["iron_ingot", null, "iron_ingot"],
-      [null, "iron_ingot", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "compass",
-    name: "Compass",
-    grid: [
-      [null, "iron_ingot", null],
-      ["iron_ingot", "redstone", "iron_ingot"],
-      [null, "iron_ingot", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "clock",
-    name: "Clock",
-    grid: [
-      [null, "gold_ingot", null],
-      ["gold_ingot", "redstone", "gold_ingot"],
-      [null, "gold_ingot", null],
-    ],
-    shapeless: false,
-  },
-
-  // Armor
-  {
-    itemId: "diamond_helmet",
-    name: "Diamond Helmet",
-    grid: [
-      ["diamond", "diamond", "diamond"],
-      ["diamond", null, "diamond"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "diamond_chestplate",
-    name: "Diamond Chestplate",
-    grid: [
-      ["diamond", null, "diamond"],
-      ["diamond", "diamond", "diamond"],
-      ["diamond", "diamond", "diamond"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "diamond_leggings",
-    name: "Diamond Leggings",
-    grid: [
-      ["diamond", "diamond", "diamond"],
-      ["diamond", null, "diamond"],
-      ["diamond", null, "diamond"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "diamond_boots",
-    name: "Diamond Boots",
-    grid: [
-      ["diamond", null, "diamond"],
-      ["diamond", null, "diamond"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-
-  // Simple crafting
-  {
-    itemId: "oak_planks",
-    name: "Oak Planks",
-    grid: [
-      ["oak_log", null, null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-
-  // ─── Axes (new) ───────────────────────────────
-  {
-    itemId: "stone_axe",
-    name: "Stone Axe",
-    grid: [
-      ["cobblestone", "cobblestone", null],
-      ["cobblestone", "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "wooden_axe",
-    name: "Wooden Axe",
-    grid: [
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_axe",
-    name: "Golden Axe",
-    grid: [
-      ["gold_ingot", "gold_ingot", null],
-      ["gold_ingot", "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Hoes ─────────────────────────────────────
-  {
-    itemId: "iron_hoe",
-    name: "Iron Hoe",
-    grid: [
-      ["iron_ingot", "iron_ingot", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "stone_hoe",
-    name: "Stone Hoe",
-    grid: [
-      ["cobblestone", "cobblestone", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "wooden_hoe",
-    name: "Wooden Hoe",
-    grid: [
-      ["oak_planks", "oak_planks", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_hoe",
-    name: "Golden Hoe",
-    grid: [
-      ["gold_ingot", "gold_ingot", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Shovels (new) ────────────────────────────
-  {
-    itemId: "stone_shovel",
-    name: "Stone Shovel",
-    grid: [
-      [null, "cobblestone", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "wooden_shovel",
-    name: "Wooden Shovel",
-    grid: [
-      [null, "oak_planks", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_shovel",
-    name: "Iron Shovel",
-    grid: [
-      [null, "iron_ingot", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_shovel",
-    name: "Golden Shovel",
-    grid: [
-      [null, "gold_ingot", null],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Golden weapons (new) ─────────────────────
-  {
-    itemId: "golden_sword",
-    name: "Golden Sword",
-    grid: [
-      [null, "gold_ingot", null],
-      [null, "gold_ingot", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_pickaxe",
-    name: "Golden Pickaxe",
-    grid: [
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-      [null, "stick", null],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Other tools & weapons (new) ──────────────
-  {
-    itemId: "crossbow",
-    name: "Crossbow",
-    grid: [
-      ["stick", "iron_ingot", "stick"],
-      ["string", "tripwire_hook", "string"],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "spyglass",
-    name: "Spyglass",
-    grid: [
-      [null, "amethyst_shard", null],
-      [null, "copper_ingot", null],
-      [null, "copper_ingot", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "lead",
-    name: "Lead",
-    grid: [
-      ["string", "string", null],
-      ["string", "slime_ball", null],
-      [null, null, "string"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "map",
-    name: "Map",
-    grid: [
-      ["paper", "paper", "paper"],
-      ["paper", "compass", "paper"],
-      ["paper", "paper", "paper"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "carrot_on_a_stick",
-    name: "Carrot on a Stick",
-    grid: [
-      ["fishing_rod", "carrot", null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-
-  // ─── Iron armor (new) ─────────────────────────
-  {
-    itemId: "iron_helmet",
-    name: "Iron Helmet",
-    grid: [
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      ["iron_ingot", null, "iron_ingot"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_chestplate",
-    name: "Iron Chestplate",
-    grid: [
-      ["iron_ingot", null, "iron_ingot"],
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_leggings",
-    name: "Iron Leggings",
-    grid: [
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      ["iron_ingot", null, "iron_ingot"],
-      ["iron_ingot", null, "iron_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_boots",
-    name: "Iron Boots",
-    grid: [
-      ["iron_ingot", null, "iron_ingot"],
-      ["iron_ingot", null, "iron_ingot"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Golden armor (new) ───────────────────────
-  {
-    itemId: "golden_helmet",
-    name: "Golden Helmet",
-    grid: [
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-      ["gold_ingot", null, "gold_ingot"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_chestplate",
-    name: "Golden Chestplate",
-    grid: [
-      ["gold_ingot", null, "gold_ingot"],
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_leggings",
-    name: "Golden Leggings",
-    grid: [
-      ["gold_ingot", "gold_ingot", "gold_ingot"],
-      ["gold_ingot", null, "gold_ingot"],
-      ["gold_ingot", null, "gold_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "golden_boots",
-    name: "Golden Boots",
-    grid: [
-      ["gold_ingot", null, "gold_ingot"],
-      ["gold_ingot", null, "gold_ingot"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Leather armor (new) ──────────────────────
-  {
-    itemId: "leather_helmet",
-    name: "Leather Helmet",
-    grid: [
-      ["leather", "leather", "leather"],
-      ["leather", null, "leather"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "leather_chestplate",
-    name: "Leather Chestplate",
-    grid: [
-      ["leather", null, "leather"],
-      ["leather", "leather", "leather"],
-      ["leather", "leather", "leather"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "leather_leggings",
-    name: "Leather Leggings",
-    grid: [
-      ["leather", "leather", "leather"],
-      ["leather", null, "leather"],
-      ["leather", null, "leather"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "leather_boots",
-    name: "Leather Boots",
-    grid: [
-      ["leather", null, "leather"],
-      ["leather", null, "leather"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Turtle helmet (new) ──────────────────────
-  {
-    itemId: "turtle_helmet",
-    name: "Turtle Helmet",
-    grid: [
-      ["scute", "scute", "scute"],
-      ["scute", null, "scute"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Blocks & utility (new) ───────────────────
-  {
-    itemId: "hopper",
-    name: "Hopper",
-    grid: [
-      ["iron_ingot", null, "iron_ingot"],
-      ["iron_ingot", "chest", "iron_ingot"],
-      [null, "iron_ingot", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "dropper",
-    name: "Dropper",
-    grid: [
-      ["cobblestone", "cobblestone", "cobblestone"],
-      ["cobblestone", null, "cobblestone"],
-      ["cobblestone", "redstone", "cobblestone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "dispenser",
-    name: "Dispenser",
-    grid: [
-      ["cobblestone", "cobblestone", "cobblestone"],
-      ["cobblestone", "bow", "cobblestone"],
-      ["cobblestone", "redstone", "cobblestone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "observer",
-    name: "Observer",
-    grid: [
-      ["cobblestone", "cobblestone", "cobblestone"],
-      ["redstone", "redstone", "quartz"],
-      ["cobblestone", "cobblestone", "cobblestone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "note_block",
-    name: "Note Block",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["oak_planks", "redstone", "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "jukebox",
-    name: "Jukebox",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["oak_planks", "diamond", "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "beacon",
-    name: "Beacon",
-    grid: [
-      ["glass", "glass", "glass"],
-      ["glass", "nether_star", "glass"],
-      ["obsidian", "obsidian", "obsidian"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "brewing_stand",
-    name: "Brewing Stand",
-    grid: [
-      [null, "blaze_rod", null],
-      ["cobblestone", "cobblestone", "cobblestone"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "composter",
-    name: "Composter",
-    grid: [
-      ["oak_planks", null, "oak_planks"],
-      ["oak_planks", null, "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "barrel",
-    name: "Barrel",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["oak_planks", null, "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "smoker",
-    name: "Smoker",
-    grid: [
-      [null, "oak_log", null],
-      ["oak_log", "furnace", "oak_log"],
-      [null, "oak_log", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "blast_furnace",
-    name: "Blast Furnace",
-    grid: [
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      ["iron_ingot", "furnace", "iron_ingot"],
-      ["stone", "stone", "stone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "stonecutter",
-    name: "Stonecutter",
-    grid: [
-      [null, "iron_ingot", null],
-      ["stone", "stone", "stone"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "grindstone",
-    name: "Grindstone",
-    grid: [
-      ["stick", "stone", "stick"],
-      ["oak_planks", null, "oak_planks"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "smithing_table",
-    name: "Smithing Table",
-    grid: [
-      ["iron_ingot", "iron_ingot", null],
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "fletching_table",
-    name: "Fletching Table",
-    grid: [
-      ["flint", "flint", null],
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "cartography_table",
-    name: "Cartography Table",
-    grid: [
-      ["paper", "paper", null],
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "loom",
-    name: "Loom",
-    grid: [
-      ["string", "string", null],
-      ["oak_planks", "oak_planks", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "lectern",
-    name: "Lectern",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      [null, "bookshelf", null],
-      [null, "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "target",
-    name: "Target",
-    grid: [
-      [null, "redstone", null],
-      ["redstone", "wheat", "redstone"],
-      [null, "redstone", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "campfire",
-    name: "Campfire",
-    grid: [
-      [null, "stick", null],
-      ["stick", "coal", "stick"],
-      ["oak_log", "oak_log", "oak_log"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "soul_campfire",
-    name: "Soul Campfire",
-    grid: [
-      [null, "stick", null],
-      ["stick", "soul_sand", "stick"],
-      ["oak_log", "oak_log", "oak_log"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "lantern",
-    name: "Lantern",
-    grid: [
-      ["iron_nugget", "iron_nugget", "iron_nugget"],
-      ["iron_nugget", "torch", "iron_nugget"],
-      ["iron_nugget", "iron_nugget", "iron_nugget"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "chain",
-    name: "Chain",
-    grid: [
-      [null, "iron_nugget", null],
-      [null, "iron_ingot", null],
-      [null, "iron_nugget", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "lightning_rod",
-    name: "Lightning Rod",
-    grid: [
-      [null, "copper_ingot", null],
-      [null, "copper_ingot", null],
-      [null, "copper_ingot", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "rail",
-    name: "Rail",
-    grid: [
-      ["iron_ingot", null, "iron_ingot"],
-      ["iron_ingot", "stick", "iron_ingot"],
-      ["iron_ingot", null, "iron_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "powered_rail",
-    name: "Powered Rail",
-    grid: [
-      ["gold_ingot", null, "gold_ingot"],
-      ["gold_ingot", "stick", "gold_ingot"],
-      ["gold_ingot", "redstone", "gold_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "detector_rail",
-    name: "Detector Rail",
-    grid: [
-      ["iron_ingot", null, "iron_ingot"],
-      ["iron_ingot", "stone", "iron_ingot"],
-      ["iron_ingot", "redstone", "iron_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "activator_rail",
-    name: "Activator Rail",
-    grid: [
-      ["iron_ingot", "stick", "iron_ingot"],
-      ["iron_ingot", "redstone_torch", "iron_ingot"],
-      ["iron_ingot", "stick", "iron_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "ladder",
-    name: "Ladder",
-    grid: [
-      ["stick", null, "stick"],
-      ["stick", "stick", "stick"],
-      ["stick", null, "stick"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_bars",
-    name: "Iron Bars",
-    grid: [
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "glass_pane",
-    name: "Glass Pane",
-    grid: [
-      ["glass", "glass", "glass"],
-      ["glass", "glass", "glass"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "redstone_lamp",
-    name: "Redstone Lamp",
-    grid: [
-      [null, "redstone", null],
-      ["redstone", "glowstone", "redstone"],
-      [null, "redstone", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "trapped_chest",
-    name: "Trapped Chest",
-    grid: [
-      ["chest", "tripwire_hook", null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "ender_chest",
-    name: "Ender Chest",
-    grid: [
-      ["obsidian", "obsidian", "obsidian"],
-      ["obsidian", "eye_of_ender", "obsidian"],
-      ["obsidian", "obsidian", "obsidian"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "shulker_box",
-    name: "Shulker Box",
-    grid: [
-      [null, "shulker_shell", null],
-      [null, "chest", null],
-      [null, "shulker_shell", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "painting",
-    name: "Painting",
-    grid: [
-      ["stick", "stick", "stick"],
-      ["stick", "white_wool", "stick"],
-      ["stick", "stick", "stick"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "item_frame",
-    name: "Item Frame",
-    grid: [
-      ["stick", "stick", "stick"],
-      ["stick", "leather", "stick"],
-      ["stick", "stick", "stick"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "armor_stand",
-    name: "Armor Stand",
-    grid: [
-      ["stick", "stick", "stick"],
-      [null, "stick", null],
-      ["stick", "stone", "stick"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "flower_pot",
-    name: "Flower Pot",
-    grid: [
-      ["brick", null, "brick"],
-      [null, "brick", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "oak_sign",
-    name: "Oak Sign",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-      [null, "stick", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "redstone_torch",
-    name: "Redstone Torch",
-    grid: [
-      [null, "redstone", null],
-      [null, "stick", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "tripwire_hook",
-    name: "Tripwire Hook",
-    grid: [
-      [null, "iron_ingot", null],
-      [null, "stick", null],
-      [null, "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "lever",
-    name: "Lever",
-    grid: [
-      [null, "stick", null],
-      [null, "cobblestone", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "stone_button",
-    name: "Stone Button",
-    grid: [
-      ["stone", null, null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "stone_pressure_plate",
-    name: "Stone Pressure Plate",
-    grid: [
-      ["stone", "stone", null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "iron_door",
-    name: "Iron Door",
-    grid: [
-      ["iron_ingot", "iron_ingot", null],
-      ["iron_ingot", "iron_ingot", null],
-      ["iron_ingot", "iron_ingot", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "oak_door",
-    name: "Oak Door",
-    grid: [
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "oak_fence",
-    name: "Oak Fence",
-    grid: [
-      ["oak_planks", "stick", "oak_planks"],
-      ["oak_planks", "stick", "oak_planks"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "oak_fence_gate",
-    name: "Oak Fence Gate",
-    grid: [
-      ["stick", "oak_planks", "stick"],
-      ["stick", "oak_planks", "stick"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "oak_stairs",
-    name: "Oak Stairs",
-    grid: [
-      ["oak_planks", null, null],
-      ["oak_planks", "oak_planks", null],
-      ["oak_planks", "oak_planks", "oak_planks"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "oak_slab",
-    name: "Oak Slab",
-    grid: [
-      ["oak_planks", "oak_planks", "oak_planks"],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "cobblestone_stairs",
-    name: "Cobblestone Stairs",
-    grid: [
-      ["cobblestone", null, null],
-      ["cobblestone", "cobblestone", null],
-      ["cobblestone", "cobblestone", "cobblestone"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "cobblestone_slab",
-    name: "Cobblestone Slab",
-    grid: [
-      ["cobblestone", "cobblestone", "cobblestone"],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "stone_bricks",
-    name: "Stone Bricks",
-    grid: [
-      ["stone", "stone", null],
-      ["stone", "stone", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "hay_bale",
-    name: "Hay Bale",
-    grid: [
-      ["wheat", "wheat", "wheat"],
-      ["wheat", "wheat", "wheat"],
-      ["wheat", "wheat", "wheat"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "bricks",
-    name: "Bricks",
-    grid: [
-      ["brick", "brick", null],
-      ["brick", "brick", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "nether_bricks",
-    name: "Nether Bricks",
-    grid: [
-      ["nether_brick", "nether_brick", null],
-      ["nether_brick", "nether_brick", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "quartz_block",
-    name: "Block of Quartz",
-    grid: [
-      ["quartz", "quartz", null],
-      ["quartz", "quartz", null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "scaffolding",
-    name: "Scaffolding",
-    grid: [
-      ["bamboo", "string", "bamboo"],
-      ["bamboo", null, "bamboo"],
-      ["bamboo", null, "bamboo"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "anvil",
-    name: "Anvil",
-    grid: [
-      ["iron_block", "iron_block", "iron_block"],
-      [null, "iron_ingot", null],
-      ["iron_ingot", "iron_ingot", "iron_ingot"],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "white_bed",
-    name: "White Bed",
-    grid: [
-      ["white_wool", "white_wool", "white_wool"],
-      ["oak_planks", "oak_planks", "oak_planks"],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Food (new) ───────────────────────────────
-  {
-    itemId: "pumpkin_pie",
-    name: "Pumpkin Pie",
-    grid: [
-      ["pumpkin", "sugar", "egg"],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "golden_carrot",
-    name: "Golden Carrot",
-    grid: [
-      ["gold_nugget", "gold_nugget", "gold_nugget"],
-      ["gold_nugget", "carrot", "gold_nugget"],
-      ["gold_nugget", "gold_nugget", "gold_nugget"],
-    ],
-    shapeless: false,
-  },
-
-  // ─── Items (new) ──────────────────────────────
-  {
-    itemId: "paper",
-    name: "Paper",
-    grid: [
-      ["sugar_cane", "sugar_cane", "sugar_cane"],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "book",
-    name: "Book",
-    grid: [
-      ["paper", null, null],
-      ["paper", null, null],
-      ["paper", "leather", null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "eye_of_ender",
-    name: "Eye of Ender",
-    grid: [
-      ["blaze_powder", "ender_pearl", null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "arrow",
-    name: "Arrow",
-    grid: [
-      [null, "flint", null],
-      [null, "stick", null],
-      [null, "feather", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "spectral_arrow",
-    name: "Spectral Arrow",
-    grid: [
-      [null, "glowstone_dust", null],
-      ["glowstone_dust", "arrow", "glowstone_dust"],
-      [null, "glowstone_dust", null],
-    ],
-    shapeless: false,
-  },
-  {
-    itemId: "firework_rocket",
-    name: "Firework Rocket",
-    grid: [
-      ["paper", "gunpowder", null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "bone_meal",
-    name: "Bone Meal",
-    grid: [
-      ["bone", null, null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-  {
-    itemId: "sugar",
-    name: "Sugar",
-    grid: [
-      ["sugar_cane", null, null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    shapeless: true,
-  },
-];
-
-// ─── Sounds ─────────────────────────────────────────────────────
-
-const SOUNDS: SoundDef[] = [
-  {
-    id: "creeper_fuse",
-    entityId: "creeper",
-    name: "Creeper",
-    searchPrefix: "Fuse",
-    category: "Mob",
-  },
-  {
-    id: "zombie_idle",
-    entityId: "zombie",
-    name: "Zombie",
-    searchPrefix: "Zombie idle",
-    category: "Mob",
-  },
-  {
-    id: "skeleton_idle",
-    entityId: "skeleton",
-    name: "Skeleton",
-    searchPrefix: "Skeleton idle",
-    category: "Mob",
-  },
-  {
-    id: "spider_idle",
-    entityId: "spider",
-    name: "Spider",
-    searchPrefix: "Spider idle",
-    category: "Mob",
-  },
-  {
-    id: "enderman_idle",
-    entityId: "enderman",
-    name: "Enderman",
-    searchPrefix: "Enderman idle",
-    category: "Mob",
-  },
-  {
-    id: "blaze_ambient",
-    entityId: "blaze",
-    name: "Blaze",
-    searchPrefix: "Blaze breath",
-    category: "Mob",
-  },
-  {
-    id: "ghast_moan",
-    entityId: "ghast",
-    name: "Ghast",
-    searchPrefix: "Ghast affectionate scream",
-    category: "Mob",
-  },
-  {
-    id: "wolf_bark",
-    entityId: "wolf",
-    name: "Wolf",
-    searchPrefix: "Wolf bark",
-    category: "Mob",
-  },
-  {
-    id: "cat_meow",
-    entityId: "cat",
-    name: "Cat",
-    searchPrefix: "Cat meow",
-    category: "Mob",
-  },
-  {
-    id: "pig_idle",
-    entityId: "pig",
-    name: "Pig",
-    searchPrefix: "Pig idle",
-    category: "Mob",
-  },
-  {
-    id: "cow_idle",
-    entityId: "cow",
-    name: "Cow",
-    searchPrefix: "Cow idle",
-    category: "Mob",
-  },
-  {
-    id: "sheep_idle",
-    entityId: "sheep",
-    name: "Sheep",
-    searchPrefix: "Sheep say",
-    category: "Mob",
-  },
-  {
-    id: "chicken_idle",
-    entityId: "chicken",
-    name: "Chicken",
-    searchPrefix: "Chicken idle",
-    category: "Mob",
-  },
-  {
-    id: "villager_idle",
-    entityId: "villager",
-    name: "Villager",
-    searchPrefix: "Villager idle",
-    category: "Mob",
-  },
-  {
-    id: "ender_dragon_roar",
-    entityId: "ender_dragon",
-    name: "Ender Dragon",
-    searchPrefix: "Ender Dragon growl",
-    category: "Mob",
-  },
-  // ── New sounds for existing mobs ──
-  {
-    id: "wither_skeleton_idle",
-    entityId: "wither_skeleton",
-    name: "Wither Skeleton",
-    searchPrefix: "Wither Skeleton idle",
-    category: "Mob",
-  },
-  {
-    id: "magma_cube_idle",
-    entityId: "magma_cube",
-    name: "Magma Cube",
-    searchPrefix: "Magma cube big",
-    category: "Mob",
-  },
-  {
-    id: "iron_golem_idle",
-    entityId: "iron_golem",
-    name: "Iron Golem",
-    searchPrefix: "Iron Golem idle",
-    category: "Mob",
-  },
-  {
-    id: "wither_idle",
-    entityId: "wither",
-    name: "Wither",
-    searchPrefix: "Wither idle",
-    category: "Mob",
-  },
-  {
-    id: "phantom_idle",
-    entityId: "phantom",
-    name: "Phantom",
-    searchPrefix: "Phantom idle",
-    category: "Mob",
-  },
-  {
-    id: "warden_idle",
-    entityId: "warden",
-    name: "Warden",
-    searchPrefix: "Warden nearby",
-    category: "Mob",
-  },
-  {
-    id: "slime_idle",
-    entityId: "slime",
-    name: "Slime",
-    searchPrefix: "Slime squish small",
-    category: "Mob",
-  },
-  // ── Sounds for new mobs ──
-  {
-    id: "witch_idle",
-    entityId: "witch",
-    name: "Witch",
-    searchPrefix: "Witch idle",
-    category: "Mob",
-  },
-  {
-    id: "guardian_idle",
-    entityId: "guardian",
-    name: "Guardian",
-    searchPrefix: "Guardian idle",
-    category: "Mob",
-  },
-  {
-    id: "shulker_idle",
-    entityId: "shulker",
-    name: "Shulker",
-    searchPrefix: "Shulker idle",
-    category: "Mob",
-  },
-  {
-    id: "bee_idle",
-    entityId: "bee",
-    name: "Bee",
-    searchPrefix: "Bee loop",
-    category: "Mob",
-  },
-  {
-    id: "dolphin_idle",
-    entityId: "dolphin",
-    name: "Dolphin",
-    searchPrefix: "Dolphin idle",
-    category: "Mob",
-  },
-  {
-    id: "horse_idle",
-    entityId: "horse",
-    name: "Horse",
-    searchPrefix: "Horse idle",
-    category: "Mob",
-  },
-  {
-    id: "bat_idle",
-    entityId: "bat",
-    name: "Bat",
-    searchPrefix: "Bat idle",
-    category: "Mob",
-  },
-  {
-    id: "fox_idle",
-    entityId: "fox",
-    name: "Fox",
-    searchPrefix: "Fox idle",
-    category: "Mob",
-  },
-  {
-    id: "goat_idle",
-    entityId: "goat",
-    name: "Goat",
-    searchPrefix: "Goat idle",
-    category: "Mob",
-  },
-  {
-    id: "frog_idle",
-    entityId: "frog",
-    name: "Frog",
-    searchPrefix: "Frog idle",
-    category: "Mob",
-  },
-  {
-    id: "axolotl_idle",
-    entityId: "axolotl",
-    name: "Axolotl",
-    searchPrefix: "Axolotl idle",
-    category: "Mob",
-  },
-  {
-    id: "parrot_idle",
-    entityId: "parrot",
-    name: "Parrot",
-    searchPrefix: "Parrot idle",
-    category: "Mob",
-  },
-  {
-    id: "drowned_idle",
-    entityId: "drowned",
-    name: "Drowned",
-    searchPrefix: "Drowned idle",
-    category: "Mob",
-  },
-  {
-    id: "pillager_idle",
-    entityId: "pillager",
-    name: "Pillager",
-    searchPrefix: "Pillager idle",
-    category: "Mob",
-  },
-  {
-    id: "hoglin_idle",
-    entityId: "hoglin",
-    name: "Hoglin",
-    searchPrefix: "Hoglin idle",
-    category: "Mob",
-  },
-  {
-    id: "piglin_idle",
-    entityId: "piglin",
-    name: "Piglin",
-    searchPrefix: "Piglin idle",
-    category: "Mob",
-  },
-  {
-    id: "strider_idle",
-    entityId: "strider",
-    name: "Strider",
-    searchPrefix: "Strider idle",
-    category: "Mob",
-  },
-];
-
-// ─── Ingredient to Icon mapping ─────────────────────────────────
-// Map ingredient IDs used in recipes to their Invicon file names
-
-const INGREDIENT_ICON_MAP: Record<string, string> = {};
-for (const item of ITEMS) {
-  INGREDIENT_ICON_MAP[item.id] = item.inviconFile;
+  return {
+    itemId: toId(outputName),
+    name: outputName,
+    grid,
+    shapeless,
+  };
 }
-// Add extra ingredients not in the main items list
-const EXTRA_INGREDIENTS: Record<string, string> = {
-  wheat: "Invicon_Wheat.png",
-  cocoa_beans: "Invicon_Cocoa_Beans.png",
-  milk_bucket: "Invicon_Milk_Bucket.png",
-  sugar: "Invicon_Sugar.png",
-  egg: "Invicon_Egg.png",
-  oak_log: "Invicon_Oak_Log.png",
-  iron_block: "Invicon_Block_of_Iron.png",
-  blaze_powder: "Invicon_Blaze_Powder.png",
-  leather: "Invicon_Leather.png",
-  feather: "Invicon_Feather.png",
-  paper: "Invicon_Paper.png",
-  tripwire_hook: "Invicon_Tripwire_Hook.png",
-  slime_ball: "Invicon_Slimeball.png",
-  amethyst_shard: "Invicon_Amethyst_Shard.png",
-  copper_ingot: "Invicon_Copper_Ingot.png",
-  iron_nugget: "Invicon_Iron_Nugget.png",
-  gold_nugget: "Invicon_Gold_Nugget.png",
-  nether_star: "Invicon_Nether_Star.png",
-  scute: "Invicon_Scute.png",
-  quartz: "Invicon_Nether_Quartz.png",
-  pumpkin: "Invicon_Pumpkin.png",
-  carrot: "Invicon_Carrot.png",
-  bamboo: "Invicon_Bamboo.png",
-  white_wool: "Invicon_White_Wool.png",
-  sugar_cane: "Invicon_Sugar_Cane.png",
-  brick: "Invicon_Brick.png",
-  nether_brick: "Invicon_Nether_Brick.png",
-  shulker_shell: "Invicon_Shulker_Shell.png",
-  redstone_torch: "Invicon_Redstone_Torch.png",
-  arrow: "Invicon_Arrow.png",
-  glowstone_dust: "Invicon_Glowstone_Dust.png",
-};
-Object.assign(INGREDIENT_ICON_MAP, EXTRA_INGREDIENTS);
+
+/** Convert a display name to an ID: "Diamond Sword" → "diamond_sword" */
+function toId(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_]/g, "");
+}
+
+/**
+ * Convert an ID back to a likely Invicon filename.
+ * "diamond_sword" → "Invicon_Diamond_Sword.png"
+ */
+function idToInviconFile(id: string): string {
+  const name = id
+    .split("_")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join("_");
+  return `Invicon_${name}.png`;
+}
 
 // ═══════════════════════════════════════════════════════════════
 //  MAIN
 // ═══════════════════════════════════════════════════════════════
 
 async function main() {
-  console.log("🔨 Craftdle Wiki Data Fetcher");
+  console.log("🔨 Craftdle Wiki Data Fetcher v2 (Dynamic)");
   console.log("═".repeat(50));
 
-  // 1. Resolve item Invicon URLs
-  console.log("\n📦 Resolving item Invicon URLs...");
-  const itemFiles = ITEMS.map((i) => i.inviconFile);
-  const ingredientFiles = Object.values(EXTRA_INGREDIENTS);
-  const allInviconFiles = [...new Set([...itemFiles, ...ingredientFiles])];
-  const inviconUrls = await batchGetImageUrls(allInviconFiles);
-  console.log(
-    `  Found ${inviconUrls.size}/${allInviconFiles.length} Invicon URLs`,
-  );
+  // ── Step 1: Discover pages from wiki categories ──
 
-  // 2. Resolve mob render URLs
-  console.log("\n🐾 Resolving mob render URLs...");
-  const mobUrls = new Map<string, string>();
-  for (const mob of MOBS) {
-    const results = await searchImages(mob.imageSearchPrefix, undefined, 3);
-    // Pick the first PNG result (skip .gif etc)
-    const pngResult = results.find((r) => r.name.endsWith(".png"));
-    if (pngResult) {
-      mobUrls.set(mob.id, pngResult.url);
-      console.log(`  ✓ ${mob.name}: ${pngResult.name}`);
-    } else {
-      console.log(
-        `  ✗ ${mob.name}: no render found (prefix: ${mob.imageSearchPrefix})`,
-      );
-    }
-    await delay(150);
+  console.log("\n📂 Discovering entities from wiki categories...");
+
+  console.log("\n  Items:");
+  const itemPages = await fetchPagesFromCategories(["Items"], 2);
+  console.log(`  → Total item pages: ${itemPages.size}`);
+
+  console.log("\n  Blocks:");
+  const blockPages = await fetchPagesFromCategories(["Blocks"], 2);
+  console.log(`  → Total block pages: ${blockPages.size}`);
+
+  console.log("\n  Mobs:");
+  const mobPages = await fetchPagesFromCategories(["Mobs"], 2);
+  console.log(`  → Total mob pages: ${mobPages.size}`);
+
+  console.log("\n  Biomes:");
+  const biomePages = await fetchPagesFromCategories(["Biomes"], 2);
+  console.log(`  → Total biome pages: ${biomePages.size}`);
+
+  // Combine items + blocks; mobs and biomes handled separately
+  const allItemBlockTitles = new Set([...itemPages, ...blockPages]);
+  const allTitles = new Set([
+    ...allItemBlockTitles,
+    ...mobPages,
+    ...biomePages,
+  ]);
+
+  // ── Step 2: Fetch wikitext and categories for all pages ──
+
+  const allTitleArray = Array.from(allTitles);
+  console.log(`\n📄 Fetching wikitext for ${allTitleArray.length} pages...`);
+  const wikitexts = await batchFetchWikitext(allTitleArray);
+  console.log(`  Got wikitext for ${wikitexts.size} pages`);
+
+  console.log(`\n🏷️  Fetching categories for classification...`);
+  const pageCategories = await batchFetchCategories(allTitleArray);
+  console.log(`  Got categories for ${pageCategories.size} pages`);
+
+  // ── Step 3: Filter out invalid/unwanted pages ──
+
+  const excludeNamespaces =
+    /^(Template|Module|Category|User|Talk|File|MediaWiki|Help):/;
+
+  /** Pages that are meta/concept articles, not actual game items */
+  const metaPages = new Set([
+    "Item (entity)",
+    "Block",
+    "Item",
+    "Mob",
+    "Entity",
+    "Biome",
+    "Tool",
+    "Armor",
+    "Food",
+    "Weapon",
+  ]);
+
+  function isValidGamePage(title: string, wikitext: string): boolean {
+    if (excludeNamespaces.test(title)) return false;
+    if (/\(disambiguation\)/i.test(title)) return false;
+    if (metaPages.has(title)) return false;
+    if (isRedirect(wikitext)) return false;
+
+    const cats = pageCategories.get(title) || [];
+    const catStr = cats.join("|").toLowerCase();
+    if (
+      catStr.includes("removed features") ||
+      catStr.includes("education edition") ||
+      catStr.includes("joke features") ||
+      catStr.includes("april fools") ||
+      catStr.includes("unimplemented") ||
+      catStr.includes("unused")
+    )
+      return false;
+
+    return true;
   }
 
-  // 3. Resolve sound URLs
-  console.log("\n🔊 Resolving sound URLs...");
-  const soundUrls = new Map<string, string>();
-  for (const sound of SOUNDS) {
-    const results = await searchImages(sound.searchPrefix, "audio/ogg", 3);
-    const oggResult = results.find((r) => r.name.endsWith(".ogg"));
-    if (oggResult) {
-      soundUrls.set(sound.id, oggResult.url);
-      console.log(`  ✓ ${sound.name}: ${oggResult.name}`);
+  // ── Step 4: Process items and blocks ──
+
+  console.log("\n📦 Processing items and blocks...");
+
+  interface ItemJson {
+    id: string;
+    name: string;
+    type: string;
+    dimension: string[];
+    stackable: boolean;
+    renewable: boolean;
+    versionAdded: string;
+    textureUrl: string;
+    wikiUrl: string;
+  }
+
+  const itemsJson: ItemJson[] = [];
+  const allRecipes: RecipeJson[] = [];
+  const seenRecipeOutputs = new Set<string>();
+  const ingredientIdSet = new Set<string>();
+  let skippedItems = 0;
+
+  for (const title of allItemBlockTitles) {
+    const wikitext = wikitexts.get(title);
+    if (!wikitext) continue;
+    if (!isValidGamePage(title, wikitext)) continue;
+    if (!hasInfobox(wikitext)) continue;
+
+    const cats = pageCategories.get(title) || [];
+    const id = toId(title);
+    const isBlock = blockPages.has(title);
+
+    const renewable = parseBoolean(extractParam(wikitext, "renewable"), true);
+    const stackable = parseStackable(extractParam(wikitext, "stackable"));
+    const versionAdded = extractVersionAdded(wikitext);
+    const type = classifyEntityType(cats, isBlock, title);
+    const dimensions = determineDimensions(cats, wikitext);
+
+    if (!versionAdded) {
+      skippedItems++;
+      continue;
+    }
+
+    itemsJson.push({
+      id,
+      name: title,
+      type,
+      dimension: dimensions,
+      stackable,
+      renewable,
+      versionAdded,
+      textureUrl: "", // Resolved in step 7
+      wikiUrl: `https://minecraft.wiki/w/${encodeURIComponent(title.replace(/ /g, "_"))}`,
+    });
+
+    // Extract crafting recipes from this page's wikitext
+    const recipes = extractCraftingRecipes(wikitext, title);
+    for (const recipe of recipes) {
+      if (!seenRecipeOutputs.has(recipe.itemId)) {
+        seenRecipeOutputs.add(recipe.itemId);
+        allRecipes.push(recipe);
+        for (const row of recipe.grid) {
+          for (const cell of row) {
+            if (cell) ingredientIdSet.add(cell);
+          }
+        }
+      }
+    }
+  }
+  console.log(
+    `  Found ${itemsJson.length} valid items/blocks (${skippedItems} skipped — missing versionAdded)`,
+  );
+  console.log(`  Found ${allRecipes.length} crafting recipes`);
+
+  // ── Step 5: Process mobs ──
+
+  console.log("\n🐾 Processing mobs...");
+
+  interface MobJson {
+    id: string;
+    name: string;
+    type: "Mob";
+    dimension: string[];
+    behavior: string;
+    stackable: false;
+    renewable: boolean;
+    versionAdded: string;
+    textureUrl: string;
+    wikiUrl: string;
+  }
+
+  const mobsJson: MobJson[] = [];
+  let skippedMobs = 0;
+
+  for (const title of mobPages) {
+    const wikitext = wikitexts.get(title);
+    if (!wikitext) continue;
+    if (!isValidGamePage(title, wikitext)) continue;
+    if (!hasInfobox(wikitext)) continue;
+
+    const cats = pageCategories.get(title) || [];
+    const id = toId(title);
+
+    const behavior = determineMobBehavior(cats);
+    if (!behavior) {
+      skippedMobs++;
+      continue;
+    }
+
+    const renewable = parseBoolean(extractParam(wikitext, "renewable"), true);
+    const versionAdded = extractVersionAdded(wikitext);
+    const dimensions = determineDimensions(cats, wikitext);
+
+    if (!versionAdded) {
+      skippedMobs++;
+      continue;
+    }
+
+    mobsJson.push({
+      id,
+      name: title,
+      type: "Mob",
+      dimension: dimensions,
+      behavior,
+      stackable: false,
+      renewable,
+      versionAdded,
+      textureUrl: "", // Resolved in step 7
+      wikiUrl: `https://minecraft.wiki/w/${encodeURIComponent(title.replace(/ /g, "_"))}`,
+    });
+  }
+  console.log(`  Found ${mobsJson.length} valid mobs (${skippedMobs} skipped)`);
+
+  // ── Step 6: Process biomes ──
+
+  console.log("\n🌍 Processing biomes...");
+
+  interface BiomeJson {
+    id: string;
+    name: string;
+    dimension: string[];
+    versionAdded: string;
+    wikiUrl: string;
+  }
+
+  const biomesJson: BiomeJson[] = [];
+
+  for (const title of biomePages) {
+    const wikitext = wikitexts.get(title);
+    if (!wikitext) continue;
+    if (!isValidGamePage(title, wikitext)) continue;
+
+    const cats = pageCategories.get(title) || [];
+    const dimensions = determineDimensions(cats, wikitext);
+    const versionAdded = extractVersionAdded(wikitext);
+
+    biomesJson.push({
+      id: toId(title),
+      name: title,
+      dimension: dimensions,
+      versionAdded: versionAdded || "1.0",
+      wikiUrl: `https://minecraft.wiki/w/${encodeURIComponent(title.replace(/ /g, "_"))}`,
+    });
+  }
+  console.log(`  Found ${biomesJson.length} biomes`);
+
+  // ── Step 7: Resolve texture URLs ──
+
+  console.log("\n🖼️  Resolving item/block Invicon URLs...");
+  const inviconFiles = itemsJson.map(
+    (i) => `Invicon_${i.name.replace(/ /g, "_")}.png`,
+  );
+  const inviconUrls = await batchGetImageUrls(inviconFiles);
+  console.log(
+    `  Resolved ${inviconUrls.size}/${inviconFiles.length} Invicon URLs`,
+  );
+
+  for (const item of itemsJson) {
+    const filename = `Invicon_${item.name.replace(/ /g, "_")}.png`;
+    const url = inviconUrls.get(filename);
+    item.textureUrl =
+      url || `https://minecraft.wiki/w/Special:FilePath/${filename}`;
+  }
+
+  console.log("\n🐾 Resolving mob render URLs...");
+  let mobTextureCount = 0;
+  for (const mob of mobsJson) {
+    const searchPrefix = `${mob.name.replace(/ /g, "_")}_JE`;
+    const results = await searchImages(searchPrefix, undefined, 5);
+    const pngResult = results.find(
+      (r) => r.name.endsWith(".png") && !r.name.includes("Sprite"),
+    );
+    if (pngResult) {
+      mob.textureUrl = pngResult.url;
+      mobTextureCount++;
     } else {
-      // Try without "idle"/"ambient" - just the mob name + ogg filter
-      const fallback = await searchImages(
-        sound.name.replace(/ /g, "_"),
-        "audio/ogg",
-        10,
+      // Fallback: try with just the mob name
+      const fallback = await searchImages(mob.name, undefined, 5);
+      const fbPng = fallback.find(
+        (r) =>
+          r.name.endsWith(".png") &&
+          !r.name.includes("Sprite") &&
+          !r.name.includes("Icon"),
       );
-      const oggFallback = fallback.find((r) => r.name.endsWith(".ogg"));
-      if (oggFallback) {
-        soundUrls.set(sound.id, oggFallback.url);
-        console.log(`  ~ ${sound.name}: ${oggFallback.name} (fallback)`);
+      if (fbPng) {
+        mob.textureUrl = fbPng.url;
+        mobTextureCount++;
       } else {
-        console.log(`  ✗ ${sound.name}: no sound found`);
+        mob.textureUrl = `https://minecraft.wiki/w/Special:FilePath/${mob.name.replace(/ /g, "_")}_JE2.png`;
       }
     }
     await delay(150);
   }
+  console.log(
+    `  Resolved ${mobTextureCount}/${mobsJson.length} mob texture URLs`,
+  );
 
-  // ─── Generate items.json ────────────────────────────────────
-  console.log("\n📝 Generating items.json...");
-  const itemsJson = ITEMS.map((item) => {
-    const url = inviconUrls.get(item.inviconFile);
-    return {
-      id: item.id,
-      name: item.name,
-      type: item.type,
-      dimension: item.dimension,
-      stackable: item.stackable,
-      renewable: item.renewable,
-      versionAdded: item.versionAdded,
-      textureUrl:
-        url || `https://minecraft.wiki/w/Special:FilePath/${item.inviconFile}`,
-      wikiUrl: `https://minecraft.wiki/w/${item.name.replace(/ /g, "_")}`,
-    };
-  });
+  // ── Step 8: Resolve sound URLs ──
 
-  // ─── Generate mobs.json ─────────────────────────────────────
-  console.log("📝 Generating mobs.json...");
-  const mobsJson = MOBS.map((mob) => ({
-    id: mob.id,
-    name: mob.name,
-    type: "Mob" as const,
-    dimension: mob.dimension,
-    behavior: mob.behavior,
-    stackable: false as const,
-    renewable: mob.renewable,
-    versionAdded: mob.versionAdded,
-    textureUrl:
-      mobUrls.get(mob.id) ||
-      `https://minecraft.wiki/w/Special:FilePath/${mob.name.replace(/ /g, "_")}_JE2.png`,
-    wikiUrl: `https://minecraft.wiki/w/${mob.name.replace(/ /g, "_")}`,
-  }));
+  console.log("\n🔊 Resolving sound URLs...");
 
-  // ─── Generate recipes.json ──────────────────────────────────
-  console.log("📝 Generating recipes.json...");
-  const recipesJson = RECIPES;
-
-  // ─── Generate sounds.json ───────────────────────────────────
-  console.log("📝 Generating sounds.json...");
-  const soundsJson = SOUNDS.map((sound) => ({
-    id: sound.id,
-    entityId: sound.entityId,
-    name: sound.name,
-    soundFile: soundUrls.get(sound.id) || "",
-    category: sound.category,
-  })).filter((s) => s.soundFile !== "");
-
-  // ─── Generate ingredient icons map ──────────────────────────
-  console.log("📝 Generating ingredientIcons.json...");
-  const ingredientIcons: Record<string, string> = {};
-  for (const [id, filename] of Object.entries(INGREDIENT_ICON_MAP)) {
-    const url = inviconUrls.get(filename);
-    ingredientIcons[id] =
-      url || `https://minecraft.wiki/w/Special:FilePath/${filename}`;
+  interface SoundJson {
+    id: string;
+    entityId: string;
+    name: string;
+    soundFile: string;
+    category: string;
   }
 
-  // ─── Write files ────────────────────────────────────────────
+  const soundsJson: SoundJson[] = [];
+
+  for (const mob of mobsJson) {
+    // Try several search prefixes to find an idle/ambient sound
+    const searchPrefixes = [
+      `${mob.name} idle`,
+      `${mob.name} ambient`,
+      `${mob.name}`,
+    ];
+
+    let found = false;
+    for (const prefix of searchPrefixes) {
+      const results = await searchImages(prefix, "audio/ogg", 5);
+      const oggResult = results.find((r) => r.name.endsWith(".ogg"));
+      if (oggResult) {
+        soundsJson.push({
+          id: `${mob.id}_sound`,
+          entityId: mob.id,
+          name: mob.name,
+          soundFile: oggResult.url,
+          category: "Mob",
+        });
+        console.log(`  ✓ ${mob.name}: ${oggResult.name}`);
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      // Last resort: underscore-separated name
+      const altResults = await searchImages(
+        mob.name.replace(/ /g, "_"),
+        "audio/ogg",
+        10,
+      );
+      const altOgg = altResults.find((r) => r.name.endsWith(".ogg"));
+      if (altOgg) {
+        soundsJson.push({
+          id: `${mob.id}_sound`,
+          entityId: mob.id,
+          name: mob.name,
+          soundFile: altOgg.url,
+          category: "Mob",
+        });
+        console.log(`  ~ ${mob.name}: ${altOgg.name} (fallback)`);
+      } else {
+        console.log(`  ✗ ${mob.name}: no sound found`);
+      }
+    }
+    await delay(150);
+  }
+  console.log(`  Found ${soundsJson.length} sounds`);
+
+  // ── Step 9: Build ingredient icons map ──
+
+  console.log("\n🏷️  Building ingredient icons map...");
+
+  // Collect every ID that could be an ingredient (items + recipe cells)
+  const allIconIds = new Set<string>();
+  for (const item of itemsJson) allIconIds.add(item.id);
+  for (const id of ingredientIdSet) allIconIds.add(id);
+
+  const iconFileEntries = Array.from(allIconIds).map((id) => ({
+    id,
+    file: idToInviconFile(id),
+  }));
+
+  const ingredientInviconUrls = await batchGetImageUrls(
+    iconFileEntries.map((x) => x.file),
+  );
+
+  const ingredientIcons: Record<string, string> = {};
+  for (const { id, file } of iconFileEntries) {
+    const url = ingredientInviconUrls.get(file);
+    ingredientIcons[id] =
+      url || `https://minecraft.wiki/w/Special:FilePath/${file}`;
+  }
+  console.log(
+    `  Resolved ${Object.keys(ingredientIcons).length} ingredient icons`,
+  );
+
+  // ── Step 10: Write JSON files ──
+
   const dataDir = path.join(process.cwd(), "server", "data");
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+
   fs.writeFileSync(
     path.join(dataDir, "items.json"),
     JSON.stringify(itemsJson, null, 2),
@@ -4943,8 +1042,12 @@ async function main() {
     JSON.stringify(mobsJson, null, 2),
   );
   fs.writeFileSync(
+    path.join(dataDir, "biomes.json"),
+    JSON.stringify(biomesJson, null, 2),
+  );
+  fs.writeFileSync(
     path.join(dataDir, "recipes.json"),
-    JSON.stringify(recipesJson, null, 2),
+    JSON.stringify(allRecipes, null, 2),
   );
   fs.writeFileSync(
     path.join(dataDir, "sounds.json"),
@@ -4955,14 +1058,15 @@ async function main() {
     JSON.stringify(ingredientIcons, null, 2),
   );
 
-  console.log("\n═".repeat(50));
-  console.log(`✅ Generated data files:`);
-  console.log(`   items.json:  ${itemsJson.length} items`);
-  console.log(`   mobs.json:   ${mobsJson.length} mobs`);
-  console.log(`   recipes.json: ${recipesJson.length} recipes`);
-  console.log(`   sounds.json: ${soundsJson.length} sounds`);
+  console.log(`\n${"═".repeat(50)}`);
+  console.log(`✅ Generated data files in ${dataDir}:`);
+  console.log(`   items.json:            ${itemsJson.length} items/blocks`);
+  console.log(`   mobs.json:             ${mobsJson.length} mobs`);
+  console.log(`   biomes.json:           ${biomesJson.length} biomes`);
+  console.log(`   recipes.json:          ${allRecipes.length} recipes`);
+  console.log(`   sounds.json:           ${soundsJson.length} sounds`);
   console.log(
-    `   ingredientIcons.json: ${Object.keys(ingredientIcons).length} icons`,
+    `   ingredientIcons.json:  ${Object.keys(ingredientIcons).length} icons`,
   );
 }
 

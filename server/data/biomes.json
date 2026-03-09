@@ -1,37 +1,749 @@
 [
   {
-    "id": "plains",
-    "name": "Plains",
-    "dimension": ["Overworld"],
+    "id": "minecraft_wikiprojectsazerbaijani_translationbiom",
+    "name": "Minecraft Wiki:Projects/Azerbaijani translation/Biom",
+    "dimension": [
+      "Overworld"
+    ],
     "versionAdded": "1.0",
-    "wikiUrl": "https://minecraft.wiki/w/Plains"
+    "wikiUrl": "https://minecraft.wiki/w/Minecraft_Wiki%3AProjects%2FAzerbaijani_translation%2FBiom"
+  },
+  {
+    "id": "badlands",
+    "name": "Badlands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Badlands"
+  },
+  {
+    "id": "bamboo_jungle",
+    "name": "Bamboo Jungle",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.14",
+    "wikiUrl": "https://minecraft.wiki/w/Bamboo_Jungle"
+  },
+  {
+    "id": "basalt_deltas",
+    "name": "Basalt Deltas",
+    "dimension": [
+      "Nether"
+    ],
+    "versionAdded": "1.16",
+    "wikiUrl": "https://minecraft.wiki/w/Basalt_Deltas"
+  },
+  {
+    "id": "beach",
+    "name": "Beach",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Beach"
+  },
+  {
+    "id": "birch_forest",
+    "name": "Birch Forest",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Birch_Forest"
+  },
+  {
+    "id": "cherry_grove",
+    "name": "Cherry Grove",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.19",
+    "wikiUrl": "https://minecraft.wiki/w/Cherry_Grove"
+  },
+  {
+    "id": "cold_ocean",
+    "name": "Cold Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.13",
+    "wikiUrl": "https://minecraft.wiki/w/Cold_Ocean"
+  },
+  {
+    "id": "crimson_forest",
+    "name": "Crimson Forest",
+    "dimension": [
+      "Nether"
+    ],
+    "versionAdded": "1.16",
+    "wikiUrl": "https://minecraft.wiki/w/Crimson_Forest"
   },
   {
     "id": "dark_forest",
     "name": "Dark Forest",
-    "dimension": ["Overworld"],
-    "versionAdded": "1.0",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
     "wikiUrl": "https://minecraft.wiki/w/Dark_Forest"
   },
   {
-    "id": "nether_wastes",
-    "name": "Nether Wastes",
-    "dimension": ["Nether"],
-    "versionAdded": "1.0",
-    "wikiUrl": "https://minecraft.wiki/w/Nether_Wastes"
-  },
-  {
-    "id": "the_end",
-    "name": "The End",
-    "dimension": ["End"],
-    "versionAdded": "1.0",
-    "wikiUrl": "https://minecraft.wiki/w/The_End_(biome)"
+    "id": "deep_cold_ocean",
+    "name": "Deep Cold Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.13",
+    "wikiUrl": "https://minecraft.wiki/w/Deep_Cold_Ocean"
   },
   {
     "id": "deep_dark",
     "name": "Deep Dark",
-    "dimension": ["Overworld"],
+    "dimension": [
+      "Overworld"
+    ],
     "versionAdded": "1.19",
     "wikiUrl": "https://minecraft.wiki/w/Deep_Dark"
+  },
+  {
+    "id": "deep_frozen_ocean",
+    "name": "Deep Frozen Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.13",
+    "wikiUrl": "https://minecraft.wiki/w/Deep_Frozen_Ocean"
+  },
+  {
+    "id": "deep_lukewarm_ocean",
+    "name": "Deep Lukewarm Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.13",
+    "wikiUrl": "https://minecraft.wiki/w/Deep_Lukewarm_Ocean"
+  },
+  {
+    "id": "deep_ocean",
+    "name": "Deep Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Deep_Ocean"
+  },
+  {
+    "id": "desert",
+    "name": "Desert",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.3",
+    "wikiUrl": "https://minecraft.wiki/w/Desert"
+  },
+  {
+    "id": "dripstone_caves",
+    "name": "Dripstone Caves",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Dripstone_Caves"
+  },
+  {
+    "id": "end_barrens",
+    "name": "End Barrens",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.9",
+    "wikiUrl": "https://minecraft.wiki/w/End_Barrens"
+  },
+  {
+    "id": "end_highlands",
+    "name": "End Highlands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.9",
+    "wikiUrl": "https://minecraft.wiki/w/End_Highlands"
+  },
+  {
+    "id": "end_midlands",
+    "name": "End Midlands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.9",
+    "wikiUrl": "https://minecraft.wiki/w/End_Midlands"
+  },
+  {
+    "id": "the_end_biome",
+    "name": "The End (biome)",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/The_End_(biome)"
+  },
+  {
+    "id": "eroded_badlands",
+    "name": "Eroded Badlands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Eroded_Badlands"
+  },
+  {
+    "id": "flower_forest",
+    "name": "Flower Forest",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Flower_Forest"
+  },
+  {
+    "id": "forest",
+    "name": "Forest",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.2",
+    "wikiUrl": "https://minecraft.wiki/w/Forest"
+  },
+  {
+    "id": "frozen_ocean",
+    "name": "Frozen Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Frozen_Ocean"
+  },
+  {
+    "id": "frozen_peaks",
+    "name": "Frozen Peaks",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Frozen_Peaks"
+  },
+  {
+    "id": "frozen_river",
+    "name": "Frozen River",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Frozen_River"
+  },
+  {
+    "id": "grove",
+    "name": "Grove",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Grove"
+  },
+  {
+    "id": "ice_spikes",
+    "name": "Ice Spikes",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Ice_Spikes"
+  },
+  {
+    "id": "jagged_peaks",
+    "name": "Jagged Peaks",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Jagged_Peaks"
+  },
+  {
+    "id": "jungle",
+    "name": "Jungle",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.8",
+    "wikiUrl": "https://minecraft.wiki/w/Jungle"
+  },
+  {
+    "id": "lukewarm_ocean",
+    "name": "Lukewarm Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.13",
+    "wikiUrl": "https://minecraft.wiki/w/Lukewarm_Ocean"
+  },
+  {
+    "id": "lush_caves",
+    "name": "Lush Caves",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Lush_Caves"
+  },
+  {
+    "id": "mangrove_swamp",
+    "name": "Mangrove Swamp",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.19",
+    "wikiUrl": "https://minecraft.wiki/w/Mangrove_Swamp"
+  },
+  {
+    "id": "meadow",
+    "name": "Meadow",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Meadow"
+  },
+  {
+    "id": "mountains",
+    "name": "Mountains",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Mountains"
+  },
+  {
+    "id": "mushroom_fields",
+    "name": "Mushroom Fields",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Mushroom_Fields"
+  },
+  {
+    "id": "nether_wastes",
+    "name": "Nether Wastes",
+    "dimension": [
+      "Nether"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Nether_Wastes"
+  },
+  {
+    "id": "ocean",
+    "name": "Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Ocean"
+  },
+  {
+    "id": "ocean_biomes",
+    "name": "Ocean biomes",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Ocean_biomes"
+  },
+  {
+    "id": "old_growth_birch_forest",
+    "name": "Old Growth Birch Forest",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Old_Growth_Birch_Forest"
+  },
+  {
+    "id": "old_growth_pine_taiga",
+    "name": "Old Growth Pine Taiga",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Old_Growth_Pine_Taiga"
+  },
+  {
+    "id": "old_growth_spruce_taiga",
+    "name": "Old Growth Spruce Taiga",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Old_Growth_Spruce_Taiga"
+  },
+  {
+    "id": "pale_garden",
+    "name": "Pale Garden",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.21",
+    "wikiUrl": "https://minecraft.wiki/w/Pale_Garden"
+  },
+  {
+    "id": "plains",
+    "name": "Plains",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.6",
+    "wikiUrl": "https://minecraft.wiki/w/Plains"
+  },
+  {
+    "id": "river",
+    "name": "River",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.8",
+    "wikiUrl": "https://minecraft.wiki/w/River"
+  },
+  {
+    "id": "savanna",
+    "name": "Savanna",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.8",
+    "wikiUrl": "https://minecraft.wiki/w/Savanna"
+  },
+  {
+    "id": "savanna_plateau",
+    "name": "Savanna Plateau",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Savanna_Plateau"
+  },
+  {
+    "id": "small_end_islands",
+    "name": "Small End Islands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.9",
+    "wikiUrl": "https://minecraft.wiki/w/Small_End_Islands"
+  },
+  {
+    "id": "snowy_beach",
+    "name": "Snowy Beach",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Snowy_Beach"
+  },
+  {
+    "id": "snowy_plains",
+    "name": "Snowy Plains",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.8",
+    "wikiUrl": "https://minecraft.wiki/w/Snowy_Plains"
+  },
+  {
+    "id": "snowy_slopes",
+    "name": "Snowy Slopes",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Snowy_Slopes"
+  },
+  {
+    "id": "snowy_taiga",
+    "name": "Snowy Taiga",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Snowy_Taiga"
+  },
+  {
+    "id": "soul_sand_valley",
+    "name": "Soul Sand Valley",
+    "dimension": [
+      "Nether"
+    ],
+    "versionAdded": "1.16",
+    "wikiUrl": "https://minecraft.wiki/w/Soul_Sand_Valley"
+  },
+  {
+    "id": "sparse_jungle",
+    "name": "Sparse Jungle",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Sparse_Jungle"
+  },
+  {
+    "id": "stony_peaks",
+    "name": "Stony Peaks",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.18",
+    "wikiUrl": "https://minecraft.wiki/w/Stony_Peaks"
+  },
+  {
+    "id": "stony_shore",
+    "name": "Stony Shore",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Stony_Shore"
+  },
+  {
+    "id": "sunflower_plains",
+    "name": "Sunflower Plains",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Sunflower_Plains"
+  },
+  {
+    "id": "swamp",
+    "name": "Swamp",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.8",
+    "wikiUrl": "https://minecraft.wiki/w/Swamp"
+  },
+  {
+    "id": "taiga",
+    "name": "Taiga",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.2",
+    "wikiUrl": "https://minecraft.wiki/w/Taiga"
+  },
+  {
+    "id": "the_void",
+    "name": "The Void",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.9",
+    "wikiUrl": "https://minecraft.wiki/w/The_Void"
+  },
+  {
+    "id": "warm_ocean",
+    "name": "Warm Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.13",
+    "wikiUrl": "https://minecraft.wiki/w/Warm_Ocean"
+  },
+  {
+    "id": "warped_forest",
+    "name": "Warped Forest",
+    "dimension": [
+      "Nether"
+    ],
+    "versionAdded": "1.16",
+    "wikiUrl": "https://minecraft.wiki/w/Warped_Forest"
+  },
+  {
+    "id": "windswept_forest",
+    "name": "Windswept Forest",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Windswept_Forest"
+  },
+  {
+    "id": "windswept_gravelly_hills",
+    "name": "Windswept Gravelly Hills",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Windswept_Gravelly_Hills"
+  },
+  {
+    "id": "windswept_hills",
+    "name": "Windswept Hills",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.8",
+    "wikiUrl": "https://minecraft.wiki/w/Windswept_Hills"
+  },
+  {
+    "id": "windswept_savanna",
+    "name": "Windswept Savanna",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Windswept_Savanna"
+  },
+  {
+    "id": "wooded_badlands",
+    "name": "Wooded Badlands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.7",
+    "wikiUrl": "https://minecraft.wiki/w/Wooded_Badlands"
+  },
+  {
+    "id": "legendsbadlands",
+    "name": "Legends:Badlands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3ABadlands"
+  },
+  {
+    "id": "legendsbiome",
+    "name": "Legends:Biome",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3ABiome"
+  },
+  {
+    "id": "legendsdry_savanna",
+    "name": "Legends:Dry Savanna",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3ADry_Savanna"
+  },
+  {
+    "id": "legendsfatelands",
+    "name": "Legends:Fatelands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3AFatelands"
+  },
+  {
+    "id": "legendsforest",
+    "name": "Legends:Forest",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3AForest"
+  },
+  {
+    "id": "legendsjagged_peaks",
+    "name": "Legends:Jagged Peaks",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3AJagged_Peaks"
+  },
+  {
+    "id": "legendsjungle",
+    "name": "Legends:Jungle",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3AJungle"
+  },
+  {
+    "id": "legendsmeadow",
+    "name": "Legends:Meadow",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3AMeadow"
+  },
+  {
+    "id": "legendsocean",
+    "name": "Legends:Ocean",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3AOcean"
+  },
+  {
+    "id": "legendsswamp",
+    "name": "Legends:Swamp",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3ASwamp"
+  },
+  {
+    "id": "legendstundra",
+    "name": "Legends:Tundra",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.17",
+    "wikiUrl": "https://minecraft.wiki/w/Legends%3ATundra"
+  },
+  {
+    "id": "story_modecave",
+    "name": "Story Mode:Cave",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Story_Mode%3ACave"
+  },
+  {
+    "id": "story_modefar_lands",
+    "name": "Story Mode:Far Lands",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Story_Mode%3AFar_Lands"
+  },
+  {
+    "id": "story_modeswamp",
+    "name": "Story Mode:Swamp",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Story_Mode%3ASwamp"
+  },
+  {
+    "id": "story_modewoods",
+    "name": "Story Mode:Woods",
+    "dimension": [
+      "Overworld"
+    ],
+    "versionAdded": "1.0",
+    "wikiUrl": "https://minecraft.wiki/w/Story_Mode%3AWoods"
   }
 ]

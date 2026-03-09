@@ -26,10 +26,61 @@ let classicEntities: ClassicEntity[] = [];
 let ingredientIcons: Record<string, string> = {};
 
 /**
- * Returns true if textureUrl is present and non-empty.
+ * Returns true if a string field is present and non-empty.
  */
-function hasValidTexture(url: string | undefined): boolean {
-  return !!url && url.trim().length > 0;
+function isNonEmpty(value: string | undefined): boolean {
+  return !!value && value.trim().length > 0;
+}
+
+/**
+ * Check that an item/block has all required fields for Classic mode:
+ * id, name, type, dimension (non-empty), stackable, renewable, versionAdded, textureUrl.
+ */
+function isValidForClassic(entity: ItemOrBlock | Mob): boolean {
+  return (
+    isNonEmpty(entity.id) &&
+    isNonEmpty(entity.name) &&
+    isNonEmpty(entity.type) &&
+    Array.isArray(entity.dimension) &&
+    entity.dimension.length > 0 &&
+    typeof entity.stackable === "boolean" &&
+    typeof entity.renewable === "boolean" &&
+    isNonEmpty(entity.versionAdded) &&
+    isNonEmpty(entity.textureUrl)
+  );
+}
+
+/**
+ * Check that a mob has the behavior field required for Classic mode.
+ */
+function isValidMobForClassic(mob: Mob): boolean {
+  return isValidForClassic(mob) && isNonEmpty(mob.behavior);
+}
+
+/**
+ * Check that a recipe has a valid grid with at least one ingredient.
+ */
+function isValidRecipe(recipe: CraftingRecipe): boolean {
+  return (
+    isNonEmpty(recipe.itemId) &&
+    isNonEmpty(recipe.name) &&
+    Array.isArray(recipe.grid) &&
+    recipe.grid.length === 3 &&
+    recipe.grid.every((row) => Array.isArray(row) && row.length === 3) &&
+    recipe.grid.some((row) => row.some((cell) => cell !== null))
+  );
+}
+
+/**
+ * Check that a sound entry has all required fields.
+ */
+function isValidSound(sound: SoundEntry): boolean {
+  return (
+    isNonEmpty(sound.id) &&
+    isNonEmpty(sound.entityId) &&
+    isNonEmpty(sound.name) &&
+    isNonEmpty(sound.soundFile)
+  );
 }
 
 export function loadAllData(): void {
@@ -45,17 +96,23 @@ export function loadAllData(): void {
     ingredientIcons = JSON.parse(fs.readFileSync(iconsPath, "utf-8"));
   }
 
-  // Filter out items/mobs with missing textures
-  items = rawItems.filter((i) => hasValidTexture(i.textureUrl));
-  mobs = rawMobs.filter((m) => hasValidTexture(m.textureUrl));
+  // Filter items: must have all required properties for game modes
+  items = rawItems.filter((i) => isValidForClassic(i));
 
-  // Keep only sounds whose mob has a valid texture and the sound file is present
+  // Filter mobs: must have behavior + all classic properties
+  mobs = rawMobs.filter((m) => isValidMobForClassic(m));
+
+  // Filter sounds: must have a valid soundFile and reference an existing mob
   const validMobIds = new Set(mobs.map((m) => m.id));
-  sounds = rawSounds.filter((s) => s.soundFile && validMobIds.has(s.entityId));
+  sounds = rawSounds.filter(
+    (s) => isValidSound(s) && validMobIds.has(s.entityId),
+  );
 
-  // Keep only recipes whose item has a valid texture
+  // Filter recipes: must have a valid grid and reference an existing item with texture
   const validItemIds = new Set(items.map((i) => i.id));
-  recipes = rawRecipes.filter((r) => validItemIds.has(r.itemId));
+  recipes = rawRecipes.filter(
+    (r) => isValidRecipe(r) && validItemIds.has(r.itemId),
+  );
 
   const excludedItems = rawItems.length - items.length;
   const excludedMobs = rawMobs.length - mobs.length;

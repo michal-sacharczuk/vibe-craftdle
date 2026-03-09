@@ -1030,7 +1030,7 @@ async function main() {
 
   // ── Step 10: Write JSON files ──
 
-  const dataDir = path.join(process.cwd(), "server", "data");
+  const dataDir = path.join(process.cwd(), "client", "public", "data");
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
   fs.writeFileSync(

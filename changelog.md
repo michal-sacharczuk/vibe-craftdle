@@ -4,6 +4,33 @@ All notable changes to the Craftdle project are documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-09
+
+### Changed
+
+- **Architecture**: Converted from client-server (React + Express) to a fully static client-only app. All game logic now runs in the browser — no backend server required.
+- **Game engines**: All 7 game mode services (Classic, Crafting, Texture, Sound, Silhouette, Timeline, Reverse Crafting) ported to client-side engines in `client/src/engine/`.
+- **Session management**: Sessions now stored in browser memory via `sessionManager.ts` instead of server-side.
+- **Data loading**: Game data fetched from static JSON files in `client/public/data/` at runtime instead of loaded at server startup.
+- **API layer**: `api.ts` rewritten to delegate to local engines instead of making HTTP calls.
+- **Data fetcher**: `scripts/fetch-wiki-data.ts` now outputs to `client/public/data/` instead of `server/data/`.
+
+### Removed
+
+- **Backend server**: Entire `server/` directory removed (Express app, routes, services, types, utils).
+- **Server tests**: All `tests/server/` test suites removed (126 tests).
+- **Dependencies**: Removed `concurrently`, Express, and all server-side dependencies.
+
+### Added
+
+- **Client-side engines**: `classicEngine.ts`, `craftingEngine.ts`, `textureEngine.ts`, `soundEngine.ts`, `silhouetteEngine.ts`, `timelineEngine.ts`, `reverseCraftingEngine.ts`.
+- **Data store**: `dataStore.ts` — client-side data loader with validation, mirroring the server's `dataLoader.ts`.
+- **Session manager**: `sessionManager.ts` — in-memory session management for the browser.
+- **GitHub Pages support**: Vite configured with `base: "/Craftdle/"`, SPA `404.html` redirect, and `BrowserRouter` basename.
+- **Vite environment types**: Added `vite-env.d.ts` for `import.meta.env` support.
+
+---
+
 ## [1.0.1] - 2026-03-09
 
 ### Fixed

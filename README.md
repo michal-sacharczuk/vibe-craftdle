@@ -121,6 +121,15 @@ Tests use Jest + React Testing Library. Test files are in `tests/client/`.
 - **Jest** + **React Testing Library** — Testing
 - **GitHub Pages** — Static hosting
 
-## License
+## Disclaimer
 
-This project is for educational and personal use. Minecraft is a trademark of Mojang Studios / Microsoft.
+**This is an unofficial fan project. It is NOT affiliated with, endorsed by, or connected to Mojang Studios, Microsoft, or Minecraft in any way.**
+
+- Minecraft is a registered trademark of Mojang Studios / Microsoft.
+- This project is non-commercial — it is not monetized and generates no revenue.
+- It is intended solely for personal, educational, and entertainment purposes.
+- Game data (item names, crafting recipes, mob attributes, version history) is sourced from [minecraft.wiki](https://minecraft.wiki), which is licensed under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/). Attribution is provided in the app footer.
+- Texture images and sound files are linked from minecraft.wiki and are not redistributed by this project.
+- If any rights holder has concerns, please open an issue and the content will be promptly removed.
+
+This project follows [Microsoft's usage guidelines](https://www.minecraft.net/en-us/usage-guidelines) for fan projects to the best of our ability.
